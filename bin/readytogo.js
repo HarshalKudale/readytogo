@@ -3,22 +3,33 @@ import { spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { basename, join, relative, resolve, sep } from "node:path";
 import { parseArgs } from "node:util";
+import { itemsOf, areas as allAreas, pickAreas, scopePlan } from "../src/areas.js";
+import { compare, loadBaseline, recordBaseline } from "../src/baseline.js";
 import { runChecks, context } from "../src/checks.js";
+import { branchInfo, changesSince, currentBranch, isRepo, startBranch } from "../src/git.js";
 import { buildPlan, isClosed, summarize } from "../src/plan.js";
 import { scan } from "../src/scan.js";
 import { parsePage, scorePage } from "../src/seo.js";
 import { load, save } from "../src/state.js";
 import { data, readJson, walk } from "../src/util.js";
 
-const HELP = `readytogo (alias: rtg): audit a repo for launch readiness and generate store assets.
+const HELP = `readytogo (alias: rtg): audit a repo for launch readiness, work on it safely, and generate store assets.
+
+Areas: ${allAreas().map((a) => a.slug).join(", ")}. Commands that take --area load and check only that slice: use it.
+
+Workflow: analyze (what is not ready, "before" snapshot, decisions) -> ask the user -> branch (safe work branch) -> fix -> check -> diff (what changed)
+  analyze [--area a,b|all] [--rebaseline] [--json]   profile if needed, run the area's checks, save the "before" snapshot, list what is not ready + decisions
+  branch [--area a,b] [--name s] [--allow-dirty]     create readytogo/<area>-<date> from the current commit; refuses over uncommitted work
+  diff [--area a,b]                                  before vs now per area, plus commits and files changed since the baseline
+  areas                                              list areas with their checklists
 
 Readiness
   scan [--write]                        detect stack/platform tags from the repo
   profile [--add t,t] [--remove t,t] [--name s] [--tagline s] [--confirm] [--tags]
-  plan [--open] [--priority blocker] [--checklist slug] [--json]
-  check [--only id,id]                  run automatic checks, store results
+  plan [--area a,b] [--open] [--priority blocker] [--checklist slug] [--json]
+  check [--area a,b] [--only id,id]     run automatic checks, store results
   mark <item-id> <done|skipped|na|open> [--note "…"]
-  report [--out READYTOGO.md] [--no-fail]
+  report [--area a,b] [--out READYTOGO.md] [--no-fail]   includes before/after when a baseline exists
 
 Converters, resizers, analysers (exact and deterministic; they never design anything)
   specs [--store chrome_web_store] [--json]
@@ -31,6 +42,7 @@ Converters, resizers, analysers (exact and deterministic; they never design anyt
   seo <page.html|https://url>           on-page SEO score and link-preview tags
   links <page.html|https://url> [--no-check] [--limit 150] [--allow-local]   broken/redirecting/unsafe links on a page
   backlinks <export.csv|urls.txt> --target example.com [--verify] [--limit 100] [--json]   who links to you, and do they still?
+  domains <name...> [--tlds com,io,app]  which domains look free (RDAP lookup; never registers anything)
   deadcode [dir] [--lang ts,py] [--ignore glob,glob] [--min high|medium|low] [--max 200] [--strict] [--json]   unused code via tree-sitter
 
 Setup: tools that are downloaded, never bundled, so they stay current
@@ -51,7 +63,7 @@ const OPTIONS = {
   priority: { type: "string" }, checklist: { type: "string" }, only: { type: "string" }, note: { type: "string" }, out: { type: "string" },
   "no-fail": { type: "boolean" }, store: { type: "string" }, for: { type: "string" }, bg: { type: "string" }, padding: { type: "string" },
   round: { type: "boolean" }, "mac-grid": { type: "boolean" }, target: { type: "string" }, fit: { type: "string" }, width: { type: "string" }, limit: { type: "string" }, verify: { type: "boolean" }, "no-check": { type: "boolean" }, "allow-local": { type: "boolean" }, lang: { type: "string" }, ignore: { type: "string" }, min: { type: "string" }, max: { type: "string" }, strict: { type: "boolean" }, update: { type: "boolean" }, start: { type: "string" }, crf: { type: "string" },
-  size: { type: "string" }, color: { type: "string" }, mode: { type: "string" },
+  area: { type: "string" }, tlds: { type: "string" }, "allow-dirty": { type: "boolean" }, rebaseline: { type: "boolean" }, size: { type: "string" }, color: { type: "string" }, mode: { type: "string" },
   box: { type: "string", multiple: true }, scale: { type: "string" }, transparent: { type: "boolean" }, wait: { type: "string" },
   frames: { type: "string" }, at: { type: "string" }, fps: { type: "string" }, duration: { type: "string" }, video: { type: "string" }, dir: { type: "string" },
   model: { type: "string", multiple: true }, help: { type: "boolean", short: "h" },
@@ -79,12 +91,34 @@ function planLines(plan, { onlyOpen, priority, checklist } = {}) {
   return out.join("\n");
 }
 
-function reportMarkdown(plan, name) {
+// The plan for the requested areas only (all areas when --area is absent).
+function scoped(s, v) {
+  const selected = pickAreas(v.area);
+  const plan = scopePlan(buildPlan(s.profile.tags, { state: s.state, checks: s.checks }), selected);
+  return { selected, plan };
+}
+
+const CAP = (t, n = 150) => (t.length > n ? t.slice(0, n - 1) + "…" : t);
+const itemLine = (i) => `[${i.priority}] ${MARK[i.status] ?? "[ ]"} ${i.id} · ~${i.minutes}m · ${i.title}${i.note ? `\n      ↳ ${CAP(i.note.replace(/\s+/g, " "))}` : ""}`;
+
+function comparisonLines(root, plan, selected) {
+  const rows = compare(root, plan, selected).filter((r) => r.baseline);
+  const lines = [];
+  for (const r of rows) {
+    lines.push(`${r.area}: ${r.baseline.closed}/${r.baseline.total} ready before (${r.baseline.at.slice(0, 10)}) → ${r.closedNow}/${r.total} now`);
+    for (const c of r.changes) lines.push(`  + ${c.id}  ${c.from} → ${c.to}`);
+    for (const c of r.regressions) lines.push(`  ! ${c.id}  ${c.from} → ${c.to}  (regression)`);
+  }
+  return { rows, lines };
+}
+
+function reportMarkdown(plan, name, before) {
   const s = summarize(plan);
   const lines = [`# Ship readiness${name ? `: ${name}` : ""}`, "", `Generated ${new Date().toISOString().slice(0, 10)} · catalog ${plan.version} · ${s.closed}/${s.total} items closed · **${s.openBlockers.length} open blockers**`, "", "> Automated checks read the repo only. Items marked verified passed a check; done/skipped were marked by a person or agent. This is not legal advice and not a guarantee of store approval.", ""];
   if (s.openBlockers.length) {
     lines.push("## Open blockers", "", ...s.openBlockers.map((i) => `- \`${i.id}\` ${i.title}${i.note ? ` — ${i.note}` : ""}`), "");
   }
+  if (before?.lines.length) lines.push("## Before / after", "", "```", ...before.lines, "```", "");
   for (const c of plan.checklists) {
     lines.push(`## ${c.title}`, "", "| Status | Item | Priority | Note |", "|---|---|---|---|");
     for (const i of c.items) lines.push(`| ${MARK[i.status]} ${i.status} | \`${i.id}\` ${i.title.replace(/\|/g, "/")} | ${i.priority} | ${(i.note ?? "").replace(/\|/g, "/").replace(/\n/g, " ")} |`);
@@ -133,7 +167,7 @@ const main = async () => {
     }
     case "plan": {
       const s = needProfile(root);
-      const plan = buildPlan(s.profile.tags, { state: s.state, checks: s.checks });
+      const { plan } = scoped(s, v);
       if (v.json) return log(JSON.stringify(plan, null, 2));
       const sum = summarize(plan);
       log(`${plan.checklists.length} checklists, ${sum.total} items, ${sum.closed} closed, ${sum.openBlockers.length} open blockers${s.profile.confirmed ? "" : "  (profile NOT confirmed yet)"}`);
@@ -142,7 +176,7 @@ const main = async () => {
     }
     case "check": {
       const s = needProfile(root);
-      const plan = buildPlan(s.profile.tags, { state: s.state });
+      const { plan } = scoped({ ...s, checks: undefined }, v);
       const ids = plan.checklists.flatMap((c) => c.items).filter((i) => i.autoCheck && (!v.only || list(v.only).includes(i.id))).map((i) => i.id);
       const ctx = context(root, walk(root), new Set(s.profile.tags));
       const results = await runChecks(ctx, ids, await sharpLib());
@@ -163,9 +197,9 @@ const main = async () => {
     }
     case "report": {
       const s = needProfile(root);
-      const plan = buildPlan(s.profile.tags, { state: s.state, checks: s.checks });
+      const { plan, selected } = scoped(s, v);
       const file = resolve(root, v.out ?? "READYTOGO.md");
-      writeFileSync(file, reportMarkdown(plan, s.profile.product?.name) + "\n");
+      writeFileSync(file, reportMarkdown(plan, s.profile.product?.name, comparisonLines(root, plan, selected)) + "\n");
       const sum = summarize(plan);
       log(`Wrote ${file}: ${sum.closed}/${sum.total} closed, ${sum.openBlockers.length} open blockers`);
       if (sum.openBlockers.length && !v["no-fail"]) {
@@ -173,6 +207,69 @@ const main = async () => {
         process.exitCode = 1;
       }
       return;
+    }
+    case "areas": {
+      return log(allAreas().map((a) => `${a.slug.padEnd(10)} ${a.title} · ${a.checklists.join(", ")}\n           ${a.summary}`).join("\n"));
+    }
+    case "analyze": {
+      const selected = pickAreas(v.area);
+      let s = load(root);
+      const notes = [];
+      if (!s.profile.tags.length) {
+        const r = scan(root);
+        save(root, "profile.json", { ...s.profile, tags: r.tags, assumed: r.assumed, product: { ...r.product, ...s.profile.product }, confirmed: false });
+        s = load(root);
+        notes.push(`Scanned ${r.fileCount} files: ${r.tags.length} tags. Assumed (confirm): ${r.assumed.join(", ") || "none"}. Only the user knows: ${r.ask.join(", ")} (options: data/questions.json).`);
+      } else if (!s.profile.confirmed) notes.push("Profile is not confirmed yet: confirm stores, pricing and data with the user, then `readytogo profile --confirm`.");
+      const fresh = scopePlan(buildPlan(s.profile.tags, { state: s.state }), selected);
+      const ids = itemsOf(fresh).filter((i) => i.autoCheck).map((i) => i.id);
+      const results = await runChecks(context(root, walk(root), new Set(s.profile.tags)), ids, await sharpLib());
+      save(root, "checks.json", { at: new Date().toISOString(), results: { ...s.checks.results, ...results } });
+      s = load(root);
+      const plan = scopePlan(buildPlan(s.profile.tags, { state: s.state, checks: s.checks }), selected);
+      const wrote = recordBaseline(root, plan, selected, { force: v.rebaseline });
+      const open = itemsOf(plan).filter((i) => !isClosed(i));
+      const decisions = open.filter((i) => i.decide);
+      if (v.json) return log(JSON.stringify({ areas: selected.map((a) => a.slug), notes, baselineWritten: wrote, open: open.map(({ steps, why, ...i }) => i), decisions: decisions.map((i) => ({ id: i.id, ...i.decide })) }, null, 2));
+      log(`ReadyToGo analysis · ${selected.map((a) => a.slug).join(", ")} · ${s.profile.tags.length} tags${s.profile.confirmed ? "" : " (profile not confirmed)"}`);
+      notes.forEach((n) => log(n));
+      log(wrote.length ? `Baseline ("before") saved for: ${wrote.join(", ")}` : "Baseline kept from an earlier analysis (use --rebaseline to reset).");
+      const rank = (p) => ["blocker", "recommended", "nice"].indexOf(p);
+      for (const a of selected) {
+        const items = itemsOf(plan).filter((i) => i.area === a.slug);
+        if (!items.length) { log(`\n## ${a.slug}: nothing applies to this product`); continue; }
+        const rest = items.filter((i) => !isClosed(i)).sort((x, y) => rank(x.priority) - rank(y.priority));
+        log(`\n## ${a.slug} · ${items.length - rest.length}/${items.length} ready`);
+        rest.forEach((i) => log(itemLine(i)));
+      }
+      if (decisions.length) {
+        log("\n## Ask the user (one message, then act on the answers)");
+        decisions.forEach((i, n) => log(`${n + 1}. ${i.decide.question}  [${i.id}]\n${i.decide.options.map((o, k) => `     ${String.fromCharCode(97 + k)}) ${o}`).join("\n")}`));
+      }
+      return log(`\nNext: ask the user which items to work on and how, then \`readytogo branch --area ${v.area ?? "all"}\` before changing any file. Item details: references/checklists/<checklist>.md`);
+    }
+    case "branch": {
+      const r = startBranch(root, { scope: v.area ?? "all", name: v.name, allowDirty: v["allow-dirty"] });
+      return log(r.created ? `On new branch ${r.branch} (from ${r.base.branch} @ ${r.base.sha?.slice(0, 7)}${r.carriedDirty ? `; ${r.carriedDirty} uncommitted file(s) carried over` : ""}). Commit small; never push or merge. \`readytogo diff\` shows the result.` : `Already on ${r.branch}.`);
+    }
+    case "diff": {
+      const s = load(root);
+      const base = loadBaseline(root);
+      if (!Object.keys(base.areas).length) throw new Error("No baseline yet. Run `readytogo analyze` before making changes.");
+      const { plan, selected } = scoped(s, v);
+      const { lines, rows } = comparisonLines(root, plan, selected.filter((a) => base.areas[a.slug]));
+      const sha = branchInfo(root)?.base?.sha ?? rows.find((r) => r.baseline?.sha)?.baseline.sha;
+      log(lines.length ? lines.join("\n") : "No baseline for those areas.");
+      const git = isRepo(root) ? changesSince(root, sha) : null;
+      if (git) log(`\nGit (${currentBranch(root)}): ${git.commits.length} commit(s), ${git.uncommitted} uncommitted file(s)\n${git.commits.slice(0, 20).map((c) => "  " + c).join("\n")}${git.stat ? "\n" + git.stat : ""}`);
+      return;
+    }
+    case "domains": {
+      if (!args.length) throw new Error("Usage: readytogo domains <name...> [--tlds com,io,app]");
+      const { checkDomains, DEFAULT_TLDS } = await import("../src/domains.js");
+      const rows = await checkDomains(args, v.tlds ? list(v.tlds) : DEFAULT_TLDS);
+      log(rows.map((r) => `${r.status.padEnd(11)} ${r.domain}${r.detail ? `  (${r.detail})` : ""}`).join("\n"));
+      return log("\nlikely-free = no registry record. Confirm and buy at a registrar; premium-priced names can still show as free.");
     }
     case "specs": {
       const { assets, listing } = data("specs");

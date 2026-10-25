@@ -3,6 +3,25 @@
 All commands accept `--root <dir>` (the project; default: current directory). Output paths without `--out` go to `<root>/.readytogo/assets/…`. Paths you pass (inputs and `--out`) resolve against the current directory.
 Exit codes: `0` ok · `1` a check/limit/report failed · `2` bad usage or error (message on stderr, starts with `error:`).
 
+## Safe workflow
+
+`--area` takes a comma list of area slugs (`readytogo areas`): `brand, domain, legal, packaging, quality, seo, docs, assets, stores, launch`. Without it, commands cover every area.
+
+### `analyze [--area a,b] [--rebaseline] [--json]`
+Read-only. Scans and profiles the repo if there is no profile, runs the automatic checks of the chosen areas only, saves the **before** snapshot per area to `.readytogo/baseline.json` (kept on later runs; `--rebaseline` resets it), then prints per area what is not ready (priority, id, minutes, title, check note) and the **decisions to ask the user**. Run this first, and again after the user changes the profile.
+
+### `branch [--area a,b] [--name s] [--allow-dirty]`
+Creates `readytogo/<areas>-<date>` from the current commit and records the base in `.readytogo/branch.json`. Refuses when there are uncommitted changes (ignoring `.readytogo/`) unless `--allow-dirty`, and when the folder is not a git repo. Already on a `readytogo/*` branch: does nothing. It never pushes or merges.
+
+### `diff [--area a,b]`
+Per area: items ready before vs now, every item that moved (`+`) or regressed (`!`), then the commits and `git diff --stat` since the branch base. Needs a baseline from `analyze`.
+
+### `areas`
+Lists areas, their checklists and a one-line summary.
+
+### `domains <name...> [--tlds com,io,app]`
+RDAP lookup against each TLD's registry (via the IANA bootstrap). `taken`, `likely-free` or `unknown` (TLD without RDAP, such as .io: check a registrar). Never registers anything.
+
 ## Readiness
 
 ### `scan [--write] [--json]`
@@ -11,17 +30,17 @@ Reads the repo. Prints tags, the evidence for each, product facts (name, descrip
 ### `profile [--add t,t] [--remove t,t] [--name s] [--tagline s] [--confirm] [--tags]`
 Show or edit the profile. Unknown tags are rejected. `--tags` lists every valid tag with a description. `--confirm` marks the profile as user-confirmed.
 
-### `plan [--open] [--priority blocker|recommended|nice] [--checklist slug] [--json]`
+### `plan [--area a,b] [--open] [--priority blocker|recommended|nice] [--checklist slug] [--json]`
 Which checklists and items apply, with status. Markers: `[ ]` open · `[!]` failing · `[v]` verified by a check · `[x]` done · `[-]` skipped / not applicable. `--json` gives full items (steps, why, tools).
 
-### `check [--only id,id]`
+### `check [--area a,b] [--only id,id]`
 Runs automatic checks for the items in the plan and saves `.readytogo/checks.json`. Each result is `PASS`, `FAIL` or `????` (needs your judgement). Which items have one is shown in the checklist file (`Auto-check`).
 
 ### `mark <item-id> <done|skipped|na|open> [--note "evidence"]`
 Records a manual decision in `.readytogo/state.json`. `open` removes the mark.
 
-### `report [--out READYTOGO.md] [--no-fail]`
-Writes the Markdown report. Exits 1 if blockers are open unless `--no-fail`.
+### `report [--area a,b] [--out READYTOGO.md] [--no-fail]`
+Writes the Markdown report, with a before/after section when a baseline exists. Exits 1 if blockers are open unless `--no-fail`.
 
 ## Assets
 

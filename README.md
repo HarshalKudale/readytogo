@@ -2,8 +2,8 @@
 
 An agent skill and CLI that gets a product **ready to ship**. Point your coding agent at a repo; it works out which launch checks apply (web, iOS, Android, desktop, browser extension, CLI, library, API), fixes what it can, and generates the assets stores ask for: icons, favicons, store screenshots at exact pixel sizes, promo tiles, device mockups, and animated 3D (three.js) mockups.
 
-- **161 checks in 20 checklists**, tag-filtered so a Chrome extension never sees App Store items.
-- **27 automatic checks** that read the repo (secrets, icon size and alpha channel, manifest, SEO and Open Graph tags, privacy page, CI, crash reporting, target SDK …).
+- **180 checks in 22 checklists, grouped into 10 areas**, tag-filtered so a Chrome extension never sees App Store items.
+- **36 automatic checks** that read the repo (secrets, icon size and alpha channel, manifest, SEO and Open Graph tags, privacy page, CI, crash reporting, target SDK …).
 - **Tools** for static, repeated work (exact and deterministic, no AI drawing): icon sets for every store, screenshot fitting, spec `verify`, video convert, redaction, listing-text limits, SEO score, broken-link audit, backlink analysis, dead-code finder.
 - **Guidelines plus shipped assets** for anything that must be designed per product: OS window frames, seven generic 3D phone and laptop models, a director-driven three.js scene (camera moves, video on screens), promo and capture templates. The agent composes; it asks you first whether to use your screenshots or capture fresh.
 - The agent supplies judgement; the CLI supplies exactness and memory (`.readytogo/` in the repo).
@@ -36,23 +36,44 @@ npx readytogo setup deadcode   # tree-sitter + grammars, for deadcode (~55 MB)
 
 `readytogo doctor` tells you what is missing. The video tool also needs `ffmpeg`.
 
+## How it works
+
+Every launch concern is an **area** (`seo`, `packaging`, `docs`, `brand`, `domain`, `legal`, `quality`, `assets`, `stores`, `launch`), and each area is a checklist the project goes through. Run one area or all of them:
+
+```
+/readytogo:ship                 # everything
+/readytogo:seo                  # only SEO: nothing else is scanned or read
+/readytogo:packaging            # source maps, bundle size, images, dependencies, installers
+/readytogo:docs  /readytogo:stores  /readytogo:brand  /readytogo:domain  /readytogo:legal  /readytogo:quality  /readytogo:launch
+/readytogo:assets  /readytogo:mockup
+```
+
+1. **Analyse** (read-only): finds what is not ready, saves a **before** snapshot, writes the report.
+2. **Ask**: you get the decisions ("remove source maps or upload them to Sentry?", "look for free domains?", "your screenshots or capture fresh?").
+3. **Work on a branch**: `readytogo/<area>-<date>`, small commits, nothing pushed or merged, so your code stays safe.
+4. **Compare**: `readytogo diff` shows before vs now and every file the agent touched.
+
 ## Use
 
 Just ask your agent:
 
+> Make the SEO of this project ready to ship.
+> Shrink the production bundle and check for source maps.
 > Get this ready to ship. It goes on the App Store and Google Play.
-> Make Chrome Web Store assets for this extension.
 > Make a 6-second looping laptop hero video of our dashboard.
 
 or run the CLI yourself:
 
 ```bash
-npx readytogo scan --write                         # detect platform, stack, services
+npx readytogo analyze --area seo,packaging         # what is not ready, before-snapshot, decisions
+npx readytogo branch --area seo,packaging          # safe work branch
+npx readytogo check --area seo,packaging
+npx readytogo diff                                  # before vs now, commits, files
+npx readytogo report --area seo,packaging           # READYTOGO.md with before/after; exit 1 while blockers are open
+
 npx readytogo profile --add store:chrome_web_store,pricing:free --name "Acme" --tagline "Do more" --confirm
-npx readytogo plan --open                          # only what applies, by phase
-npx readytogo check                                # automatic checks
+npx readytogo domains acme acmeapp --tlds com,dev,app
 npx readytogo mark legal.privacy done --note "https://acme.com/privacy"
-npx readytogo report                               # READYTOGO.md; exit 1 while blockers are open
 
 npx readytogo icons logo.svg --for chrome_web_store
 npx readytogo shot cap/*.png --target chrome       # 1280×800 store screenshots
@@ -74,6 +95,8 @@ Full command reference: [`skills/readytogo/references/commands.md`](skills/ready
 skills/readytogo/
   SKILL.md                      the agent's entry point (workflow, rules, tool vs guideline)
   references/
+    areas/<area>.md             start here: one file per area, links only what that area needs
+    tools.md                    every tool, mockup guidelines, setup
     workflow.md  commands.md    how to profile, work a checklist, gate CI; every CLI option
     assets.md  capture.md       master icon, placement, listing copy; capturing real screenshots per platform
     mockups.md  mockups-3d.md   composition guidelines for 2D and three.js mockups, motion, GLB contract

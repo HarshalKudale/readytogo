@@ -191,6 +191,55 @@ export const CHECKS = {
     }
     return wrong.length ? bad(wrong.join("; ")) : ok("manifest icons 16/48/128 exist at the right sizes. Screenshots and promo tiles are separate: `readytogo specs --store chrome_web_store`.");
   },
+  "build.web-sourcemaps": (c) => {
+    const cfg = (f) => /(^|\/)(vite|webpack|rollup|next|nuxt|astro|svelte|angular|vue|rsbuild|tsup|rspack)[\w.-]*\.(config\.)?[cm]?[jt]s$|(^|\/)(angular\.json|\.env[\w.]*)$/.test(f);
+    const on = c.grep(/(sourcemap|sourceMap|productionBrowserSourceMaps)["']?\s*[:=]\s*(true|["']inline["'])|devtool\s*:\s*["'](?!hidden|false|eval)[\w-]*source-map|GENERATE_SOURCEMAP\s*=\s*true/, cfg);
+    if (on.length) return bad(`Source maps enabled in ${on.slice(0, 3).join(", ")}. Disable for production or use 'hidden' and upload them to your error tracker.`);
+    if (c.deps.has("react-scripts") && !c.grep(/GENERATE_SOURCEMAP\s*=\s*false/, (f) => /\.env/.test(f)).length) return bad("Create React App emits source maps by default; set GENERATE_SOURCEMAP=false in .env.production.");
+    return unknown("No config enables source maps. Open the live site's DevTools > Sources to confirm no original .ts/.tsx files are served.");
+  },
+  "pack.strip-debug": (c) => {
+    const hit = c.grep(/^\s*debugger\s*;?\s*$/m, (f) => !/(\.test\.|\.spec\.|__tests__|\/tests?\/|\.config\.)/.test(f) && /\.[cm]?[jt]sx?$|\.vue$|\.svelte$/.test(f));
+    return hit.length ? bad(`debugger statement in ${hit.slice(0, 4).join(", ")}${hit.length > 4 ? ` (+${hit.length - 4})` : ""}`) : ok("no debugger statements; console.log stripping is a build option, check the bundler config");
+  },
+  "pack.npm-files": (c) => {
+    const p = c.pkgs[0];
+    if (!p) return unknown("No package.json.");
+    return p.files || c.has(/(^|\/)\.npmignore$/) ? ok(p.files ? `files whitelist: ${p.files.join(", ")}` : ".npmignore present (a `files` whitelist is safer)") : bad("No `files` whitelist or .npmignore: npm publishes nearly everything. Check `npm pack --dry-run`.");
+  },
+  "pack.docker": (c) => {
+    const df = c.find(/(^|\/)Dockerfile[\w.-]*$/);
+    if (!df.length) return unknown("No Dockerfile; nothing to check.");
+    const stages = (c.read(df[0]).match(/^FROM\s/gim) ?? []).length;
+    const problems = [!c.has(/(^|\/)\.dockerignore$/) && "no .dockerignore", stages < 2 && "single-stage build", !/^USER\s+(?!root)/im.test(c.read(df[0])) && "runs as root"].filter(Boolean);
+    return problems.length ? bad(`${df[0]}: ${problems.join(", ")}`) : ok(`${df[0]}: multi-stage, .dockerignore, non-root`);
+  },
+  "pack.android-shrink": (c) => {
+    const g = c.find(/(^|\/)build\.gradle(\.kts)?$/).filter((f) => /app\//.test(f) || !/\//.test(f));
+    if (!g.length) return unknown("No app build.gradle found.");
+    const on = g.some((f) => /(minifyEnabled\s*(=)?\s*true|isMinifyEnabled\s*=\s*true)/.test(c.read(f)));
+    return flag(on, "R8 minification enabled in a build.gradle", "minifyEnabled is not true in any app build.gradle: release builds are not shrunk.");
+  },
+  "pack.images": (c) => {
+    const big = c.find(/\.(png|jpe?g|gif|bmp|tiff?)$/i).map((f) => {
+      try {
+        return [f, statSync(join(c.root, f)).size];
+      } catch {
+        return [f, 0];
+      }
+    }).filter(([, n]) => n > 300_000).sort((a, b) => b[1] - a[1]);
+    return big.length ? bad(`${big.length} image(s) over 300 KB, largest: ${big.slice(0, 3).map(([f, n]) => `${f} (${Math.round(n / 1024)} KB)`).join(", ")}`) : ok("no raster image over 300 KB");
+  },
+  "pack.heavy-deps": (c) => {
+    const heavy = ["moment", "moment-timezone", "request", "jquery", "lodash", "core-js", "babel-polyfill", "bluebird", "underscore"].filter((d) => c.deps.has(d));
+    return heavy.length ? bad(`Heavy or legacy dependencies: ${heavy.join(", ")}. Prefer date-fns/dayjs, lodash-es per function, native fetch.`) : ok("no known-heavy dependency; run `npx depcheck` for unused ones");
+  },
+  "docs.env-example": (c) => {
+    const usesEnv = c.has(/(^|\/)\.env(\.\w+)?$/) || c.grep(/process\.env\.|import\.meta\.env|os\.environ|std::env::var|getenv\(/).length > 0;
+    if (!usesEnv) return ok("no environment variables used");
+    return flag(c.has(/(^|\/)\.env\.(example|sample|template)$/), ".env.example present", "Environment variables are used but there is no .env.example.");
+  },
+  "docs.security-policy": (c) => flag(c.has(/(^|\/)SECURITY\.md$/i), "SECURITY.md present", "No SECURITY.md."),
   "pkg.readme": (c) => {
     const f = c.find(/^README(\.\w+)?$/i)[0];
     return f && c.read(f).length > 300 ? ok(f) : bad(f ? "README is almost empty" : "No README.");

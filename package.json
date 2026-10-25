@@ -20,7 +20,7 @@
     "node": ">=20"
   },
   "scripts": {
-    "build:docs": "node scripts/build-references.mjs",
+    "build:docs": "node scripts/build-references.mjs && node scripts/build-areas.mjs",
     "build:models": "node scripts/build-models.mjs",
     "test": "node --test test/*.test.js"
   },

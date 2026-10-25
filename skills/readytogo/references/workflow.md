@@ -7,6 +7,8 @@
   profile.json   tags, product name/tagline/description, which tags were assumed, confirmed flag
   state.json     manual marks: { "<item-id>": { status, note, at } }   status: done | skipped | na
   checks.json    last automatic check results: { "<item-id>": { pass: true|false|null, detail } }
+  baseline.json  the "before" snapshot per area (first `analyze`); compared by `diff` and `report`
+  branch.json    the readytogo/* branch and the commit it started from
   assets/        generated output (icons, screenshots, mockups, promo)
   mockups/       scaffolded 3d / frames / promo starters you are editing
 READYTOGO.md     the report (commit it, or regenerate in CI)
@@ -16,6 +18,17 @@ Commit `profile.json` and `state.json`; they are the project's launch memory. `c
 
 An item's status resolves in this order: a manual mark, then the latest automatic check (`verified` / `failing`), then `preTickIf` (e.g. the profile already has `has:logo`), else `open`.
 Open and failing items are not closed. A `pass: null` check result means "the repo cannot tell": decide it yourself.
+
+## Branches and the before-snapshot
+
+- `analyze` never edits project files. The first `analyze` of an area records its item statuses (after running its automatic checks) as the baseline.
+- Any change to code, config or content happens on a `readytogo/<area>-<date>` branch (`readytogo branch`). If the user has uncommitted work, ask them to commit or stash first. Without git there is no safe undo: ask them to `git init` and commit.
+- Commit small on that branch; the user reviews with `readytogo diff` or `git diff <base>..HEAD`, and merges or deletes the branch themselves.
+- `readytogo diff` and `report` compare against the baseline; use `analyze --rebaseline` only if the user wants to start the comparison over.
+
+## Only the requested area
+
+Pass `--area` everywhere. A request about SEO means `analyze --area seo` and `references/areas/seo.md`: do not run, read or mention packaging, docs or other areas. The profile (what the product is) is shared and asked once.
 
 ## Profiling well
 

@@ -1,9 +1,11 @@
 ---
-description: Audit this repo for launch readiness, fix what applies, and report what is left
-argument-hint: "[focus, e.g. chrome-web-store | app-store | seo | everything]"
+description: Audit every area of this repo for launch readiness, ask how to proceed, fix on a branch, and show what changed
+argument-hint: "[areas, e.g. seo,packaging | empty = everything]"
 ---
 
-Use the `readytogo` skill to get this project ready to ship. Focus: $ARGUMENTS (if empty, everything that applies).
+Use the `readytogo` skill. Areas: $ARGUMENTS (empty = all; `readytogo areas` lists them). Work only on the areas named.
 
-Follow the skill's workflow: scan and profile (ask me the unknowns in one batch), plan, check, fix what you can in the repo, generate any assets the plan calls for, then write `READYTOGO.md`.
-Do not submit, publish, pay or sign anything. Finish with: open blockers, what you changed, and what only I can do.
+1. `readytogo analyze --area <areas>` (no `--area` for all). It saves the before-snapshot and lists what is not ready and the decisions to ask. Read `references/areas/<area>.md` only for areas you will work on.
+2. Show me the result by area, blockers first, and ask me the decisions in one message (what to do, how, what I will handle). Wait for my answers.
+3. `readytogo branch --area <areas>`; fix only what I approved, in small commits on that branch. Never push, merge, publish, pay or sign.
+4. `readytogo check`, `readytogo diff`, `readytogo report`. Finish with: fixed, still open, what only I can do, and the branch name.

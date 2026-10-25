@@ -27,35 +27,6 @@ Phase: Pre-launch · Last verified: 2026-10-24 · Checklist applies when: always
   6. (any of platform:extension) Extensions: anything in the package is readable. Call your backend for secret-backed APIs.
   7. Search the built output for 'sk_', 'secret' and your API key prefixes.
 
-## build.web-sourcemaps: Production source maps aren't publicly served
-
-- **Priority:** recommended · ~15 min · **Applies when:** all of platform:web, bundle:js
-- **Why:** Public source maps hand anyone your original code and comments.
-- **Steps:**
-  1. (any of fw:nextjs) Next.js: keep productionBrowserSourceMaps off (the default) in next.config.
-  2. (any of fw:react_vite, fw:react_router, fw:sveltekit, fw:astro) Vite: set build.sourcemap to false, or 'hidden' and upload maps to your error tracker only.
-  3. (any of fw:nuxt) Nuxt: set sourcemap.client to false in nuxt.config.
-  4. (any of fw:angular) Angular: set sourceMap to false in the production configuration.
-  5. Open your live site, then DevTools > Sources: no original .ts/.tsx files should appear.
-
-## build.desktop-sourcemaps: Electron build ships without source maps or DevTools
-
-- **Priority:** blocker · ~20 min · **Applies when:** any of fw:electron
-- **Why:** ASAR archives unpack in seconds. Shipped maps and DevTools expose your code and internals.
-- **Steps:**
-  1. Set build.sourcemap false in the renderer's Vite/webpack config and exclude **/*.map in electron-builder 'files'.
-  2. Only open DevTools when !app.isPackaged.
-  3. Unpack the release ASAR (npx @electron/asar extract) and confirm no .map files are inside.
-
-## build.tauri-release: Tauri release build has no DevTools or source maps
-
-- **Priority:** blocker · ~15 min · **Applies when:** any of fw:tauri
-- **Why:** A release webview with DevTools lets anyone poke at your IPC commands.
-- **Steps:**
-  1. Don't enable the 'devtools' Cargo feature for release builds.
-  2. (all of bundle:js) Set build.sourcemap false in vite.config for the frontend.
-  3. Build with tauri build and right-click in the app: Inspect must not appear.
-
 ## build.electron-security: Electron security defaults on
 
 - **Priority:** blocker · ~45 min · **Applies when:** any of fw:electron
@@ -76,16 +47,6 @@ Phase: Pre-launch · Last verified: 2026-10-24 · Checklist applies when: always
   2. Scope filesystem and shell permissions to exact paths and commands.
   3. Set app.security.csp in tauri.conf.json.
 
-## build.rust-release: Rust release profile tuned, debug symbols kept separately
-
-- **Priority:** recommended · ~30 min · **Applies when:** any of platform:desktop, platform:cli; all of lang:rust
-- **Why:** Smaller, faster binaries for users, with symbols kept so crash reports stay readable.
-- **Steps:**
-  1. In Cargo.toml [profile.release]: lto = "thin", codegen-units = 1, and strip = "debuginfo" or split-debuginfo.
-  2. Build with cargo build --release --locked so CI uses exactly your Cargo.lock.
-  3. (any of platform:desktop) Upload the split debug info (.dSYM / .pdb / .dwp) to your crash reporter for each release.
-  4. (any of platform:cli) Set opt-level = "z" only if binary size matters more than speed for your CLI.
-
 ## build.rust-panics: Panics are caught, logged and reported
 
 - **Priority:** blocker · ~45 min · **Applies when:** all of lang:rust, platform:desktop
@@ -103,24 +64,6 @@ Phase: Pre-launch · Last verified: 2026-10-24 · Checklist applies when: always
   1. Embed assets with include_bytes! or rust-embed, or resolve them relative to the app bundle.
   2. (any of fw:gpui) GPUI: serve embedded assets through your AssetSource implementation.
   3. Install the release build on a clean machine and check fonts and icons render.
-
-## build.dead-code: Unused code and imports removed
-
-- **Priority:** recommended · ~30 min · **Applies when:** none of fw:nocode
-- **Why:** Dead code ships to users, inflates bundles, hides real bugs and leaks removed features.
-- **Run:** `readytogo setup deadcode   (once)` · `readytogo deadcode --min medium`
-- **Steps:**
-  1. Run the analyser, review HIGH findings (unused imports, unreachable code, unreferenced private declarations) and delete them.
-  2. Treat MEDIUM and LOW findings (unused exports, unreferenced files) as questions: public API, entry points and framework routes can look unused.
-  3. Re-run tests and the build after deleting.
-
-## build.flutter-obfuscate: Flutter release builds obfuscated, symbols uploaded
-
-- **Priority:** recommended · ~20 min · **Applies when:** any of fw:flutter
-- **Why:** Obfuscation slows reverse engineering; uploaded symbols keep crash reports readable.
-- **Steps:**
-  1. Build with flutter build <target> --release --obfuscate --split-debug-info=build/symbols.
-  2. Upload the symbols directory to your crash reporter.
 
 ## build.expo-release: EAS production build and update channel set up
 

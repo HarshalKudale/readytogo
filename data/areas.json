@@ -1,0 +1,93 @@
+[
+ {
+  "slug": "brand",
+  "title": "Brand and identity",
+  "summary": "Name, logo, icon master, favicon, tagline",
+  "checklists": ["brand-identity"],
+  "tools": ["icons", "domains", "listing"],
+  "guides": ["assets.md"],
+  "args": "e.g. name | logo | icon | favicon"
+ },
+ {
+  "slug": "domain",
+  "title": "Domain, DNS and email",
+  "summary": "Domain, HTTPS, DNS records, email deliverability",
+  "checklists": ["domain-dns", "email"],
+  "tools": ["domains", "links"],
+  "guides": [],
+  "args": "e.g. domains | email | dns"
+ },
+ {
+  "slug": "legal",
+  "title": "Legal, privacy and payments",
+  "summary": "Privacy policy, terms, consent, regional law, payments and tax",
+  "checklists": ["legal-compliance", "payments-tax"],
+  "tools": [],
+  "guides": [],
+  "args": "e.g. privacy | terms | payments"
+ },
+ {
+  "slug": "packaging",
+  "title": "Packaging and size",
+  "summary": "Source maps, minification, bundle size, images, dependencies, installers, release hygiene",
+  "checklists": ["app-packaging", "release-build"],
+  "tools": ["deadcode", "verify"],
+  "guides": [],
+  "args": "e.g. sourcemaps | bundle size | images | docker"
+ },
+ {
+  "slug": "quality",
+  "title": "Testing, analytics and monitoring",
+  "summary": "CI, tests, crash reporting, analytics, uptime",
+  "checklists": ["testing-qa", "analytics-monitoring"],
+  "tools": ["deadcode"],
+  "guides": [],
+  "args": "e.g. ci | crash reporting | analytics"
+ },
+ {
+  "slug": "seo",
+  "title": "SEO and links",
+  "summary": "Titles, meta, Open Graph, sitemap, structured data, broken links, backlinks",
+  "checklists": ["technical-seo"],
+  "tools": ["seo", "links", "backlinks"],
+  "guides": [],
+  "args": "e.g. a page URL | backlinks export | og tags"
+ },
+ {
+  "slug": "docs",
+  "title": "Documentation",
+  "summary": "README, quickstart, API reference, env docs, security policy, support",
+  "checklists": ["documentation"],
+  "tools": ["links"],
+  "guides": [],
+  "args": "e.g. readme | api reference | support page"
+ },
+ {
+  "slug": "assets",
+  "title": "Store assets and mockups",
+  "summary": "Icons, screenshots, promo art, 2D and 3D mockups, demo video",
+  "checklists": ["launch-assets"],
+  "tools": ["icons", "shot", "verify", "video", "annotate", "listing", "render"],
+  "guides": ["capture.md", "mockups.md", "mockups-3d.md", "assets.md", "store-specs.md"],
+  "args": "e.g. play store | hero video | og image",
+  "command": false
+ },
+ {
+  "slug": "stores",
+  "title": "Store submissions and distribution",
+  "summary": "App Store, Google Play, extension stores, Microsoft Store, desktop signing, registries",
+  "checklists": ["apple-app-store", "google-play", "chrome-web-store", "microsoft-store", "linux-stores", "desktop-release", "package-registries"],
+  "tools": ["specs", "shot", "verify", "listing", "icons"],
+  "guides": ["store-specs.md"],
+  "args": "e.g. app store | play | chrome | npm"
+ },
+ {
+  "slug": "launch",
+  "title": "Launch and after",
+  "summary": "Launch sites, communities, reviews, backlinks, second wave",
+  "checklists": ["launchpad", "communities", "post-launch"],
+  "tools": ["backlinks", "listing"],
+  "guides": [],
+  "args": "e.g. product hunt | communities | post-launch"
+ }
+]

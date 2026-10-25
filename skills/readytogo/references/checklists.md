@@ -22,8 +22,10 @@ _Icons, screenshots, mockups, demos_
 
 _Build, tests, SEO and store submissions_
 
-- [Release build hygiene](checklists/release-build.md) — What ships in your production build, and what must not. (19 items; applies: always)
+- [Release build hygiene](checklists/release-build.md) — What ships in your production build, and what must not. (13 items; applies: always)
+- [Packaging and size](checklists/app-packaging.md) — What goes into the shipped artifact: bundles, source maps, assets, dependencies, installers. Smaller and safer builds. (20 items; applies: always)
 - [Testing and QA](checklists/testing-qa.md) — Automated checks on the flows that matter. (12 items; applies: always)
+- [Documentation](checklists/documentation.md) — README, quickstart, API docs, contributing, security and support pages. (8 items; applies: always)
 - [Analytics and monitoring](checklists/analytics-monitoring.md) — Know what launch day did, and when something breaks. (6 items; applies: none of platform:library)
 - [Desktop distribution](checklists/desktop-release.md) — Signing, packaging and updates for each OS. (5 items; applies: any of platform:desktop)
 - [Technical SEO](checklists/technical-seo.md) — Indexable pages that look good when shared. (11 items; applies: any of store:website)
@@ -32,7 +34,7 @@ _Build, tests, SEO and store submissions_
 - [Browser extension stores](checklists/chrome-web-store.md) — Manifest, permissions and listings for Chrome, Firefox and Edge. (6 items; applies: any of store:chrome_web_store, store:firefox_addons, store:edge_addons)
 - [Microsoft Store](checklists/microsoft-store.md) — Partner Center listing and package requirements. (3 items; applies: any of store:microsoft_store)
 - [Snap and Flathub](checklists/linux-stores.md) — Store metadata and sandboxing for Linux app stores. (2 items; applies: any of store:snap_flathub)
-- [Registries and releases](checklists/package-registries.md) — Registries, package managers and release downloads. (8 items; applies: any of store:npm, store:pypi, store:crates_io, store:homebrew, store:github)
+- [Registries and releases](checklists/package-registries.md) — Registries, package managers and release downloads. (5 items; applies: any of store:npm, store:pypi, store:crates_io, store:homebrew, store:github)
 
 ## Launch week
 

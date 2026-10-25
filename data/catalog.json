@@ -254,6 +254,22 @@
    "phase": "postlaunch",
    "order": 10,
    "lastVerified": "2026-10-24"
+  },
+  {
+   "slug": "app-packaging",
+   "title": "Packaging and size",
+   "description": "What goes into the shipped artifact: bundles, source maps, assets, dependencies, installers. Smaller and safer builds.",
+   "phase": "prelaunch",
+   "order": 11,
+   "lastVerified": "2026-10-26"
+  },
+  {
+   "slug": "documentation",
+   "title": "Documentation",
+   "description": "README, quickstart, API docs, contributing, security and support pages.",
+   "phase": "prelaunch",
+   "order": 20,
+   "lastVerified": "2026-10-26"
   }
  ],
  "items": [
@@ -335,7 +351,14 @@
    "minutes": 30,
    "kit": [
     "name"
-   ]
+   ],
+   "decide": {
+    "question": "Should I check which domains and social handles are free for this name?",
+    "options": [
+     "Yes, run `readytogo domains <name>` and show me the free ones",
+     "No, I will pick and register them myself"
+    ]
+   }
   },
   {
    "id": "brand.handles",
@@ -508,7 +531,15 @@
    "preTickIf": "has:domain",
    "kit": [
     "url"
-   ]
+   ],
+   "decide": {
+    "question": "Do you already own a domain?",
+    "options": [
+     "Yes, tell me which",
+     "No: find free candidates for me (`readytogo domains`), I will register one",
+     "No: I will handle it myself"
+    ]
+   }
   },
   {
    "id": "domain.lock",
@@ -853,7 +884,15 @@
      "platform:api"
     ]
    },
-   "autoCheck": true
+   "autoCheck": true,
+   "decide": {
+    "question": "Privacy policy: who writes it?",
+    "options": [
+     "Draft it from what the code actually collects, for my review",
+     "I already have one: here is the URL or file",
+     "Skip for now"
+    ]
+   }
   },
   {
    "id": "legal.terms",
@@ -1411,6 +1450,13 @@
      "platform:desktop",
      "platform:extension"
     ]
+   },
+   "decide": {
+    "question": "Mockup media?",
+    "options": [
+     "Use my screenshots or recordings (give paths)",
+     "Capture fresh ones from the running app with demo data"
+    ]
    }
   },
   {
@@ -1635,7 +1681,7 @@
   },
   {
    "id": "build.web-sourcemaps",
-   "checklist": "release-build",
+   "checklist": "app-packaging",
    "order": 30,
    "title": "Production source maps aren't publicly served",
    "why": "Public source maps hand anyone your original code and comments.",
@@ -1684,11 +1730,19 @@
      "platform:web",
      "bundle:js"
     ]
-   }
+   },
+   "decide": {
+    "question": "Production source maps?",
+    "options": [
+     "Remove them from the production build",
+     "Keep them hidden and upload to my error tracker (name it)"
+    ]
+   },
+   "autoCheck": true
   },
   {
    "id": "build.desktop-sourcemaps",
-   "checklist": "release-build",
+   "checklist": "app-packaging",
    "order": 40,
    "title": "Electron build ships without source maps or DevTools",
    "why": "ASAR archives unpack in seconds. Shipped maps and DevTools expose your code and internals.",
@@ -1707,7 +1761,7 @@
   },
   {
    "id": "build.tauri-release",
-   "checklist": "release-build",
+   "checklist": "app-packaging",
    "order": 50,
    "title": "Tauri release build has no DevTools or source maps",
    "why": "A release webview with DevTools lets anyone poke at your IPC commands.",
@@ -1773,7 +1827,7 @@
   },
   {
    "id": "build.rust-release",
-   "checklist": "release-build",
+   "checklist": "app-packaging",
    "order": 80,
    "title": "Rust release profile tuned, debug symbols kept separately",
    "why": "Smaller, faster binaries for users, with symbols kept so crash reports stay readable.",
@@ -1866,7 +1920,7 @@
   },
   {
    "id": "build.flutter-obfuscate",
-   "checklist": "release-build",
+   "checklist": "app-packaging",
    "order": 100,
    "title": "Flutter release builds obfuscated, symbols uploaded",
    "why": "Obfuscation slows reverse engineering; uploaded symbols keep crash reports readable.",
@@ -3168,7 +3222,14 @@
     "Submit your sitemap."
    ],
    "priority": "recommended",
-   "minutes": 15
+   "minutes": 15,
+   "decide": {
+    "question": "Search Console and Bing verification?",
+    "options": [
+     "I verify; give me the steps",
+     "I will paste the verification token and you add the tag or file"
+    ]
+   }
   },
   {
    "id": "seo.store-badges",
@@ -3976,7 +4037,7 @@
   },
   {
    "id": "pkg.readme",
-   "checklist": "package-registries",
+   "checklist": "documentation",
    "order": 10,
    "title": "README with install, quickstart and a demo",
    "why": "The README is your landing page on every registry.",
@@ -4125,7 +4186,7 @@
   },
   {
    "id": "pkg.semver",
-   "checklist": "package-registries",
+   "checklist": "documentation",
    "order": 70,
    "title": "Semver and a CHANGELOG",
    "why": "Users need to know when an upgrade will break them.",
@@ -4160,7 +4221,7 @@
   },
   {
    "id": "pkg.repo-meta",
-   "checklist": "package-registries",
+   "checklist": "documentation",
    "order": 80,
    "title": "Repo description, topics, license and contributing guide",
    "why": "GitHub search and topic pages drive discovery for developer tools.",
@@ -4242,7 +4303,14 @@
    ],
    "commands": [
     "readytogo backlinks <listing-urls.txt> --target yoursite.com --verify   (after you are listed)"
-   ]
+   ],
+   "decide": {
+    "question": "Launch posts?",
+    "options": [
+     "Draft the copy for me to post",
+     "Skip directories and launch sites"
+    ]
+   }
   },
   {
    "id": "launch.show-hn",
@@ -4978,7 +5046,7 @@
   },
   {
    "id": "build.dead-code",
-   "checklist": "release-build",
+   "checklist": "app-packaging",
    "order": 95,
    "title": "Unused code and imports removed",
    "priority": "recommended",
@@ -4997,7 +5065,15 @@
    "commands": [
     "readytogo setup deadcode   (once)",
     "readytogo deadcode --min medium"
-   ]
+   ],
+   "decide": {
+    "question": "Unused code found by `readytogo deadcode`?",
+    "options": [
+     "Delete the high-confidence findings on the branch",
+     "List them only, I will review",
+     "Skip"
+    ]
+   }
   },
   {
    "id": "seo.links",
@@ -5045,6 +5121,518 @@
    "commands": [
     "readytogo backlinks links.csv --target yoursite.com --verify"
    ]
+  },
+  {
+   "id": "pack.minify",
+   "checklist": "app-packaging",
+   "order": 40,
+   "title": "Production build is minified and tree-shaken",
+   "why": "Dev-mode bundles are several times bigger and slower than production builds.",
+   "steps": [
+    "Build with NODE_ENV=production (the framework's build command does this); never ship the dev server output.",
+    "Check package.json `sideEffects` is correct (false for pure libraries) so unused exports are dropped.",
+    {
+     "text": "Import from ESM entry points (lodash-es, date-fns) instead of whole CommonJS libraries.",
+     "appliesTo": {
+      "any": [
+       "bundle:js"
+      ]
+     }
+    },
+    "Compare size before and after with the bundler's analyser (vite-bundle-visualizer, @next/bundle-analyzer, webpack-bundle-analyzer, source-map-explorer)."
+   ],
+   "priority": "recommended",
+   "minutes": 30,
+   "appliesTo": {
+    "any": [
+     "bundle:js"
+    ]
+   }
+  },
+  {
+   "id": "pack.bundle-size",
+   "checklist": "app-packaging",
+   "order": 41,
+   "title": "Bundle size budget and code splitting",
+   "why": "Every extra 100 KB of JavaScript costs real users seconds on a mid-range phone.",
+   "steps": [
+    "Set a budget (a common start: under 200 KB gzipped for the first route) and fail CI when it is exceeded.",
+    "Lazy-load routes and heavy widgets (editors, charts, maps) with dynamic import().",
+    "Replace heavy dependencies with lighter ones: moment to date-fns or dayjs, full lodash to lodash-es per-function imports, icon packs to per-icon imports.",
+    "Load third-party scripts (analytics, chat) after first paint."
+   ],
+   "priority": "recommended",
+   "minutes": 60,
+   "appliesTo": {
+    "all": [
+     "platform:web",
+     "bundle:js"
+    ]
+   }
+  },
+  {
+   "id": "pack.heavy-deps",
+   "checklist": "app-packaging",
+   "order": 42,
+   "title": "No known-heavy or unused dependencies",
+   "why": "Unused and heavyweight packages bloat bundles, installs and the attack surface.",
+   "steps": [
+    "Run `npx depcheck` (or knip) and remove dependencies nothing imports.",
+    "Move build-only and test-only packages to devDependencies.",
+    "Replace moment, request, left-pad-style packages and full lodash with native or lighter equivalents.",
+    "Reinstall from the lockfile and make sure the app still builds and starts."
+   ],
+   "priority": "recommended",
+   "minutes": 30,
+   "appliesTo": {
+    "any": [
+     "bundle:js"
+    ]
+   },
+   "autoCheck": true
+  },
+  {
+   "id": "pack.images",
+   "checklist": "app-packaging",
+   "order": 43,
+   "title": "Images are compressed and right-sized",
+   "why": "Images are usually the largest part of a web page and an app package.",
+   "steps": [
+    "Find images over ~300 KB (`readytogo check` lists them) and compress or resize them to the largest size they are displayed at.",
+    {
+     "text": "Serve WebP or AVIF with a fallback; use the framework's image component (next/image, astro:assets, vite-imagetools).",
+     "appliesTo": {
+      "any": [
+       "platform:web"
+      ]
+     }
+    },
+    "Run svgo on SVGs; delete unused images and design-source files from the package.",
+    {
+     "text": "Use asset catalogs with correct @2x/@3x variants only; remove unused assets.",
+     "appliesTo": {
+      "any": [
+       "platform:ios"
+      ]
+     }
+    },
+    {
+     "text": "Use WebP/vector drawables for Android; remove unused drawables with lint (`./gradlew lint`).",
+     "appliesTo": {
+      "any": [
+       "platform:android"
+      ]
+     }
+    }
+   ],
+   "priority": "recommended",
+   "minutes": 45,
+   "decide": {
+    "question": "Compress images?",
+    "options": [
+     "Convert and replace them on the branch (originals stay in git history)",
+     "Only list the offenders, I will handle them"
+    ]
+   },
+   "autoCheck": true
+  },
+  {
+   "id": "pack.fonts",
+   "checklist": "app-packaging",
+   "order": 44,
+   "title": "Fonts are subset and in WOFF2",
+   "why": "Full font families can add hundreds of KB before the first paint.",
+   "steps": [
+    "Ship WOFF2 only; drop TTF/OTF/EOT from web builds.",
+    "Subset to the languages you support, or use the font provider's `text=` or unicode-range subsets.",
+    "Preload the one or two fonts used above the fold; set font-display: swap."
+   ],
+   "priority": "nice",
+   "minutes": 20,
+   "appliesTo": {
+    "any": [
+     "platform:web",
+     "platform:extension",
+     "fw:electron",
+     "fw:tauri"
+    ]
+   }
+  },
+  {
+   "id": "pack.strip-debug",
+   "checklist": "app-packaging",
+   "order": 45,
+   "title": "No debugger statements or debug logging in production",
+   "why": "Leftover debug code leaks internals and slows the app.",
+   "steps": [
+    "Remove `debugger;` statements.",
+    "Strip console.log in production builds (esbuild `drop: ['console','debugger']`, terser `drop_console`, Next.js `compiler.removeConsole`), keeping console.error if you rely on it.",
+    "Gate verbose logging behind a log level that defaults to warn in production."
+   ],
+   "priority": "recommended",
+   "minutes": 15,
+   "appliesTo": {
+    "any": [
+     "bundle:js"
+    ]
+   },
+   "autoCheck": true
+  },
+  {
+   "id": "pack.cache-headers",
+   "checklist": "app-packaging",
+   "order": 46,
+   "title": "Hashed assets with long-lived caching and compression",
+   "why": "Repeat visits should download almost nothing, and text should travel compressed.",
+   "steps": [
+    "Build output filenames contain a content hash (the default in Vite, Next.js, Astro).",
+    "Serve hashed assets with `Cache-Control: public, max-age=31536000, immutable`; serve HTML with a short cache or revalidation.",
+    "Enable Brotli (or gzip) for text responses on your host or CDN. Verify: `curl -sI -H 'Accept-Encoding: br' https://yoursite/app.js`."
+   ],
+   "priority": "recommended",
+   "minutes": 20,
+   "appliesTo": {
+    "all": [
+     "platform:web"
+    ]
+   }
+  },
+  {
+   "id": "pack.npm-files",
+   "checklist": "app-packaging",
+   "order": 47,
+   "title": "Published npm package contains only what users need",
+   "why": "Accidentally publishing tests, source maps, .env files or the whole repo is common and permanent.",
+   "steps": [
+    "Add a `files` whitelist to package.json (dist, README, LICENSE) or an .npmignore.",
+    "Run `npm pack --dry-run` and read the file list and the unpacked size.",
+    "Make sure no .env, credentials, test fixtures or large media are in the list."
+   ],
+   "priority": "blocker",
+   "minutes": 15,
+   "appliesTo": {
+    "any": [
+     "store:npm"
+    ]
+   },
+   "autoCheck": true
+  },
+  {
+   "id": "pack.docker",
+   "checklist": "app-packaging",
+   "order": 48,
+   "title": "Container image is small, multi-stage and non-root",
+   "why": "Smaller images deploy faster and carry fewer vulnerabilities.",
+   "steps": [
+    "Use a multi-stage build: compile in a builder stage, copy only the output into a slim or distroless runtime image.",
+    "Add a .dockerignore (node_modules, .git, tests, .env).",
+    "Run as a non-root USER and pin base image versions.",
+    "Check size with `docker images` and layers with `docker history`."
+   ],
+   "priority": "recommended",
+   "minutes": 40,
+   "appliesTo": {
+    "any": [
+     "platform:api",
+     "host:self",
+     "host:paas",
+     "host:cloud"
+    ]
+   },
+   "autoCheck": true
+  },
+  {
+   "id": "pack.android-shrink",
+   "checklist": "app-packaging",
+   "order": 49,
+   "title": "Android release enables R8 shrinking and ships an AAB",
+   "why": "Shrinking removes unused code and resources; AAB lets Play deliver per-device APKs.",
+   "steps": [
+    "Set `minifyEnabled true` and `shrinkResources true` for the release build type (Kotlin DSL: `isMinifyEnabled = true`).",
+    "Keep rules for reflection and serialization libraries in proguard-rules.pro; test the release build on a device.",
+    "Upload an Android App Bundle (.aab), not an APK; check the size in Play Console's app size report.",
+    "Upload the R8 mapping file so crash traces are readable."
+   ],
+   "priority": "recommended",
+   "minutes": 45,
+   "appliesTo": {
+    "any": [
+     "platform:android"
+    ],
+    "none": [
+     "fw:flutter"
+    ]
+   },
+   "autoCheck": true
+  },
+  {
+   "id": "pack.ios-size",
+   "checklist": "app-packaging",
+   "order": 50,
+   "title": "iOS build is thinned and stripped",
+   "why": "App Store download size affects installs, and the cellular download limit still matters.",
+   "steps": [
+    "Archive with Release configuration; leave Bitcode irrelevant (removed), strip debug symbols and keep dSYMs for crash reports.",
+    "Use asset catalogs so app thinning delivers only the right variants; compress large media.",
+    "Check the size report from Xcode's Distribute App > App Thinning Size Report."
+   ],
+   "priority": "nice",
+   "minutes": 30,
+   "appliesTo": {
+    "any": [
+     "platform:ios"
+    ]
+   }
+  },
+  {
+   "id": "pack.electron-size",
+   "checklist": "app-packaging",
+   "order": 51,
+   "title": "Electron app packages only runtime files",
+   "why": "Electron apps are big already; packaging dev files makes it worse and leaks source.",
+   "steps": [
+    "Enable asar packaging; list `files` in electron-builder so tests, docs and source maps are excluded.",
+    "Keep build tools in devDependencies so they are not bundled.",
+    "Bundle the main and renderer code (esbuild/Vite) instead of shipping node_modules wholesale.",
+    "Compare installer sizes before and after; maximum compression is fine for releases."
+   ],
+   "priority": "recommended",
+   "minutes": 45,
+   "appliesTo": {
+    "any": [
+     "fw:electron"
+    ]
+   }
+  },
+  {
+   "id": "pack.ext-size",
+   "checklist": "app-packaging",
+   "order": 52,
+   "title": "Extension zip contains only the built output",
+   "why": "Store reviews are quicker and uploads smaller when the package is clean.",
+   "steps": [
+    "Zip the build output folder only (dist/ or .output/), never the repo.",
+    "Exclude source maps, test files and unused locales.",
+    "Bundle dependencies instead of loading remote scripts (remote code is rejected under Manifest V3).",
+    "Open the zip and check its size and file list."
+   ],
+   "priority": "recommended",
+   "minutes": 15,
+   "appliesTo": {
+    "any": [
+     "platform:extension"
+    ]
+   }
+  },
+  {
+   "id": "pack.wasm-native",
+   "checklist": "app-packaging",
+   "order": 53,
+   "title": "Native and WASM builds use size-optimised release profiles",
+   "why": "Compiler flags can cut binary size by half.",
+   "steps": [
+    {
+     "text": "Rust: opt-level = 'z' or 's', lto = true, codegen-units = 1, panic = 'abort' if you do not catch panics, strip = true.",
+     "appliesTo": {
+      "any": [
+       "lang:rust"
+      ]
+     }
+    },
+    {
+     "text": "Go: build with `-ldflags='-s -w' -trimpath`.",
+     "appliesTo": {
+      "any": [
+       "lang:go"
+      ]
+     }
+    },
+    {
+     "text": "Flutter: build with --split-debug-info and --obfuscate; use --split-per-abi for APKs.",
+     "appliesTo": {
+      "any": [
+       "fw:flutter"
+      ]
+     }
+    },
+    "Measure the binary before and after with `ls -l`; keep debug symbols separate for crash reports."
+   ],
+   "priority": "nice",
+   "minutes": 30,
+   "appliesTo": {
+    "any": [
+     "lang:rust",
+     "lang:go",
+     "fw:flutter"
+    ],
+    "none": [
+     "fw:tauri"
+    ]
+   }
+  },
+  {
+   "id": "docs.quickstart",
+   "checklist": "documentation",
+   "order": 15,
+   "title": "Quickstart that works from a clean machine",
+   "why": "Most visitors decide in the first five minutes whether your product is usable.",
+   "steps": [
+    "Write the install and first-run commands in the README, copy-pasteable, with the expected output.",
+    "Test them in a fresh clone or container; fix every step that fails.",
+    "Add one screenshot, GIF or terminal recording of the product working."
+   ],
+   "priority": "blocker",
+   "minutes": 30,
+   "decide": {
+    "question": "README work?",
+    "options": [
+     "Rewrite README quickstart from the code and test it on the branch",
+     "I will write it, just check it",
+     "Skip"
+    ]
+   }
+  },
+  {
+   "id": "docs.env-example",
+   "checklist": "documentation",
+   "order": 20,
+   "title": "Environment variables documented in .env.example",
+   "why": "Contributors and deployers should not have to read the source to learn what to configure.",
+   "steps": [
+    "Create .env.example listing every variable with a safe placeholder and a one-line comment.",
+    "Make sure .env is in .gitignore.",
+    "Describe required versus optional variables in the README."
+   ],
+   "priority": "recommended",
+   "minutes": 15,
+   "appliesTo": {
+    "none": [
+     "fw:nocode"
+    ]
+   },
+   "autoCheck": true
+  },
+  {
+   "id": "docs.api",
+   "checklist": "documentation",
+   "order": 25,
+   "title": "API or SDK reference generated from the source",
+   "why": "A reference that is generated from code stays correct.",
+   "steps": [
+    {
+     "text": "REST/GraphQL API: publish an OpenAPI or GraphQL schema and render it (Scalar, Redoc, Swagger UI).",
+     "appliesTo": {
+      "any": [
+       "platform:api"
+      ]
+     }
+    },
+    {
+     "text": "TypeScript library: generate with TypeDoc and host it; add TSDoc to public exports.",
+     "appliesTo": {
+      "any": [
+       "platform:library"
+      ],
+      "all": [
+       "lang:js"
+      ]
+     }
+    },
+    {
+     "text": "Rust: document public items and publish on docs.rs; run `cargo doc` with warnings denied.",
+     "appliesTo": {
+      "all": [
+       "lang:rust"
+      ],
+      "any": [
+       "platform:library"
+      ]
+     }
+    },
+    {
+     "text": "Python: docstrings plus Sphinx or MkDocs with mkdocstrings.",
+     "appliesTo": {
+      "all": [
+       "lang:python"
+      ],
+      "any": [
+       "platform:library"
+      ]
+     }
+    },
+    {
+     "text": "CLI: `--help` for every command and a command reference page.",
+     "appliesTo": {
+      "any": [
+       "platform:cli"
+      ]
+     }
+    },
+    "Add a runnable example for each major feature."
+   ],
+   "priority": "recommended",
+   "minutes": 90,
+   "appliesTo": {
+    "any": [
+     "platform:api",
+     "platform:library",
+     "platform:cli"
+    ]
+   }
+  },
+  {
+   "id": "docs.security-policy",
+   "checklist": "documentation",
+   "order": 30,
+   "title": "SECURITY.md with a private way to report vulnerabilities",
+   "why": "Researchers who cannot find a private channel post publicly or stay silent.",
+   "steps": [
+    "Add SECURITY.md: supported versions, the contact address or GitHub private vulnerability reporting, and the response time you commit to.",
+    "Enable private vulnerability reporting in the GitHub repo settings."
+   ],
+   "priority": "recommended",
+   "minutes": 10,
+   "appliesTo": {
+    "any": [
+     "store:github",
+     "store:npm",
+     "store:pypi",
+     "store:crates_io",
+     "platform:library",
+     "platform:cli"
+    ]
+   },
+   "autoCheck": true
+  },
+  {
+   "id": "docs.support",
+   "checklist": "documentation",
+   "order": 35,
+   "title": "Help and support page users can find",
+   "why": "Users who cannot find help leave bad reviews instead of emails.",
+   "steps": [
+    "Create a help page or FAQ covering install, sign-in, billing and data deletion.",
+    "Put a support email or form on it, and link it from the app, the website footer and each store listing.",
+    "Store listings need a working support URL."
+   ],
+   "priority": "recommended",
+   "minutes": 45,
+   "appliesTo": {
+    "any": [
+     "store:website",
+     "mobile",
+     "platform:desktop",
+     "platform:extension"
+    ]
+   },
+   "decide": {
+    "question": "Support page?",
+    "options": [
+     "Draft the help page from the app's features for my review",
+     "I already have one: here is the URL",
+     "Skip"
+    ]
+   }
   }
  ]
 }
