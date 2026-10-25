@@ -1,0 +1,494 @@
+{
+ "assets": [
+  {
+   "id": "app_store",
+   "label": "iPhone 6.9\" screenshot",
+   "w": 1320,
+   "h": 2868,
+   "req": true,
+   "max": 10,
+   "note": "1 to 10 images",
+   "when": {
+    "any": [
+     "store:app_store"
+    ]
+   },
+   "kind": "shot"
+  },
+  {
+   "id": "ipad",
+   "label": "iPad 13\" screenshot",
+   "w": 2064,
+   "h": 2752,
+   "max": 10,
+   "note": "Required for apps that run on iPad",
+   "when": {
+    "any": [
+     "store:app_store"
+    ]
+   },
+   "kind": "shot"
+  },
+  {
+   "id": "play_phone",
+   "label": "Phone screenshot",
+   "w": 1080,
+   "h": 1920,
+   "req": true,
+   "max": 8,
+   "note": "2 to 8 images",
+   "when": {
+    "any": [
+     "store:play_store"
+    ]
+   },
+   "kind": "shot"
+  },
+  {
+   "id": "play_tablet7",
+   "label": "7\" tablet screenshot",
+   "w": 1200,
+   "h": 1920,
+   "max": 8,
+   "note": "Optional, up to 8",
+   "when": {
+    "any": [
+     "store:play_store"
+    ]
+   },
+   "kind": "shot"
+  },
+  {
+   "id": "play_tablet",
+   "label": "10\" tablet screenshot",
+   "w": 1600,
+   "h": 2560,
+   "max": 8,
+   "note": "Optional, up to 8",
+   "when": {
+    "any": [
+     "store:play_store"
+    ]
+   },
+   "kind": "shot"
+  },
+  {
+   "id": "chrome",
+   "label": "Screenshot",
+   "w": 1280,
+   "h": 800,
+   "req": true,
+   "max": 5,
+   "note": "1 to 5 images",
+   "when": {
+    "any": [
+     "store:chrome_web_store"
+    ]
+   },
+   "kind": "shot"
+  },
+  {
+   "id": "firefox",
+   "label": "Screenshot",
+   "w": 1280,
+   "h": 800,
+   "max": 10,
+   "note": "Optional but recommended",
+   "when": {
+    "any": [
+     "store:firefox_addons"
+    ]
+   },
+   "kind": "shot"
+  },
+  {
+   "id": "edge",
+   "label": "Screenshot",
+   "w": 1280,
+   "h": 800,
+   "req": true,
+   "max": 10,
+   "note": "1 to 10 images",
+   "when": {
+    "any": [
+     "store:edge_addons"
+    ]
+   },
+   "kind": "shot"
+  },
+  {
+   "id": "mac_app_store",
+   "label": "Mac screenshot",
+   "w": 2880,
+   "h": 1800,
+   "req": true,
+   "max": 10,
+   "note": "1 to 10 images",
+   "when": {
+    "any": [
+     "store:mac_app_store"
+    ]
+   },
+   "kind": "shot"
+  },
+  {
+   "id": "ms_store",
+   "label": "Screenshot",
+   "w": 1920,
+   "h": 1080,
+   "req": true,
+   "max": 10,
+   "note": "At least 1 image",
+   "when": {
+    "any": [
+     "store:microsoft_store"
+    ]
+   },
+   "kind": "shot"
+  },
+  {
+   "id": "product_hunt",
+   "label": "Gallery image",
+   "w": 1270,
+   "h": 760,
+   "max": 8,
+   "note": "Shown on your launch page",
+   "kind": "shot"
+  },
+  {
+   "id": "cws_small",
+   "label": "Small promo tile",
+   "w": 440,
+   "h": 280,
+   "req": true,
+   "note": "Required",
+   "when": {
+    "any": [
+     "store:chrome_web_store"
+    ]
+   },
+   "kind": "promo"
+  },
+  {
+   "id": "cws_marquee",
+   "label": "Marquee promo tile",
+   "w": 1400,
+   "h": 560,
+   "note": "Optional, needed to be featured",
+   "when": {
+    "any": [
+     "store:chrome_web_store"
+    ]
+   },
+   "kind": "promo"
+  },
+  {
+   "id": "edge_logo",
+   "label": "Store logo",
+   "w": 300,
+   "h": 300,
+   "req": true,
+   "note": "Required",
+   "when": {
+    "any": [
+     "store:edge_addons"
+    ]
+   },
+   "kind": "promo"
+  },
+  {
+   "id": "edge_small",
+   "label": "Small promo tile",
+   "w": 440,
+   "h": 280,
+   "note": "Optional",
+   "when": {
+    "any": [
+     "store:edge_addons"
+    ]
+   },
+   "kind": "promo"
+  },
+  {
+   "id": "edge_large",
+   "label": "Large promo tile",
+   "w": 1400,
+   "h": 560,
+   "note": "Optional",
+   "when": {
+    "any": [
+     "store:edge_addons"
+    ]
+   },
+   "kind": "promo"
+  },
+  {
+   "id": "play_feature",
+   "label": "Feature graphic",
+   "w": 1024,
+   "h": 500,
+   "req": true,
+   "note": "Required",
+   "when": {
+    "any": [
+     "store:play_store"
+    ]
+   },
+   "kind": "promo"
+  },
+  {
+   "id": "ms_logo",
+   "label": "Store logo 1:1",
+   "w": 300,
+   "h": 300,
+   "req": true,
+   "note": "Required",
+   "when": {
+    "any": [
+     "store:microsoft_store"
+    ]
+   },
+   "kind": "promo"
+  },
+  {
+   "id": "ms_poster",
+   "label": "Poster art 2:3",
+   "w": 720,
+   "h": 1080,
+   "note": "Recommended",
+   "when": {
+    "any": [
+     "store:microsoft_store"
+    ]
+   },
+   "kind": "promo"
+  },
+  {
+   "id": "ms_box",
+   "label": "Box art 1:1",
+   "w": 1080,
+   "h": 1080,
+   "note": "Recommended",
+   "when": {
+    "any": [
+     "store:microsoft_store"
+    ]
+   },
+   "kind": "promo"
+  },
+  {
+   "id": "ms_hero",
+   "label": "Hero art 16:9",
+   "w": 1920,
+   "h": 1080,
+   "note": "Optional",
+   "when": {
+    "any": [
+     "store:microsoft_store"
+    ]
+   },
+   "kind": "promo"
+  },
+  {
+   "id": "ms_promo",
+   "label": "Promotional image",
+   "w": 2400,
+   "h": 1200,
+   "note": "Optional",
+   "when": {
+    "any": [
+     "store:microsoft_store"
+    ]
+   },
+   "kind": "promo"
+  },
+  {
+   "id": "ph_thumb",
+   "label": "Thumbnail",
+   "w": 240,
+   "h": 240,
+   "req": true,
+   "note": "Next to your name on the list",
+   "kind": "promo"
+  },
+  {
+   "id": "og",
+   "label": "Open Graph image",
+   "w": 1200,
+   "h": 630,
+   "req": true,
+   "note": "Link previews on most platforms",
+   "when": {
+    "any": [
+     "store:website"
+    ]
+   },
+   "kind": "promo"
+  },
+  {
+   "id": "github_social",
+   "label": "Social preview",
+   "w": 1280,
+   "h": 640,
+   "note": "Repo link cards",
+   "when": {
+    "any": [
+     "store:github"
+    ]
+   },
+   "kind": "promo"
+  },
+  {
+   "id": "x_card",
+   "label": "X post card",
+   "w": 1200,
+   "h": 628,
+   "note": "Large link card on X",
+   "kind": "promo"
+  },
+  {
+   "id": "linkedin_card",
+   "label": "LinkedIn post image",
+   "w": 1200,
+   "h": 627,
+   "note": "Link and image posts",
+   "kind": "promo"
+  },
+  {
+   "id": "x_header",
+   "label": "X header",
+   "w": 1500,
+   "h": 500,
+   "note": "Profile banner",
+   "kind": "promo"
+  },
+  {
+   "id": "linkedin_banner",
+   "label": "LinkedIn banner",
+   "w": 1584,
+   "h": 396,
+   "note": "Page banner",
+   "kind": "promo"
+  },
+  {
+   "id": "yt_thumb",
+   "label": "YouTube thumbnail",
+   "w": 1280,
+   "h": 720,
+   "note": "Under 2 MB",
+   "kind": "promo"
+  }
+ ],
+ "listing": [
+  {
+   "id": "as_name",
+   "label": "App name",
+   "max": 30,
+   "from": "name"
+  },
+  {
+   "id": "as_subtitle",
+   "label": "Subtitle",
+   "max": 30,
+   "from": "tagline"
+  },
+  {
+   "id": "as_promo",
+   "label": "Promotional text",
+   "max": 170
+  },
+  {
+   "id": "as_keywords",
+   "label": "Keywords",
+   "max": 100
+  },
+  {
+   "id": "as_description",
+   "label": "Description",
+   "max": 4000,
+   "from": "description"
+  },
+  {
+   "id": "gp_title",
+   "label": "App name",
+   "max": 30,
+   "from": "name"
+  },
+  {
+   "id": "gp_short",
+   "label": "Short description",
+   "max": 80,
+   "from": "tagline"
+  },
+  {
+   "id": "gp_full",
+   "label": "Full description",
+   "max": 4000,
+   "from": "description"
+  },
+  {
+   "id": "cws_name",
+   "label": "Extension name",
+   "max": 75,
+   "from": "name"
+  },
+  {
+   "id": "cws_summary",
+   "label": "Summary",
+   "max": 132,
+   "from": "tagline"
+  },
+  {
+   "id": "amo_name",
+   "label": "Add-on name",
+   "max": 50,
+   "from": "name"
+  },
+  {
+   "id": "amo_summary",
+   "label": "Summary",
+   "max": 250,
+   "from": "tagline"
+  },
+  {
+   "id": "ph_name",
+   "label": "Name",
+   "max": 40,
+   "from": "name"
+  },
+  {
+   "id": "ph_tagline",
+   "label": "Tagline",
+   "max": 60,
+   "from": "tagline"
+  },
+  {
+   "id": "ph_description",
+   "label": "Description",
+   "max": 260,
+   "from": "description"
+  }
+ ],
+ "appIcons": [
+  {
+   "id": "icns",
+   "label": "macOS .icns",
+   "when": {
+    "all": [
+     "platform:desktop",
+     "os:macos"
+    ]
+   }
+  },
+  {
+   "id": "ico",
+   "label": "Windows .ico",
+   "when": {
+    "all": [
+     "platform:desktop",
+     "os:windows"
+    ]
+   }
+  }
+ ]
+}

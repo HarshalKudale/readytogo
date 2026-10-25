@@ -1,0 +1,41 @@
+{
+  "name": "readytogo",
+  "version": "0.1.0",
+  "description": "Agent skill and CLI that audits a repo for launch readiness and generates store assets, icons and mockups.",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "readytogo": "bin/readytogo.js",
+    "rtg": "bin/readytogo.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "data",
+    "skills",
+    "commands",
+    ".claude-plugin"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build:docs": "node scripts/build-references.mjs",
+    "export": "node scripts/export-from-sass.mjs",
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "sharp": "^0.35.5"
+  },
+  "peerDependencies": {
+    "playwright": ">=1.45"
+  },
+  "peerDependenciesMeta": {
+    "playwright": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "playwright": "^1.64.1"
+  }
+}

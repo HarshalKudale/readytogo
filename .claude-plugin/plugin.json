@@ -1,0 +1,8 @@
+{
+  "name": "readytogo",
+  "version": "0.1.0",
+  "description": "Audit a repo for launch readiness, fix what applies to it, and generate store assets, icons, screenshots and 2D/3D mockups.",
+  "author": { "name": "HarshalKudale" },
+  "license": "MIT",
+  "keywords": ["launch", "release", "app-store", "play-store", "chrome-web-store", "icons", "mockups", "three.js", "seo", "checklist"]
+}

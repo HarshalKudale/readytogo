@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Promo tile</title>
+<!--
+  Rich promo art (store tiles, feature graphics, OG images, social cards) rendered to exact pixels:
+    readytogo render "/__skill/templates/promo/tile.html?title=Ship%20faster&subtitle=Free%20forever&logo=/logo.png&shot=/shot.png" --size 1400x560 --out tile.png
+
+  Query parameters:
+    title, subtitle   text; keep the title under ~6 words
+    logo              URL of a logo (PNG/SVG), shown left of the text
+    shot              URL of a screenshot, shown on the right inside a rounded card (optional)
+    bg                CSS background (URL-encoded)    default: linear-gradient(135deg,#4f46e5,#7c3aed)
+    fg                text colour                     default: #fff
+    font              CSS font-family                 default: system sans
+  Copy this file into the project and edit it freely: the point is that the agent can design with HTML/CSS
+  and still get a pixel-exact PNG. Size comes from the render --size, so use vmin/vw/vh units, never px.
+-->
+<style>
+  html, body { margin: 0; height: 100%; }
+  body { background: var(--bg); color: var(--fg); font-family: var(--font); display: flex; align-items: center; gap: 4vmin; padding: 0 7vmin; box-sizing: border-box; overflow: hidden; }
+  .logo { width: 30vmin; height: 30vmin; object-fit: contain; flex: none; border-radius: 6vmin; }
+  .text { flex: 1; min-width: 0; }
+  h1 { margin: 0; font-size: 11vmin; line-height: 1.04; letter-spacing: -0.02em; font-weight: 800; }
+  p { margin: 2.2vmin 0 0; font-size: 4.6vmin; line-height: 1.25; opacity: .85; }
+  .shot { flex: none; height: 78vmin; aspect-ratio: 9 / 16; border-radius: 4vmin; object-fit: cover; object-position: top; box-shadow: 0 3vmin 8vmin rgba(0,0,0,.35); }
+  body.tall { flex-direction: column; justify-content: center; text-align: center; padding: 8vmin; }
+  body.tall .logo { width: 24vmin; height: 24vmin; }
+  body.tall .shot { height: 40vmin; }
+</style>
+</head>
+<body>
+<script>
+  const q = new URLSearchParams(location.search);
+  const css = document.documentElement.style;
+  css.setProperty("--bg", q.get("bg") || "linear-gradient(135deg,#4f46e5,#7c3aed)");
+  css.setProperty("--fg", q.get("fg") || "#fff");
+  css.setProperty("--font", q.get("font") || "Inter, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif");
+  if (innerHeight > innerWidth * 1.1) document.body.classList.add("tall");
+  const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  document.body.innerHTML =
+    (q.get("logo") ? `<img class="logo" src="${esc(q.get("logo"))}" alt="">` : "") +
+    `<div class="text"><h1>${esc(q.get("title") || "Your product")}</h1>${q.get("subtitle") ? `<p>${esc(q.get("subtitle"))}</p>` : ""}</div>` +
+    (q.get("shot") ? `<img class="shot" src="${esc(q.get("shot"))}" alt="">` : "");
+  // Wait for images so the screenshot is final.
+  const imgs = [...document.images];
+  Promise.all(imgs.map((i) => i.decode().catch(() => {}))).then(() => (window.__ready = true));
+</script>
+</body>
+</html>

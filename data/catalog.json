@@ -1,0 +1,4935 @@
+{
+ "version": "1ssbw3g",
+ "phases": [
+  {
+   "id": "foundation",
+   "title": "Foundation",
+   "description": "Brand, domain, email, legal, payments"
+  },
+  {
+   "id": "assets",
+   "title": "Build assets",
+   "description": "Icons, screenshots, mockups, demos"
+  },
+  {
+   "id": "prelaunch",
+   "title": "Pre-launch",
+   "description": "Build, tests, SEO and store submissions"
+  },
+  {
+   "id": "launch",
+   "title": "Launch week",
+   "description": "Product Hunt, communities, directories"
+  },
+  {
+   "id": "postlaunch",
+   "title": "Post-launch",
+   "description": "Reviews, iteration, second wave"
+  }
+ ],
+ "checklists": [
+  {
+   "slug": "brand-identity",
+   "title": "Brand and identity",
+   "description": "Name, logo, icons and the copy every listing reuses.",
+   "phase": "foundation",
+   "order": 10,
+   "lastVerified": "2026-10-24"
+  },
+  {
+   "slug": "domain-dns",
+   "title": "Domain and DNS",
+   "description": "Own your domain, serve it securely, wire up app links.",
+   "phase": "foundation",
+   "order": 20,
+   "lastVerified": "2026-10-24",
+   "appliesTo": {
+    "none": [
+     "platform:library"
+    ]
+   }
+  },
+  {
+   "slug": "email",
+   "title": "Email and deliverability",
+   "description": "A support inbox, and email that lands in the inbox.",
+   "phase": "foundation",
+   "order": 30,
+   "lastVerified": "2026-10-24",
+   "appliesTo": {
+    "none": [
+     "platform:library"
+    ]
+   }
+  },
+  {
+   "slug": "legal-compliance",
+   "title": "Legal and compliance",
+   "description": "The policies stores and users require. Templates are not legal advice.",
+   "phase": "foundation",
+   "order": 40,
+   "lastVerified": "2026-10-24"
+  },
+  {
+   "slug": "payments-tax",
+   "title": "Payments and tax",
+   "description": "Get paid, stay compliant, follow store billing rules.",
+   "phase": "foundation",
+   "order": 50,
+   "lastVerified": "2026-10-24",
+   "appliesTo": {
+    "any": [
+     "paid"
+    ]
+   }
+  },
+  {
+   "slug": "launch-assets",
+   "title": "Launch visuals",
+   "description": "Mockups, demos and images for your listings and posts.",
+   "phase": "assets",
+   "order": 10,
+   "lastVerified": "2026-10-24"
+  },
+  {
+   "slug": "release-build",
+   "title": "Release build hygiene",
+   "description": "What ships in your production build, and what must not.",
+   "phase": "prelaunch",
+   "order": 10,
+   "lastVerified": "2026-10-24"
+  },
+  {
+   "slug": "testing-qa",
+   "title": "Testing and QA",
+   "description": "Automated checks on the flows that matter.",
+   "phase": "prelaunch",
+   "order": 20,
+   "lastVerified": "2026-10-24"
+  },
+  {
+   "slug": "analytics-monitoring",
+   "title": "Analytics and monitoring",
+   "description": "Know what launch day did, and when something breaks.",
+   "phase": "prelaunch",
+   "order": 30,
+   "lastVerified": "2026-10-24",
+   "appliesTo": {
+    "none": [
+     "platform:library"
+    ]
+   }
+  },
+  {
+   "slug": "desktop-release",
+   "title": "Desktop distribution",
+   "description": "Signing, packaging and updates for each OS.",
+   "phase": "prelaunch",
+   "order": 40,
+   "lastVerified": "2026-10-24",
+   "appliesTo": {
+    "any": [
+     "platform:desktop"
+    ]
+   }
+  },
+  {
+   "slug": "technical-seo",
+   "title": "Technical SEO",
+   "description": "Indexable pages that look good when shared.",
+   "phase": "prelaunch",
+   "order": 50,
+   "lastVerified": "2026-10-24",
+   "appliesTo": {
+    "any": [
+     "store:website"
+    ]
+   }
+  },
+  {
+   "slug": "apple-app-store",
+   "title": "Apple App Store",
+   "description": "Listing, assets and privacy answers App Review checks.",
+   "phase": "prelaunch",
+   "order": 60,
+   "lastVerified": "2026-10-24",
+   "appliesTo": {
+    "any": [
+     "store:app_store",
+     "store:mac_app_store"
+    ]
+   }
+  },
+  {
+   "slug": "google-play",
+   "title": "Google Play",
+   "description": "Console setup, listing assets and the data safety form.",
+   "phase": "prelaunch",
+   "order": 70,
+   "lastVerified": "2026-10-24",
+   "appliesTo": {
+    "any": [
+     "store:play_store"
+    ]
+   }
+  },
+  {
+   "slug": "chrome-web-store",
+   "title": "Browser extension stores",
+   "description": "Manifest, permissions and listings for Chrome, Firefox and Edge.",
+   "phase": "prelaunch",
+   "order": 80,
+   "lastVerified": "2026-10-24",
+   "appliesTo": {
+    "any": [
+     "store:chrome_web_store",
+     "store:firefox_addons",
+     "store:edge_addons"
+    ]
+   }
+  },
+  {
+   "slug": "microsoft-store",
+   "title": "Microsoft Store",
+   "description": "Partner Center listing and package requirements.",
+   "phase": "prelaunch",
+   "order": 90,
+   "lastVerified": "2026-10-24",
+   "appliesTo": {
+    "any": [
+     "store:microsoft_store"
+    ]
+   }
+  },
+  {
+   "slug": "linux-stores",
+   "title": "Snap and Flathub",
+   "description": "Store metadata and sandboxing for Linux app stores.",
+   "phase": "prelaunch",
+   "order": 95,
+   "lastVerified": "2026-10-24",
+   "appliesTo": {
+    "any": [
+     "store:snap_flathub"
+    ]
+   }
+  },
+  {
+   "slug": "package-registries",
+   "title": "Registries and releases",
+   "description": "Registries, package managers and release downloads.",
+   "phase": "prelaunch",
+   "order": 100,
+   "lastVerified": "2026-10-24",
+   "appliesTo": {
+    "any": [
+     "store:npm",
+     "store:pypi",
+     "store:crates_io",
+     "store:homebrew",
+     "store:github"
+    ]
+   }
+  },
+  {
+   "slug": "launchpad",
+   "title": "Launchpad",
+   "description": "Where you launch. Each platform is one item with its own steps.",
+   "phase": "launch",
+   "order": 10,
+   "lastVerified": "2026-10-24"
+  },
+  {
+   "slug": "communities",
+   "title": "Communities and outreach",
+   "description": "Subreddits, newsletters and lists where your users already are.",
+   "phase": "launch",
+   "order": 20,
+   "lastVerified": "2026-10-24"
+  },
+  {
+   "slug": "post-launch",
+   "title": "After launch",
+   "description": "Reviews, iteration and the second wave.",
+   "phase": "postlaunch",
+   "order": 10,
+   "lastVerified": "2026-10-24"
+  }
+ ],
+ "items": [
+  {
+   "id": "brand.name",
+   "checklist": "brand-identity",
+   "order": 10,
+   "title": "Final name, checked for trademark conflicts",
+   "why": "Renaming after launch costs you every link, review and listing you earned.",
+   "steps": [
+    "Search USPTO, EUIPO and the India IP office for your name in your category.",
+    {
+     "text": "Search the App Store for apps with the same or a similar name.",
+     "appliesTo": {
+      "any": [
+       "platform:ios",
+       "store:mac_app_store"
+      ]
+     }
+    },
+    {
+     "text": "Search Google Play for apps with the same or a similar name.",
+     "appliesTo": {
+      "any": [
+       "platform:android"
+      ]
+     }
+    },
+    {
+     "text": "Check the name is free on crates.io; crate names are first come, first served.",
+     "appliesTo": {
+      "all": [
+       "lang:rust"
+      ],
+      "any": [
+       "platform:library",
+       "platform:cli"
+      ]
+     }
+    },
+    {
+     "text": "Check the name is free on npm; package names are first come, first served.",
+     "appliesTo": {
+      "all": [
+       "lang:js"
+      ],
+      "any": [
+       "platform:library",
+       "platform:cli"
+      ]
+     }
+    },
+    {
+     "text": "Check the name is free on PyPI; project names are first come, first served.",
+     "appliesTo": {
+      "all": [
+       "lang:python"
+      ],
+      "any": [
+       "platform:library",
+       "platform:cli"
+      ]
+     }
+    },
+    {
+     "text": "Check the module path you'll publish under (github.com/you/name) is available.",
+     "appliesTo": {
+      "all": [
+       "lang:go"
+      ],
+      "any": [
+       "platform:library",
+       "platform:cli"
+      ]
+     }
+    }
+   ],
+   "priority": "blocker",
+   "minutes": 30,
+   "kit": [
+    "name"
+   ]
+  },
+  {
+   "id": "brand.handles",
+   "checklist": "brand-identity",
+   "order": 20,
+   "title": "Domain and social handles reserved",
+   "why": "A consistent name across your domain and socials makes you findable.",
+   "steps": [
+    "Check the .com or a strong alternative TLD.",
+    "Reserve the handle on X, LinkedIn and GitHub."
+   ],
+   "priority": "recommended",
+   "minutes": 20,
+   "preTickIf": "has:social"
+  },
+  {
+   "id": "brand.logo",
+   "checklist": "brand-identity",
+   "order": 30,
+   "title": "Logo in SVG with light, dark and mono variants",
+   "why": "Stores, directories and press all ask for a logo, often on dark backgrounds.",
+   "steps": [
+    "Export a square SVG and a 1024×1024 PNG.",
+    "Check it reads at 16px and on dark backgrounds."
+   ],
+   "priority": "recommended",
+   "minutes": 60,
+   "preTickIf": "has:logo"
+  },
+  {
+   "id": "brand.app-icon",
+   "checklist": "brand-identity",
+   "order": 40,
+   "title": "App icon master at 1024×1024",
+   "why": "Every store and OS icon size is generated from one high-resolution master.",
+   "steps": [
+    {
+     "text": "iOS: no transparency, no rounded corners. The OS applies the mask.",
+     "appliesTo": {
+      "any": [
+       "platform:ios"
+      ]
+     }
+    },
+    {
+     "text": "Android: prepare an adaptive icon (foreground and background layers).",
+     "appliesTo": {
+      "any": [
+       "platform:android"
+      ]
+     }
+    },
+    {
+     "text": "macOS: follow the rounded-square grid with a soft shadow, and export an .icns.",
+     "appliesTo": {
+      "all": [
+       "platform:desktop",
+       "os:macos"
+      ]
+     }
+    },
+    {
+     "text": "Windows: export a multi-size .ico (16–256px).",
+     "appliesTo": {
+      "all": [
+       "platform:desktop",
+       "os:windows"
+      ]
+     }
+    },
+    {
+     "text": "Extensions need 16, 32, 48 and 128px icons.",
+     "appliesTo": {
+      "any": [
+       "platform:extension"
+      ]
+     }
+    }
+   ],
+   "priority": "blocker",
+   "minutes": 30,
+   "tools": [
+    "app-store-icons",
+    "play-store-icons",
+    "macos-icns",
+    "windows-ico",
+    "chrome-extension-icons",
+    "firefox-addon-icons",
+    "edge-addon-icons"
+   ],
+   "appliesTo": {
+    "any": [
+     "mobile",
+     "platform:desktop",
+     "platform:extension"
+    ]
+   },
+   "autoCheck": true
+  },
+  {
+   "id": "brand.favicon",
+   "checklist": "brand-identity",
+   "order": 50,
+   "title": "Favicon set (.ico, 16, 32, 180, 192, 512)",
+   "why": "Browsers, iOS home screens and PWAs each pick a different size.",
+   "steps": [
+    "Generate the set from your square logo.",
+    "Paste the HTML snippet into your <head>."
+   ],
+   "priority": "recommended",
+   "minutes": 10,
+   "tools": [
+    "favicon"
+   ],
+   "appliesTo": {
+    "any": [
+     "store:website"
+    ]
+   },
+   "autoCheck": true
+  },
+  {
+   "id": "brand.copy",
+   "checklist": "brand-identity",
+   "order": 60,
+   "title": "Tagline (under 60 chars) and 160-char description",
+   "why": "Every store, directory and meta tag reuses these. Write them once, well.",
+   "steps": [
+    "Say what it does and for whom.",
+    "Keep the tagline under 60 characters for Product Hunt."
+   ],
+   "priority": "blocker",
+   "minutes": 30,
+   "kit": [
+    "tagline",
+    "description"
+   ]
+  },
+  {
+   "id": "brand.social-preview",
+   "checklist": "brand-identity",
+   "order": 70,
+   "title": "README banner and GitHub social preview (1280×640)",
+   "why": "Your repo is your landing page. Links to it show this image everywhere.",
+   "steps": [
+    "Add a banner with logo and tagline to the top of your README.",
+    "Upload a 1280×640 image under repo Settings > Social preview."
+   ],
+   "priority": "recommended",
+   "minutes": 20,
+   "appliesTo": {
+    "any": [
+     "platform:library",
+     "platform:cli"
+    ]
+   }
+  },
+  {
+   "id": "domain.registered",
+   "checklist": "domain-dns",
+   "order": 10,
+   "title": "Domain registered with auto-renew on",
+   "why": "An expired domain takes your product, email and policy URLs offline at once.",
+   "steps": [
+    "Turn on auto-renew at your registrar.",
+    "Make sure the payment card on file won't expire soon."
+   ],
+   "priority": "blocker",
+   "minutes": 10,
+   "preTickIf": "has:domain",
+   "kit": [
+    "url"
+   ]
+  },
+  {
+   "id": "domain.lock",
+   "checklist": "domain-dns",
+   "order": 20,
+   "title": "Registrar lock and two-factor auth",
+   "why": "Domain hijacking usually starts with a weak registrar login.",
+   "steps": [
+    "Enable transfer lock.",
+    "Turn on 2FA for the registrar account."
+   ],
+   "priority": "recommended",
+   "minutes": 5
+  },
+  {
+   "id": "domain.https",
+   "checklist": "domain-dns",
+   "order": 30,
+   "title": "HTTPS everywhere with auto-renewing certificates",
+   "why": "Browsers flag HTTP as not secure, and stores reject non-HTTPS policy URLs.",
+   "steps": [
+    {
+     "text": "Vercel, Netlify and Cloudflare issue certificates automatically once DNS points at them.",
+     "appliesTo": {
+      "any": [
+       "host:vercel",
+       "host:netlify",
+       "host:cloudflare"
+      ]
+     }
+    },
+    {
+     "text": "On your own server, use Caddy or certbot with auto-renewal.",
+     "appliesTo": {
+      "any": [
+       "host:self",
+       "host:cloud",
+       "host:paas"
+      ]
+     }
+    },
+    "Redirect all HTTP traffic to HTTPS."
+   ],
+   "priority": "blocker",
+   "minutes": 15,
+   "appliesTo": {
+    "any": [
+     "store:website",
+     "platform:web",
+     "platform:api"
+    ]
+   }
+  },
+  {
+   "id": "domain.canonical",
+   "checklist": "domain-dns",
+   "order": 40,
+   "title": "One canonical host (www → apex or the reverse)",
+   "why": "Two hosts split your SEO signals and break cookies.",
+   "steps": [
+    "Pick one host.",
+    "301-redirect the other to it."
+   ],
+   "priority": "recommended",
+   "minutes": 10,
+   "appliesTo": {
+    "any": [
+     "store:website"
+    ]
+   }
+  },
+  {
+   "id": "domain.policy-urls",
+   "checklist": "domain-dns",
+   "order": 50,
+   "title": "Privacy and support pages live on your domain",
+   "why": "Every app and extension store requires public privacy and support URLs.",
+   "steps": [
+    "Publish /privacy and /support (or a contact page) on your domain.",
+    "Check they load without login and on mobile."
+   ],
+   "priority": "blocker",
+   "minutes": 20,
+   "appliesTo": {
+    "any": [
+     "mobile",
+     "platform:desktop",
+     "platform:extension"
+    ]
+   }
+  },
+  {
+   "id": "domain.deeplinks-ios",
+   "checklist": "domain-dns",
+   "order": 60,
+   "title": "apple-app-site-association for Universal Links",
+   "why": "Without it, links to your site open Safari instead of your app.",
+   "steps": [
+    "Serve /.well-known/apple-app-site-association as JSON over HTTPS, without redirects.",
+    "Add the Associated Domains entitlement (applinks:yourdomain.com).",
+    {
+     "text": "Expo: set ios.associatedDomains in app.json.",
+     "appliesTo": {
+      "any": [
+       "fw:expo"
+      ]
+     }
+    }
+   ],
+   "priority": "recommended",
+   "minutes": 30,
+   "appliesTo": {
+    "any": [
+     "platform:ios"
+    ]
+   },
+   "autoCheck": true
+  },
+  {
+   "id": "domain.deeplinks-android",
+   "checklist": "domain-dns",
+   "order": 70,
+   "title": "assetlinks.json for Android App Links",
+   "why": "Verified App Links open your app directly, without the 'Open with' chooser.",
+   "steps": [
+    "Serve /.well-known/assetlinks.json with your package name and the Play App Signing SHA-256 fingerprint.",
+    "Add an autoVerify intent filter for your domain.",
+    {
+     "text": "Expo: set android.intentFilters with autoVerify in app.json.",
+     "appliesTo": {
+      "any": [
+       "fw:expo"
+      ]
+     }
+    }
+   ],
+   "priority": "recommended",
+   "minutes": 30,
+   "appliesTo": {
+    "any": [
+     "platform:android"
+    ]
+   },
+   "autoCheck": true
+  },
+  {
+   "id": "domain.api-cors",
+   "checklist": "domain-dns",
+   "order": 80,
+   "title": "API on its own subdomain with CORS locked down",
+   "why": "A wildcard CORS policy lets any site call your API with your users' credentials.",
+   "steps": [
+    "Serve the API from api.yourdomain.com.",
+    "Allow only your own origins in CORS."
+   ],
+   "priority": "recommended",
+   "minutes": 20,
+   "appliesTo": {
+    "any": [
+     "platform:api"
+    ]
+   }
+  },
+  {
+   "id": "email.support",
+   "checklist": "email",
+   "order": 10,
+   "title": "Support address on your own domain",
+   "why": "Stores, users and reviewers need a way to reach you that isn't a personal Gmail.",
+   "steps": [
+    "Create support@ or hello@ on your domain.",
+    "Forward it somewhere you read daily."
+   ],
+   "priority": "blocker",
+   "minutes": 15
+  },
+  {
+   "id": "email.mx",
+   "checklist": "email",
+   "order": 20,
+   "title": "MX records set and inbound mail tested",
+   "why": "Store reviewers and users email you. Bounced mail is lost goodwill.",
+   "steps": [
+    "Add MX records for your mail provider.",
+    "Send a test email from an outside account."
+   ],
+   "priority": "recommended",
+   "minutes": 10
+  },
+  {
+   "id": "email.spf",
+   "checklist": "email",
+   "order": 30,
+   "title": "SPF record covering every sending service",
+   "why": "Without SPF, signup and reset emails land in spam or get rejected.",
+   "steps": [
+    "Publish one TXT record: v=spf1 include:<each provider> ~all.",
+    {
+     "text": "Supabase Auth: set up custom SMTP first. The built-in sender is rate-limited and not for production.",
+     "appliesTo": {
+      "any": [
+       "svc:supabase"
+      ]
+     }
+    }
+   ],
+   "priority": "blocker",
+   "minutes": 15,
+   "appliesTo": {
+    "any": [
+     "data:accounts",
+     "data:emails"
+    ]
+   }
+  },
+  {
+   "id": "email.dkim",
+   "checklist": "email",
+   "order": 40,
+   "title": "DKIM signing on for every sending service",
+   "why": "Gmail and Yahoo require authenticated mail from bulk and app senders.",
+   "steps": [
+    "Add the DKIM CNAME or TXT records your provider gives you.",
+    "Verify in the provider's dashboard."
+   ],
+   "priority": "blocker",
+   "minutes": 15,
+   "appliesTo": {
+    "any": [
+     "data:accounts",
+     "data:emails"
+    ]
+   }
+  },
+  {
+   "id": "email.dmarc",
+   "checklist": "email",
+   "order": 50,
+   "title": "DMARC record (start with p=none)",
+   "why": "Protects your domain from spoofing and is required by major inboxes.",
+   "steps": [
+    "Publish _dmarc TXT: v=DMARC1; p=none; rua=mailto:dmarc@yourdomain.com.",
+    "Tighten to quarantine once reports look clean."
+   ],
+   "priority": "recommended",
+   "minutes": 10,
+   "appliesTo": {
+    "any": [
+     "data:accounts",
+     "data:emails"
+    ]
+   }
+  },
+  {
+   "id": "email.transactional",
+   "checklist": "email",
+   "order": 60,
+   "title": "Signup, reset and receipt emails tested in Gmail and Outlook",
+   "why": "A reset email in spam is a lost user.",
+   "steps": [
+    "Use a transactional provider (Resend, Postmark, SES).",
+    {
+     "text": "Firebase Auth: customise the action URL and sender domain for auth emails.",
+     "appliesTo": {
+      "any": [
+       "svc:firebase"
+      ]
+     }
+    },
+    {
+     "text": "Clerk: verify your sending domain in the Clerk dashboard.",
+     "appliesTo": {
+      "any": [
+       "svc:clerk"
+      ]
+     }
+    },
+    "Send each email to a Gmail and an Outlook inbox and check placement."
+   ],
+   "priority": "blocker",
+   "minutes": 30,
+   "appliesTo": {
+    "any": [
+     "data:accounts"
+    ]
+   }
+  },
+  {
+   "id": "email.unsubscribe",
+   "checklist": "email",
+   "order": 70,
+   "title": "One-click unsubscribe and a postal address in marketing emails",
+   "why": "Required by CAN-SPAM, GDPR and Gmail's bulk sender rules.",
+   "steps": [
+    "Add a List-Unsubscribe header and a visible unsubscribe link.",
+    "Include a postal address in the footer."
+   ],
+   "priority": "recommended",
+   "minutes": 15,
+   "appliesTo": {
+    "any": [
+     "data:emails"
+    ]
+   }
+  },
+  {
+   "id": "legal.privacy",
+   "checklist": "legal-compliance",
+   "order": 10,
+   "title": "Privacy policy, publicly linked",
+   "why": "Every app and extension store rejects listings without one, and the law requires it once you handle personal data.",
+   "steps": [
+    "List exactly what you collect and every third-party service that sees it.",
+    {
+     "text": "Link it from your app's settings screen and the store listing.",
+     "appliesTo": {
+      "any": [
+       "mobile",
+       "platform:desktop",
+       "platform:extension"
+      ]
+     }
+    },
+    {
+     "text": "Link it in your site footer.",
+     "appliesTo": {
+      "any": [
+       "store:website"
+      ]
+     }
+    }
+   ],
+   "priority": "blocker",
+   "minutes": 45,
+   "appliesTo": {
+    "any": [
+     "data:personal",
+     "mobile",
+     "platform:extension",
+     "platform:desktop",
+     "platform:web",
+     "platform:api"
+    ]
+   },
+   "autoCheck": true
+  },
+  {
+   "id": "legal.terms",
+   "checklist": "legal-compliance",
+   "order": 20,
+   "title": "Terms of service",
+   "why": "Limits your liability and sets the rules for accounts and payments.",
+   "steps": [
+    "Cover acceptable use, termination, liability and governing law."
+   ],
+   "priority": "blocker",
+   "minutes": 30,
+   "appliesTo": {
+    "any": [
+     "platform:web",
+     "platform:api",
+     "data:accounts",
+     "paid"
+    ]
+   },
+   "autoCheck": true
+  },
+  {
+   "id": "legal.license",
+   "checklist": "legal-compliance",
+   "order": 25,
+   "title": "Open-source license chosen and included",
+   "why": "Code without a license can't legally be used by anyone.",
+   "steps": [
+    "Pick a license (MIT or Apache-2.0 are common) and add a LICENSE file.",
+    {
+     "text": "Rust: set license = \"MIT OR Apache-2.0\" in Cargo.toml.",
+     "appliesTo": {
+      "any": [
+       "lang:rust"
+      ]
+     }
+    },
+    {
+     "text": "npm: set the license field in package.json.",
+     "appliesTo": {
+      "any": [
+       "store:npm"
+      ]
+     }
+    }
+   ],
+   "priority": "blocker",
+   "minutes": 10,
+   "appliesTo": {
+    "any": [
+     "platform:library",
+     "platform:cli"
+    ]
+   },
+   "autoCheck": true
+  },
+  {
+   "id": "legal.refund",
+   "checklist": "legal-compliance",
+   "order": 30,
+   "title": "Refund and cancellation policy",
+   "why": "Payment providers and merchants of record require one.",
+   "steps": [
+    "State the refund window and how to cancel.",
+    {
+     "text": "Explain that cancelling stops the next renewal.",
+     "appliesTo": {
+      "any": [
+       "pricing:subscription"
+      ]
+     }
+    }
+   ],
+   "priority": "recommended",
+   "minutes": 15,
+   "appliesTo": {
+    "any": [
+     "paid"
+    ]
+   }
+  },
+  {
+   "id": "legal.cookies",
+   "checklist": "legal-compliance",
+   "order": 40,
+   "title": "Cookie consent for EU/UK visitors",
+   "why": "Non-essential cookies need opt-in consent under GDPR and ePrivacy.",
+   "steps": [
+    "Block analytics until consent, or use a cookieless analytics tool."
+   ],
+   "priority": "recommended",
+   "minutes": 30,
+   "appliesTo": {
+    "all": [
+     "store:website",
+     "region:eu"
+    ]
+   }
+  },
+  {
+   "id": "legal.gdpr",
+   "checklist": "legal-compliance",
+   "order": 50,
+   "title": "GDPR basics: data requests and retention",
+   "why": "EU users can ask you to export or delete their data.",
+   "steps": [
+    "Document how you handle access, export and delete requests.",
+    "Set retention periods for each data type."
+   ],
+   "priority": "recommended",
+   "minutes": 60,
+   "appliesTo": {
+    "all": [
+     "region:eu",
+     "data:personal"
+    ]
+   }
+  },
+  {
+   "id": "legal.ccpa",
+   "checklist": "legal-compliance",
+   "order": 55,
+   "title": "CCPA notice for California users",
+   "why": "California residents have the right to know and delete, and to opt out of data sales.",
+   "steps": [
+    "Add a California section to your privacy policy.",
+    "Add 'Do not sell or share' if you share data for ads."
+   ],
+   "priority": "recommended",
+   "minutes": 30,
+   "appliesTo": {
+    "all": [
+     "region:us",
+     "data:personal"
+    ]
+   }
+  },
+  {
+   "id": "legal.dpdp",
+   "checklist": "legal-compliance",
+   "order": 60,
+   "title": "India DPDP Act notice and grievance contact",
+   "why": "Required when you process personal data of users in India.",
+   "steps": [
+    "Add a consent notice and a named grievance contact to your policy."
+   ],
+   "priority": "recommended",
+   "minutes": 30,
+   "appliesTo": {
+    "all": [
+     "region:india",
+     "data:personal"
+    ]
+   }
+  },
+  {
+   "id": "legal.coppa",
+   "checklist": "legal-compliance",
+   "order": 65,
+   "title": "COPPA: verifiable parental consent",
+   "why": "Collecting data from children under 13 without parental consent brings heavy fines and store removal.",
+   "steps": [
+    "Get verifiable parental consent before collecting data from children.",
+    {
+     "text": "Apple Kids category and Google Play Families have extra rules on ads and analytics SDKs.",
+     "appliesTo": {
+      "any": [
+       "mobile"
+      ]
+     }
+    }
+   ],
+   "priority": "blocker",
+   "minutes": 90,
+   "appliesTo": {
+    "any": [
+     "data:kids"
+    ]
+   }
+  },
+  {
+   "id": "legal.deletion",
+   "checklist": "legal-compliance",
+   "order": 70,
+   "title": "Account deletion in-app and via the web",
+   "why": "Apple and Google require it for any app that offers accounts, and GDPR requires it everywhere.",
+   "steps": [
+    "Add a delete-account action in settings.",
+    {
+     "text": "Publish a web URL explaining how to delete. Google Play requires it in the listing.",
+     "appliesTo": {
+      "any": [
+       "platform:android"
+      ]
+     }
+    }
+   ],
+   "priority": "blocker",
+   "minutes": 120,
+   "appliesTo": {
+    "any": [
+     "data:accounts"
+    ]
+   }
+  },
+  {
+   "id": "legal.ai",
+   "checklist": "legal-compliance",
+   "order": 80,
+   "title": "AI disclosure",
+   "why": "Users must know when they talk to AI and which providers see their data.",
+   "steps": [
+    "Name your AI providers in the privacy policy.",
+    "Label AI-generated output in the product.",
+    {
+     "text": "State whether user content is used for model training.",
+     "appliesTo": {
+      "any": [
+       "ai:user_content"
+      ]
+     }
+    }
+   ],
+   "priority": "recommended",
+   "minutes": 20,
+   "appliesTo": {
+    "any": [
+     "ai:any"
+    ]
+   }
+  },
+  {
+   "id": "legal.subprocessors",
+   "checklist": "legal-compliance",
+   "order": 90,
+   "title": "Sub-processor list matches the services you use",
+   "why": "Your privacy policy must name every service that handles user data.",
+   "steps": [
+    {
+     "text": "Supabase (database and auth)",
+     "appliesTo": {
+      "any": [
+       "svc:supabase"
+      ]
+     }
+    },
+    {
+     "text": "Firebase (Google)",
+     "appliesTo": {
+      "any": [
+       "svc:firebase"
+      ]
+     }
+    },
+    {
+     "text": "Clerk or Auth0 (authentication)",
+     "appliesTo": {
+      "any": [
+       "svc:clerk"
+      ]
+     }
+    },
+    {
+     "text": "Stripe (payments)",
+     "appliesTo": {
+      "any": [
+       "svc:stripe"
+      ]
+     }
+    },
+    {
+     "text": "Sentry (error reports can contain personal data)",
+     "appliesTo": {
+      "any": [
+       "svc:sentry"
+      ]
+     }
+    },
+    {
+     "text": "PostHog or Mixpanel (product analytics)",
+     "appliesTo": {
+      "any": [
+       "svc:posthog"
+      ]
+     }
+    }
+   ],
+   "priority": "recommended",
+   "minutes": 20,
+   "appliesTo": {
+    "all": [
+     "data:personal"
+    ],
+    "any": [
+     "svc:supabase",
+     "svc:firebase",
+     "svc:clerk",
+     "svc:stripe",
+     "svc:sentry",
+     "svc:posthog"
+    ]
+   }
+  },
+  {
+   "id": "legal.eula",
+   "checklist": "legal-compliance",
+   "order": 100,
+   "title": "EULA for the downloadable app",
+   "why": "Outside app stores, your installer needs its own license agreement.",
+   "steps": [
+    "Show the EULA in the installer or on first launch.",
+    "Link it from your download page."
+   ],
+   "priority": "recommended",
+   "minutes": 30,
+   "appliesTo": {
+    "any": [
+     "platform:desktop"
+    ]
+   }
+  },
+  {
+   "id": "legal.oss-notices",
+   "checklist": "legal-compliance",
+   "order": 110,
+   "title": "Third-party license notices bundled",
+   "why": "Most open-source licenses require attribution in what you distribute.",
+   "steps": [
+    {
+     "text": "Rust: generate notices with cargo-about or cargo-deny.",
+     "appliesTo": {
+      "any": [
+       "lang:rust"
+      ]
+     }
+    },
+    {
+     "text": "JavaScript: generate notices with license-checker or rollup-plugin-license.",
+     "appliesTo": {
+      "any": [
+       "bundle:js"
+      ]
+     }
+    },
+    {
+     "text": "Flutter: showLicensePage() lists package licenses automatically.",
+     "appliesTo": {
+      "any": [
+       "fw:flutter"
+      ]
+     }
+    },
+    "Show them in an About or Licenses screen."
+   ],
+   "priority": "nice",
+   "minutes": 30,
+   "appliesTo": {
+    "any": [
+     "platform:desktop",
+     "mobile",
+     "platform:extension"
+    ]
+   }
+  },
+  {
+   "id": "pay.live-test",
+   "checklist": "payments-tax",
+   "order": 10,
+   "title": "Live payment tested with a real card, including a refund",
+   "why": "Test mode hides tax, 3DS and webhook issues that only show up in live mode.",
+   "steps": [
+    {
+     "text": "Stripe: switch to live keys, buy your cheapest plan, then refund it from the dashboard.",
+     "appliesTo": {
+      "any": [
+       "svc:stripe"
+      ]
+     }
+    },
+    "Confirm the webhook upgraded and then downgraded the account."
+   ],
+   "priority": "blocker",
+   "minutes": 30,
+   "appliesTo": {
+    "any": [
+     "platform:web",
+     "platform:desktop",
+     "platform:api",
+     "platform:cli",
+     "platform:extension"
+    ]
+   }
+  },
+  {
+   "id": "pay.store-billing",
+   "checklist": "payments-tax",
+   "order": 20,
+   "title": "Digital purchases in the app use store billing",
+   "why": "Apple and Google reject apps that sell digital goods outside their billing (with narrow exceptions).",
+   "steps": [
+    {
+     "text": "iOS: use StoreKit (or RevenueCat) for subscriptions and unlocks.",
+     "appliesTo": {
+      "any": [
+       "platform:ios"
+      ]
+     }
+    },
+    {
+     "text": "Android: use Google Play Billing.",
+     "appliesTo": {
+      "any": [
+       "platform:android"
+      ]
+     }
+    },
+    {
+     "text": "Expo: react-native-purchases (RevenueCat) handles both stores.",
+     "appliesTo": {
+      "any": [
+       "fw:expo"
+      ]
+     }
+    },
+    {
+     "text": "Flutter: use in_app_purchase or purchases_flutter.",
+     "appliesTo": {
+      "any": [
+       "fw:flutter"
+      ]
+     }
+    }
+   ],
+   "priority": "blocker",
+   "minutes": 120,
+   "appliesTo": {
+    "any": [
+     "mobile",
+     "store:mac_app_store"
+    ]
+   }
+  },
+  {
+   "id": "pay.mor",
+   "checklist": "payments-tax",
+   "order": 30,
+   "title": "Merchant of record or tax collection decided",
+   "why": "Selling worldwide means VAT/GST in dozens of countries. Someone has to collect it.",
+   "steps": [
+    "Use a merchant of record (Paddle, Lemon Squeezy, Polar), or Stripe Tax and register yourself."
+   ],
+   "priority": "recommended",
+   "minutes": 45,
+   "appliesTo": {
+    "any": [
+     "platform:web",
+     "platform:desktop",
+     "platform:api",
+     "platform:cli",
+     "platform:extension"
+    ]
+   }
+  },
+  {
+   "id": "pay.pricing-page",
+   "checklist": "payments-tax",
+   "order": 40,
+   "title": "Pricing page matches what checkout charges",
+   "why": "Mismatches cause chargebacks and support tickets on launch day.",
+   "steps": [
+    "Compare each plan's price, currency and trial with the checkout page."
+   ],
+   "priority": "recommended",
+   "minutes": 15,
+   "appliesTo": {
+    "all": [
+     "store:website"
+    ]
+   }
+  },
+  {
+   "id": "pay.dunning",
+   "checklist": "payments-tax",
+   "order": 50,
+   "title": "Failed-payment emails and retries",
+   "why": "Involuntary churn from expired cards is often 20–40% of subscription churn.",
+   "steps": [
+    {
+     "text": "Stripe: turn on Smart Retries and the failed-payment emails in Billing settings.",
+     "appliesTo": {
+      "any": [
+       "svc:stripe"
+      ]
+     }
+    },
+    "Email users before access is cut off."
+   ],
+   "priority": "recommended",
+   "minutes": 20,
+   "appliesTo": {
+    "all": [
+     "pricing:subscription"
+    ],
+    "none": [
+     "mobile"
+    ]
+   }
+  },
+  {
+   "id": "pay.license-keys",
+   "checklist": "payments-tax",
+   "order": 60,
+   "title": "License keys or account check for paid desktop and CLI builds",
+   "why": "Downloadable software needs a way to unlock paid features offline.",
+   "steps": [
+    "Issue keys from your merchant of record or license service.",
+    "Validate on launch with an offline grace period."
+   ],
+   "priority": "recommended",
+   "minutes": 90,
+   "appliesTo": {
+    "any": [
+     "platform:desktop",
+     "platform:cli"
+    ],
+    "none": [
+     "store:mac_app_store",
+     "store:microsoft_store"
+    ]
+   }
+  },
+  {
+   "id": "assets.mockups",
+   "checklist": "launch-assets",
+   "order": 10,
+   "title": "2–3 device mockups of your main screens",
+   "why": "A product shot in a device frame reads as a real product at a glance.",
+   "steps": [
+    "Pick your 3 strongest screens.",
+    "Drop them into a frame that matches where it runs."
+   ],
+   "priority": "recommended",
+   "minutes": 20,
+   "tools": [
+    "phone-mockup",
+    "browser-mockup",
+    "desktop-window-mockup",
+    "3d-phone-mockup"
+   ],
+   "appliesTo": {
+    "any": [
+     "platform:web",
+     "mobile",
+     "platform:desktop",
+     "platform:extension"
+    ]
+   }
+  },
+  {
+   "id": "assets.og-image",
+   "checklist": "launch-assets",
+   "order": 20,
+   "title": "1200×630 share image",
+   "why": "Used whenever someone shares your link on X, LinkedIn, Slack or WhatsApp.",
+   "steps": [
+    "Use a mockup or your logo with your tagline.",
+    "Export at 1200×630 and reference it as og:image."
+   ],
+   "priority": "recommended",
+   "minutes": 15,
+   "tools": [
+    "og-image",
+    "browser-mockup"
+   ],
+   "toolOptions": [
+    "og"
+   ],
+   "appliesTo": {
+    "any": [
+     "store:website"
+    ]
+   },
+   "autoCheck": true
+  },
+  {
+   "id": "assets.terminal-demo",
+   "checklist": "launch-assets",
+   "order": 30,
+   "title": "Terminal demo GIF",
+   "why": "One looping GIF of your CLI in action sells it faster than any paragraph.",
+   "steps": [
+    "Script the demo with VHS (charmbracelet/vhs) so it's reproducible.",
+    "Keep it under 20 seconds and put it at the top of the README."
+   ],
+   "priority": "recommended",
+   "minutes": 30,
+   "appliesTo": {
+    "any": [
+     "platform:cli"
+    ]
+   }
+  },
+  {
+   "id": "assets.quickstart",
+   "checklist": "launch-assets",
+   "order": 40,
+   "title": "Copy-paste quickstart that works in under a minute",
+   "why": "Developers decide in the first 60 seconds whether your tool is worth it.",
+   "steps": [
+    {
+     "text": "Rust: cargo add <crate> plus a 10-line example that compiles.",
+     "appliesTo": {
+      "any": [
+       "lang:rust"
+      ]
+     }
+    },
+    {
+     "text": "JavaScript: npm i <pkg> plus a runnable snippet.",
+     "appliesTo": {
+      "any": [
+       "store:npm"
+      ]
+     }
+    },
+    {
+     "text": "Python: pip install <pkg> plus a runnable snippet.",
+     "appliesTo": {
+      "any": [
+       "store:pypi"
+      ]
+     }
+    },
+    {
+     "text": "API: a curl request with a test key that returns real data.",
+     "appliesTo": {
+      "any": [
+       "platform:api"
+      ]
+     }
+    },
+    "Run it yourself in a fresh environment."
+   ],
+   "priority": "blocker",
+   "minutes": 45,
+   "appliesTo": {
+    "any": [
+     "platform:library",
+     "platform:api",
+     "platform:cli"
+    ]
+   }
+  },
+  {
+   "id": "assets.demo-video",
+   "checklist": "launch-assets",
+   "order": 50,
+   "title": "30–60 second demo video",
+   "why": "Product Hunt, landing pages and store previews all convert better with motion.",
+   "steps": [
+    "Show one problem and its solution, with no intro.",
+    {
+     "text": "macOS: record with the built-in screen recorder (Cmd+Shift+5).",
+     "appliesTo": {
+      "any": [
+       "os:macos"
+      ]
+     }
+    },
+    {
+     "text": "App Store app previews: 15–30 seconds, recorded on device.",
+     "appliesTo": {
+      "any": [
+       "store:app_store"
+      ]
+     }
+    }
+   ],
+   "priority": "nice",
+   "minutes": 90,
+   "appliesTo": {
+    "any": [
+     "platform:web",
+     "mobile",
+     "platform:desktop",
+     "platform:extension"
+    ]
+   }
+  },
+  {
+   "id": "build.secrets-repo",
+   "checklist": "release-build",
+   "order": 10,
+   "title": "No secrets in the repo or its history",
+   "why": "Leaked keys are found by bots within minutes of a public push.",
+   "steps": [
+    "Run gitleaks detect on the full history.",
+    "Rotate anything it finds, then remove it from history."
+   ],
+   "priority": "blocker",
+   "minutes": 20,
+   "appliesTo": {
+    "none": [
+     "fw:nocode"
+    ]
+   },
+   "autoCheck": true
+  },
+  {
+   "id": "build.public-env",
+   "checklist": "release-build",
+   "order": 20,
+   "title": "Only public env vars reach the client bundle",
+   "why": "Anything with the public prefix is baked into JavaScript every user downloads.",
+   "steps": [
+    {
+     "text": "Next.js: only NEXT_PUBLIC_* vars are exposed. Keep secret keys unprefixed and use them in server code only.",
+     "appliesTo": {
+      "any": [
+       "fw:nextjs"
+      ]
+     }
+    },
+    {
+     "text": "Vite: only VITE_* vars are exposed via import.meta.env. Never prefix a secret with VITE_.",
+     "appliesTo": {
+      "any": [
+       "fw:react_vite",
+       "fw:react_router",
+       "fw:astro",
+       "fw:tauri",
+       "fw:electron"
+      ]
+     }
+    },
+    {
+     "text": "SvelteKit: import secrets from $env/static/private, never $env/static/public.",
+     "appliesTo": {
+      "any": [
+       "fw:sveltekit"
+      ]
+     }
+    },
+    {
+     "text": "Nuxt: put secrets in runtimeConfig, not runtimeConfig.public.",
+     "appliesTo": {
+      "any": [
+       "fw:nuxt"
+      ]
+     }
+    },
+    {
+     "text": "Expo: EXPO_PUBLIC_* vars are inlined into the app binary. Keep secrets on your backend.",
+     "appliesTo": {
+      "any": [
+       "fw:expo"
+      ]
+     }
+    },
+    {
+     "text": "Extensions: anything in the package is readable. Call your backend for secret-backed APIs.",
+     "appliesTo": {
+      "any": [
+       "platform:extension"
+      ]
+     }
+    },
+    "Search the built output for 'sk_', 'secret' and your API key prefixes."
+   ],
+   "priority": "blocker",
+   "minutes": 15,
+   "appliesTo": {
+    "any": [
+     "bundle:js"
+    ]
+   },
+   "autoCheck": true
+  },
+  {
+   "id": "build.web-sourcemaps",
+   "checklist": "release-build",
+   "order": 30,
+   "title": "Production source maps aren't publicly served",
+   "why": "Public source maps hand anyone your original code and comments.",
+   "steps": [
+    {
+     "text": "Next.js: keep productionBrowserSourceMaps off (the default) in next.config.",
+     "appliesTo": {
+      "any": [
+       "fw:nextjs"
+      ]
+     }
+    },
+    {
+     "text": "Vite: set build.sourcemap to false, or 'hidden' and upload maps to your error tracker only.",
+     "appliesTo": {
+      "any": [
+       "fw:react_vite",
+       "fw:react_router",
+       "fw:sveltekit",
+       "fw:astro"
+      ]
+     }
+    },
+    {
+     "text": "Nuxt: set sourcemap.client to false in nuxt.config.",
+     "appliesTo": {
+      "any": [
+       "fw:nuxt"
+      ]
+     }
+    },
+    {
+     "text": "Angular: set sourceMap to false in the production configuration.",
+     "appliesTo": {
+      "any": [
+       "fw:angular"
+      ]
+     }
+    },
+    "Open your live site, then DevTools > Sources: no original .ts/.tsx files should appear."
+   ],
+   "priority": "recommended",
+   "minutes": 15,
+   "appliesTo": {
+    "all": [
+     "platform:web",
+     "bundle:js"
+    ]
+   }
+  },
+  {
+   "id": "build.desktop-sourcemaps",
+   "checklist": "release-build",
+   "order": 40,
+   "title": "Electron build ships without source maps or DevTools",
+   "why": "ASAR archives unpack in seconds. Shipped maps and DevTools expose your code and internals.",
+   "steps": [
+    "Set build.sourcemap false in the renderer's Vite/webpack config and exclude **/*.map in electron-builder 'files'.",
+    "Only open DevTools when !app.isPackaged.",
+    "Unpack the release ASAR (npx @electron/asar extract) and confirm no .map files are inside."
+   ],
+   "priority": "blocker",
+   "minutes": 20,
+   "appliesTo": {
+    "any": [
+     "fw:electron"
+    ]
+   }
+  },
+  {
+   "id": "build.tauri-release",
+   "checklist": "release-build",
+   "order": 50,
+   "title": "Tauri release build has no DevTools or source maps",
+   "why": "A release webview with DevTools lets anyone poke at your IPC commands.",
+   "steps": [
+    "Don't enable the 'devtools' Cargo feature for release builds.",
+    {
+     "text": "Set build.sourcemap false in vite.config for the frontend.",
+     "appliesTo": {
+      "all": [
+       "bundle:js"
+      ]
+     }
+    },
+    "Build with tauri build and right-click in the app: Inspect must not appear."
+   ],
+   "priority": "blocker",
+   "minutes": 15,
+   "appliesTo": {
+    "any": [
+     "fw:tauri"
+    ]
+   }
+  },
+  {
+   "id": "build.electron-security",
+   "checklist": "release-build",
+   "order": 60,
+   "title": "Electron security defaults on",
+   "why": "A renderer with Node access turns any XSS into full control of the user's machine.",
+   "steps": [
+    "Keep contextIsolation: true, nodeIntegration: false and sandbox: true for every BrowserWindow.",
+    "Expose a minimal API with contextBridge in the preload script; validate every IPC message.",
+    "Turn on the ASAR integrity and OnlyLoadAppFromAsar fuses with @electron/fuses.",
+    "Set a Content-Security-Policy for your renderer."
+   ],
+   "priority": "blocker",
+   "minutes": 45,
+   "appliesTo": {
+    "any": [
+     "fw:electron"
+    ]
+   },
+   "autoCheck": true
+  },
+  {
+   "id": "build.tauri-capabilities",
+   "checklist": "release-build",
+   "order": 70,
+   "title": "Tauri capabilities are minimal",
+   "why": "Every allowed command and permission is attack surface for the webview.",
+   "steps": [
+    "Grant only the permissions you use in src-tauri/capabilities/*.json, scoped to specific windows.",
+    "Scope filesystem and shell permissions to exact paths and commands.",
+    "Set app.security.csp in tauri.conf.json."
+   ],
+   "priority": "blocker",
+   "minutes": 30,
+   "appliesTo": {
+    "any": [
+     "fw:tauri"
+    ]
+   }
+  },
+  {
+   "id": "build.rust-release",
+   "checklist": "release-build",
+   "order": 80,
+   "title": "Rust release profile tuned, debug symbols kept separately",
+   "why": "Smaller, faster binaries for users, with symbols kept so crash reports stay readable.",
+   "steps": [
+    "In Cargo.toml [profile.release]: lto = \"thin\", codegen-units = 1, and strip = \"debuginfo\" or split-debuginfo.",
+    "Build with cargo build --release --locked so CI uses exactly your Cargo.lock.",
+    {
+     "text": "Upload the split debug info (.dSYM / .pdb / .dwp) to your crash reporter for each release.",
+     "appliesTo": {
+      "any": [
+       "platform:desktop"
+      ]
+     }
+    },
+    {
+     "text": "Set opt-level = \"z\" only if binary size matters more than speed for your CLI.",
+     "appliesTo": {
+      "any": [
+       "platform:cli"
+      ]
+     }
+    }
+   ],
+   "priority": "recommended",
+   "minutes": 30,
+   "appliesTo": {
+    "all": [
+     "lang:rust"
+    ],
+    "any": [
+     "platform:desktop",
+     "platform:cli"
+    ]
+   }
+  },
+  {
+   "id": "build.rust-panics",
+   "checklist": "release-build",
+   "order": 90,
+   "title": "Panics are caught, logged and reported",
+   "why": "A release GUI that panics just vanishes. Users can't tell you what happened.",
+   "steps": [
+    "Install a panic hook (std::panic::set_hook) that writes a crash log to the app's data directory.",
+    "Report it with the sentry crate (panic integration), or offer 'send crash report' on next launch.",
+    {
+     "text": "GPUI: wrap fallible entity updates and surface errors in the UI instead of unwrap().",
+     "appliesTo": {
+      "any": [
+       "fw:gpui"
+      ]
+     }
+    }
+   ],
+   "priority": "blocker",
+   "minutes": 45,
+   "appliesTo": {
+    "all": [
+     "lang:rust",
+     "platform:desktop"
+    ]
+   }
+  },
+  {
+   "id": "build.rust-native-assets",
+   "checklist": "release-build",
+   "order": 95,
+   "title": "Fonts, icons and assets bundled into the binary",
+   "why": "Native Rust apps often load assets from relative paths that don't exist once installed.",
+   "steps": [
+    "Embed assets with include_bytes! or rust-embed, or resolve them relative to the app bundle.",
+    {
+     "text": "GPUI: serve embedded assets through your AssetSource implementation.",
+     "appliesTo": {
+      "any": [
+       "fw:gpui"
+      ]
+     }
+    },
+    "Install the release build on a clean machine and check fonts and icons render."
+   ],
+   "priority": "blocker",
+   "minutes": 30,
+   "appliesTo": {
+    "any": [
+     "fw:gpui",
+     "fw:egui_iced",
+     "fw:slint"
+    ]
+   }
+  },
+  {
+   "id": "build.flutter-obfuscate",
+   "checklist": "release-build",
+   "order": 100,
+   "title": "Flutter release builds obfuscated, symbols uploaded",
+   "why": "Obfuscation slows reverse engineering; uploaded symbols keep crash reports readable.",
+   "steps": [
+    "Build with flutter build <target> --release --obfuscate --split-debug-info=build/symbols.",
+    "Upload the symbols directory to your crash reporter."
+   ],
+   "priority": "recommended",
+   "minutes": 20,
+   "appliesTo": {
+    "any": [
+     "fw:flutter"
+    ]
+   }
+  },
+  {
+   "id": "build.expo-release",
+   "checklist": "release-build",
+   "order": 110,
+   "title": "EAS production build and update channel set up",
+   "why": "Store builds and over-the-air updates need separate, predictable profiles.",
+   "steps": [
+    "Add a production profile in eas.json and build with eas build --profile production.",
+    "Point production builds at a production EAS Update channel.",
+    "Enable R8 minification for Android release builds."
+   ],
+   "priority": "recommended",
+   "minutes": 30,
+   "appliesTo": {
+    "any": [
+     "fw:expo"
+    ]
+   }
+  },
+  {
+   "id": "build.native-symbols",
+   "checklist": "release-build",
+   "order": 120,
+   "title": "Release symbols uploaded for crash reports",
+   "why": "Without dSYMs or mapping files, production crash reports are unreadable.",
+   "steps": [
+    {
+     "text": "Apple platforms: upload dSYMs from each archive to your crash reporter.",
+     "appliesTo": {
+      "any": [
+       "fw:swift"
+      ]
+     }
+    },
+    {
+     "text": "Android: keep R8 on and upload mapping.txt for each release.",
+     "appliesTo": {
+      "any": [
+       "fw:kotlin"
+      ]
+     }
+    }
+   ],
+   "priority": "recommended",
+   "minutes": 20,
+   "appliesTo": {
+    "any": [
+     "fw:swift",
+     "fw:kotlin"
+    ]
+   }
+  },
+  {
+   "id": "build.ext-package",
+   "checklist": "release-build",
+   "order": 130,
+   "title": "Store package has no dev-only permissions",
+   "why": "Leftover localhost hosts or broad permissions trigger rejections and scare users.",
+   "steps": [
+    {
+     "text": "WXT: build the store zip with wxt zip (and wxt zip -b firefox for AMO).",
+     "appliesTo": {
+      "any": [
+       "fw:wxt"
+      ]
+     }
+    },
+    {
+     "text": "Plasmo: run plasmo package to produce the store zip.",
+     "appliesTo": {
+      "any": [
+       "fw:plasmo"
+      ]
+     }
+    },
+    "Check manifest.json: no localhost in host_permissions, no unused permissions."
+   ],
+   "priority": "blocker",
+   "minutes": 15,
+   "appliesTo": {
+    "any": [
+     "platform:extension"
+    ]
+   },
+   "autoCheck": true
+  },
+  {
+   "id": "build.deps-audit",
+   "checklist": "release-build",
+   "order": 140,
+   "title": "Dependency vulnerability scan passes",
+   "why": "Known-vulnerable dependencies are the easiest way in.",
+   "steps": [
+    {
+     "text": "Rust: cargo audit (or cargo deny check advisories).",
+     "appliesTo": {
+      "any": [
+       "lang:rust"
+      ]
+     }
+    },
+    {
+     "text": "JavaScript: npm audit --omit=dev, and fix highs and criticals.",
+     "appliesTo": {
+      "any": [
+       "lang:js"
+      ]
+     }
+    },
+    {
+     "text": "Python: pip-audit.",
+     "appliesTo": {
+      "any": [
+       "lang:python"
+      ]
+     }
+    },
+    {
+     "text": "Go: govulncheck ./...",
+     "appliesTo": {
+      "any": [
+       "lang:go"
+      ]
+     }
+    },
+    {
+     "text": "Dart: dart pub outdated, then upgrade flagged packages.",
+     "appliesTo": {
+      "any": [
+       "lang:dart"
+      ]
+     }
+    },
+    "Run it in CI so new advisories fail the build."
+   ],
+   "priority": "recommended",
+   "minutes": 20,
+   "appliesTo": {
+    "none": [
+     "fw:nocode"
+    ]
+   }
+  },
+  {
+   "id": "build.security-headers",
+   "checklist": "release-build",
+   "order": 150,
+   "title": "Security headers set",
+   "why": "CSP, HSTS and frame protection block whole classes of attacks for free.",
+   "steps": [
+    "Set Content-Security-Policy, Strict-Transport-Security, X-Content-Type-Options and Referrer-Policy.",
+    {
+     "text": "Next.js: add them in the headers() function in next.config.",
+     "appliesTo": {
+      "any": [
+       "fw:nextjs"
+      ]
+     }
+    },
+    {
+     "text": "Cloudflare: add a _headers file or a Transform Rule.",
+     "appliesTo": {
+      "any": [
+       "host:cloudflare"
+      ]
+     }
+    },
+    {
+     "text": "Vercel: add a headers block to vercel.json.",
+     "appliesTo": {
+      "any": [
+       "host:vercel"
+      ]
+     }
+    },
+    "Check the result with securityheaders.com."
+   ],
+   "priority": "recommended",
+   "minutes": 30,
+   "appliesTo": {
+    "any": [
+     "platform:web"
+    ]
+   }
+  },
+  {
+   "id": "build.rate-limit",
+   "checklist": "release-build",
+   "order": 160,
+   "title": "Rate limits on auth and expensive endpoints",
+   "why": "Launch traffic and bots hit login and AI endpoints hardest.",
+   "steps": [
+    "Limit login, signup, password reset and any endpoint that costs you money.",
+    {
+     "text": "AI endpoints: cap requests and tokens per user per day.",
+     "appliesTo": {
+      "any": [
+       "ai:any"
+      ]
+     }
+    }
+   ],
+   "priority": "blocker",
+   "minutes": 45,
+   "appliesTo": {
+    "any": [
+     "platform:api",
+     "data:accounts",
+     "ai:any"
+    ],
+    "none": [
+     "fw:nocode"
+    ]
+   }
+  },
+  {
+   "id": "build.backups",
+   "checklist": "release-build",
+   "order": 170,
+   "title": "Database backups running, one restore tested",
+   "why": "A backup you haven't restored is a hope, not a backup.",
+   "steps": [
+    {
+     "text": "Supabase: turn on daily backups or PITR, and restore one into a branch.",
+     "appliesTo": {
+      "any": [
+       "svc:supabase"
+      ]
+     }
+    },
+    {
+     "text": "Firebase: schedule Firestore exports to Cloud Storage.",
+     "appliesTo": {
+      "any": [
+       "svc:firebase"
+      ]
+     }
+    },
+    "Restore into a scratch database and check the row counts."
+   ],
+   "priority": "blocker",
+   "minutes": 45,
+   "appliesTo": {
+    "any": [
+     "data:accounts",
+     "data:ugc",
+     "data:payments"
+    ]
+   }
+  },
+  {
+   "id": "qa.e2e-web",
+   "checklist": "testing-qa",
+   "order": 10,
+   "title": "Playwright tests for your core web flows",
+   "why": "Signup, login and checkout break silently. A browser test catches it before your users do.",
+   "steps": [
+    "Run npm init playwright@latest.",
+    "Cover signup to first value, login, and checkout if you charge.",
+    "Add Chromium, WebKit and a mobile viewport as Playwright projects.",
+    {
+     "text": "Next.js: point webServer at next build && next start, not the dev server.",
+     "appliesTo": {
+      "any": [
+       "fw:nextjs"
+      ]
+     }
+    },
+    {
+     "text": "Rust web (Leptos/Dioxus): run cargo leptos build --release in webServer, then drive it with Playwright.",
+     "appliesTo": {
+      "any": [
+       "fw:leptos"
+      ]
+     }
+    }
+   ],
+   "priority": "recommended",
+   "minutes": 120,
+   "appliesTo": {
+    "any": [
+     "platform:web"
+    ],
+    "none": [
+     "fw:nocode"
+    ]
+   }
+  },
+  {
+   "id": "qa.e2e-electron",
+   "checklist": "testing-qa",
+   "order": 20,
+   "title": "Playwright tests for the Electron app",
+   "why": "Playwright can launch your packaged Electron app and drive real windows.",
+   "steps": [
+    "Launch the app with _electron.launch({ args: ['.'] }) from @playwright/test.",
+    "Test first launch, your main window flow and update prompts."
+   ],
+   "priority": "recommended",
+   "minutes": 90,
+   "appliesTo": {
+    "any": [
+     "fw:electron"
+    ]
+   }
+  },
+  {
+   "id": "qa.e2e-tauri",
+   "checklist": "testing-qa",
+   "order": 30,
+   "title": "WebDriver tests for the Tauri app",
+   "why": "Tauri apps are tested through tauri-driver; cover the flows a first-time user hits.",
+   "steps": [
+    "Install tauri-driver and a WebDriver client (WebdriverIO).",
+    "Run against a release build on Windows and Linux in CI (macOS has no WKWebView driver)."
+   ],
+   "priority": "recommended",
+   "minutes": 120,
+   "appliesTo": {
+    "any": [
+     "fw:tauri"
+    ]
+   }
+  },
+  {
+   "id": "qa.rust",
+   "checklist": "testing-qa",
+   "order": 40,
+   "title": "cargo clippy and cargo test gate every merge",
+   "why": "Clippy catches real bugs; tests keep refactors safe.",
+   "steps": [
+    "Run cargo clippy --all-targets -- -D warnings and cargo test --locked in CI.",
+    {
+     "text": "GPUI: test view and model state with #[gpui::test] and TestAppContext, no window needed.",
+     "appliesTo": {
+      "any": [
+       "fw:gpui"
+      ]
+     }
+    },
+    {
+     "text": "egui: drive UI tests headlessly with egui_kittest.",
+     "appliesTo": {
+      "any": [
+       "fw:egui_iced"
+      ]
+     }
+    },
+    {
+     "text": "Slint: use the testing backend (i-slint-backend-testing) to assert on UI state.",
+     "appliesTo": {
+      "any": [
+       "fw:slint"
+      ]
+     }
+    },
+    {
+     "text": "Test on every target OS in CI with a matrix (macos-latest, windows-latest, ubuntu-latest).",
+     "appliesTo": {
+      "any": [
+       "platform:desktop",
+       "platform:cli"
+      ]
+     }
+    },
+    {
+     "text": "Pin and test your minimum supported Rust version (rust-version in Cargo.toml).",
+     "appliesTo": {
+      "any": [
+       "platform:library"
+      ]
+     }
+    }
+   ],
+   "priority": "recommended",
+   "minutes": 60,
+   "appliesTo": {
+    "all": [
+     "lang:rust"
+    ],
+    "none": [
+     "fw:tauri"
+    ]
+   }
+  },
+  {
+   "id": "qa.e2e-mobile",
+   "checklist": "testing-qa",
+   "order": 50,
+   "title": "End-to-end tests on a simulator or device",
+   "why": "Store reviewers will find a crash on first launch if your tests don't.",
+   "steps": [
+    {
+     "text": "Expo / React Native: write Maestro flows (or Detox) for onboarding and your main action.",
+     "appliesTo": {
+      "any": [
+       "fw:expo"
+      ]
+     }
+    },
+    {
+     "text": "Flutter: add integration_test and run it on an emulator in CI.",
+     "appliesTo": {
+      "any": [
+       "fw:flutter"
+      ]
+     }
+    },
+    {
+     "text": "Swift: add an XCUITest target for launch, sign-in and the main screen.",
+     "appliesTo": {
+      "all": [
+       "fw:swift",
+       "platform:ios"
+      ]
+     }
+    },
+    {
+     "text": "Kotlin: write Compose UI tests or Espresso tests for the main flows.",
+     "appliesTo": {
+      "any": [
+       "fw:kotlin"
+      ]
+     }
+    },
+    {
+     "text": "Capacitor: test the web layer with Playwright, then smoke-test on a device.",
+     "appliesTo": {
+      "any": [
+       "fw:capacitor"
+      ]
+     }
+    }
+   ],
+   "priority": "recommended",
+   "minutes": 120,
+   "appliesTo": {
+    "any": [
+     "mobile"
+    ]
+   }
+  },
+  {
+   "id": "qa.cli",
+   "checklist": "testing-qa",
+   "order": 60,
+   "title": "CLI output and exit codes covered by tests",
+   "why": "Scripts and CI pipelines depend on your exit codes and output format.",
+   "steps": [
+    {
+     "text": "Rust: assert_cmd for invocations and insta for snapshot-testing output.",
+     "appliesTo": {
+      "any": [
+       "lang:rust"
+      ]
+     }
+    },
+    {
+     "text": "Node: run the binary with execa in Vitest and snapshot stdout.",
+     "appliesTo": {
+      "any": [
+       "lang:js"
+      ]
+     }
+    },
+    {
+     "text": "Python: test commands with Click's CliRunner or Typer's testing client.",
+     "appliesTo": {
+      "any": [
+       "lang:python"
+      ]
+     }
+    },
+    {
+     "text": "Go: use testscript for end-to-end CLI scripts.",
+     "appliesTo": {
+      "any": [
+       "lang:go"
+      ]
+     }
+    },
+    "Test --help, a bad flag, and a missing-file error."
+   ],
+   "priority": "recommended",
+   "minutes": 60,
+   "appliesTo": {
+    "any": [
+     "platform:cli"
+    ]
+   }
+  },
+  {
+   "id": "qa.library",
+   "checklist": "testing-qa",
+   "order": 70,
+   "title": "Public API tested on every supported runtime version",
+   "why": "Users run versions you don't. A matrix catches it before an issue does.",
+   "steps": [
+    {
+     "text": "Node: test against every active LTS in a CI matrix.",
+     "appliesTo": {
+      "any": [
+       "lang:js"
+      ]
+     }
+    },
+    {
+     "text": "Python: test supported versions with nox or tox.",
+     "appliesTo": {
+      "any": [
+       "lang:python"
+      ]
+     }
+    },
+    {
+     "text": "Rust: test on stable and your MSRV; run cargo test --doc so examples compile.",
+     "appliesTo": {
+      "any": [
+       "lang:rust"
+      ]
+     }
+    },
+    "Run your README examples as tests."
+   ],
+   "priority": "recommended",
+   "minutes": 60,
+   "appliesTo": {
+    "any": [
+     "platform:library"
+    ]
+   }
+  },
+  {
+   "id": "qa.api",
+   "checklist": "testing-qa",
+   "order": 80,
+   "title": "API contract tests run in CI",
+   "why": "A changed response shape breaks every client at once.",
+   "steps": [
+    "Keep an OpenAPI spec or request collection for every endpoint.",
+    "Run it against a staging deploy in CI (Postman CLI, Schemathesis or similar)."
+   ],
+   "priority": "recommended",
+   "minutes": 60,
+   "appliesTo": {
+    "any": [
+     "platform:api"
+    ]
+   }
+  },
+  {
+   "id": "qa.ci",
+   "checklist": "testing-qa",
+   "order": 90,
+   "title": "CI runs build and tests on every pull request",
+   "why": "Tests nobody runs don't protect anything.",
+   "steps": [
+    "Add a GitHub Actions workflow that installs, builds and tests.",
+    "Block merges when it fails.",
+    {
+     "text": "Cache ~/.cargo and target/ with Swatinem/rust-cache to keep builds fast.",
+     "appliesTo": {
+      "any": [
+       "lang:rust"
+      ]
+     }
+    },
+    {
+     "text": "Upload the Playwright HTML report as an artifact.",
+     "appliesTo": {
+      "all": [
+       "platform:web"
+      ],
+      "none": [
+       "fw:nocode"
+      ]
+     }
+    }
+   ],
+   "priority": "recommended",
+   "minutes": 45,
+   "appliesTo": {
+    "none": [
+     "fw:nocode"
+    ]
+   },
+   "autoCheck": true
+  },
+  {
+   "id": "qa.crash-reporting",
+   "checklist": "testing-qa",
+   "order": 100,
+   "title": "Error and crash reporting live",
+   "why": "Launch day is when you find bugs. You need the stack trace, not a vague tweet.",
+   "steps": [
+    {
+     "text": "Next.js: npx @sentry/wizard -i nextjs.",
+     "appliesTo": {
+      "any": [
+       "fw:nextjs"
+      ]
+     }
+    },
+    {
+     "text": "Electron: add @sentry/electron in both main and renderer.",
+     "appliesTo": {
+      "any": [
+       "fw:electron"
+      ]
+     }
+    },
+    {
+     "text": "Rust: add the sentry crate with the panic integration.",
+     "appliesTo": {
+      "any": [
+       "lang:rust"
+      ]
+     }
+    },
+    {
+     "text": "Expo: add @sentry/react-native with the Expo config plugin.",
+     "appliesTo": {
+      "any": [
+       "fw:expo"
+      ]
+     }
+    },
+    {
+     "text": "Flutter: add sentry_flutter or Firebase Crashlytics.",
+     "appliesTo": {
+      "any": [
+       "fw:flutter"
+      ]
+     }
+    },
+    {
+     "text": "Swift: Firebase Crashlytics or the Sentry Cocoa SDK.",
+     "appliesTo": {
+      "any": [
+       "fw:swift"
+      ]
+     }
+    },
+    {
+     "text": "Kotlin: Firebase Crashlytics or the Sentry Android SDK.",
+     "appliesTo": {
+      "any": [
+       "fw:kotlin"
+      ]
+     }
+    },
+    "Trigger a test error in a release build and confirm it arrives."
+   ],
+   "priority": "blocker",
+   "minutes": 30,
+   "appliesTo": {
+    "any": [
+     "platform:web",
+     "mobile",
+     "platform:desktop",
+     "platform:extension",
+     "platform:api"
+    ],
+    "none": [
+     "fw:nocode"
+    ]
+   },
+   "autoCheck": true
+  },
+  {
+   "id": "qa.real-devices",
+   "checklist": "testing-qa",
+   "order": 110,
+   "title": "Checked on Safari, Firefox and a real phone",
+   "why": "Safari and small screens break layouts that look fine in Chrome.",
+   "steps": [
+    "Check Chrome, Safari and Firefox.",
+    "Check a real phone at 375px wide: no horizontal scroll."
+   ],
+   "priority": "recommended",
+   "minutes": 45,
+   "appliesTo": {
+    "any": [
+     "store:website"
+    ]
+   }
+  },
+  {
+   "id": "qa.install",
+   "checklist": "testing-qa",
+   "order": 120,
+   "title": "Fresh-machine install test on every OS you ship",
+   "why": "Missing runtimes, DLLs and permissions only show up on a clean machine.",
+   "steps": [
+    {
+     "text": "macOS: install from the notarized .dmg on a fresh user account, and open it with no Gatekeeper warning.",
+     "appliesTo": {
+      "any": [
+       "os:macos"
+      ]
+     }
+    },
+    {
+     "text": "Windows: install on a clean VM and check for a SmartScreen warning and missing VC++ runtimes.",
+     "appliesTo": {
+      "any": [
+       "os:windows"
+      ]
+     }
+    },
+    {
+     "text": "Linux: install the AppImage/deb on a fresh Ubuntu VM and check GPU/Wayland.",
+     "appliesTo": {
+      "any": [
+       "os:linux"
+      ]
+     }
+    },
+    {
+     "text": "Rust GPU apps: test on a machine without a discrete GPU and under a VM's software renderer.",
+     "appliesTo": {
+      "any": [
+       "fw:gpui",
+       "fw:egui_iced",
+       "fw:slint"
+      ]
+     }
+    }
+   ],
+   "priority": "blocker",
+   "minutes": 60,
+   "appliesTo": {
+    "any": [
+     "platform:desktop",
+     "platform:cli"
+    ]
+   }
+  },
+  {
+   "id": "seo.analytics",
+   "checklist": "analytics-monitoring",
+   "order": 10,
+   "title": "Web analytics installed",
+   "why": "You can't tell which launch channel worked without it.",
+   "steps": [
+    "Install Plausible, Umami or GA4.",
+    "Verify a pageview arrives.",
+    {
+     "text": "Respect cookie consent for EU visitors.",
+     "appliesTo": {
+      "any": [
+       "region:eu"
+      ]
+     }
+    }
+   ],
+   "priority": "blocker",
+   "minutes": 15,
+   "preTickIf": "has:analytics",
+   "appliesTo": {
+    "any": [
+     "store:website"
+    ]
+   }
+  },
+  {
+   "id": "an.product-events",
+   "checklist": "analytics-monitoring",
+   "order": 20,
+   "title": "Product analytics for signup, activation and your key action",
+   "why": "Visits don't matter. You need to know who reached first value.",
+   "steps": [
+    {
+     "text": "PostHog/Mixpanel: track signup, activation and key action events.",
+     "appliesTo": {
+      "any": [
+       "svc:posthog"
+      ]
+     }
+    },
+    {
+     "text": "Desktop: make usage telemetry opt-in and say so in your privacy policy.",
+     "appliesTo": {
+      "any": [
+       "platform:desktop"
+      ]
+     }
+    },
+    "Build one funnel from install or visit to activation."
+   ],
+   "priority": "recommended",
+   "minutes": 60,
+   "appliesTo": {
+    "any": [
+     "platform:web",
+     "mobile",
+     "platform:desktop",
+     "platform:extension"
+    ],
+    "none": [
+     "data:none"
+    ]
+   }
+  },
+  {
+   "id": "an.uptime",
+   "checklist": "analytics-monitoring",
+   "order": 30,
+   "title": "Uptime monitor and a status page",
+   "why": "Find out your site is down before Product Hunt commenters tell you.",
+   "steps": [
+    "Monitor your homepage and a health endpoint every minute.",
+    "Alert to your phone, not just email."
+   ],
+   "priority": "recommended",
+   "minutes": 20,
+   "appliesTo": {
+    "any": [
+     "platform:web",
+     "platform:api"
+    ]
+   }
+  },
+  {
+   "id": "an.store-analytics",
+   "checklist": "analytics-monitoring",
+   "order": 40,
+   "title": "Store analytics enabled",
+   "why": "Impressions to installs is the number ASO improves.",
+   "steps": [
+    {
+     "text": "App Store Connect: check App Analytics and opt in to sharing.",
+     "appliesTo": {
+      "any": [
+       "store:app_store"
+      ]
+     }
+    },
+    {
+     "text": "Play Console: turn on store listing acquisition reports.",
+     "appliesTo": {
+      "any": [
+       "store:play_store"
+      ]
+     }
+    }
+   ],
+   "priority": "nice",
+   "minutes": 10,
+   "appliesTo": {
+    "any": [
+     "store:app_store",
+     "store:play_store"
+    ]
+   }
+  },
+  {
+   "id": "an.utm",
+   "checklist": "analytics-monitoring",
+   "order": 50,
+   "title": "UTM links for every launch channel",
+   "why": "Without them, Product Hunt, Reddit and newsletters all show up as 'direct'.",
+   "steps": [
+    "Use utm_source=<channel>&utm_campaign=launch on every link you post."
+   ],
+   "priority": "recommended",
+   "minutes": 10,
+   "appliesTo": {
+    "any": [
+     "store:website"
+    ]
+   }
+  },
+  {
+   "id": "an.downloads",
+   "checklist": "analytics-monitoring",
+   "order": 60,
+   "title": "Download and install counts tracked",
+   "why": "Registries and releases are your funnel. Watch them on launch day.",
+   "steps": [
+    {
+     "text": "crates.io shows daily downloads per version.",
+     "appliesTo": {
+      "any": [
+       "store:crates_io"
+      ]
+     }
+    },
+    {
+     "text": "npm: check npm-stat or the npm website's weekly downloads.",
+     "appliesTo": {
+      "any": [
+       "store:npm"
+      ]
+     }
+    },
+    {
+     "text": "PyPI: use pypistats.",
+     "appliesTo": {
+      "any": [
+       "store:pypi"
+      ]
+     }
+    },
+    {
+     "text": "GitHub: release asset download counts via the API.",
+     "appliesTo": {
+      "any": [
+       "store:github"
+      ]
+     }
+    }
+   ],
+   "priority": "nice",
+   "minutes": 10,
+   "appliesTo": {
+    "any": [
+     "store:crates_io",
+     "store:npm",
+     "store:pypi",
+     "store:github"
+    ]
+   }
+  },
+  {
+   "id": "desk.mac-sign",
+   "checklist": "desktop-release",
+   "order": 10,
+   "title": "macOS: signed with Developer ID and notarized",
+   "why": "Unsigned or un-notarized apps are blocked by Gatekeeper on first open.",
+   "steps": [
+    "Join the Apple Developer Program and create a Developer ID Application certificate.",
+    {
+     "text": "Electron: configure notarization in electron-builder with an App Store Connect API key.",
+     "appliesTo": {
+      "any": [
+       "fw:electron"
+      ]
+     }
+    },
+    {
+     "text": "Tauri: set APPLE_SIGNING_IDENTITY and the APPLE_API_* env vars; tauri build signs and notarizes.",
+     "appliesTo": {
+      "any": [
+       "fw:tauri"
+      ]
+     }
+    },
+    {
+     "text": "Rust native: bundle the .app with cargo-packager or cargo-bundle, sign with codesign --options runtime, then xcrun notarytool submit --wait and stapler staple.",
+     "appliesTo": {
+      "any": [
+       "fw:gpui",
+       "fw:egui_iced",
+       "fw:slint"
+      ]
+     }
+    },
+    {
+     "text": "Flutter: sign in Xcode with the Developer ID profile, then notarize the exported app.",
+     "appliesTo": {
+      "any": [
+       "fw:flutter"
+      ]
+     }
+    },
+    "Verify with spctl -a -vv YourApp.app."
+   ],
+   "priority": "blocker",
+   "minutes": 90,
+   "appliesTo": {
+    "any": [
+     "os:macos"
+    ],
+    "none": [
+     "store:mac_app_store"
+    ]
+   }
+  },
+  {
+   "id": "desk.win-sign",
+   "checklist": "desktop-release",
+   "order": 20,
+   "title": "Windows: installer and binary code-signed",
+   "why": "Unsigned installers trigger SmartScreen warnings that scare most users away.",
+   "steps": [
+    "Use Azure Trusted Signing or an OV/EV code signing certificate.",
+    {
+     "text": "Electron: set win.azureSignOptions (or signtool options) in electron-builder.",
+     "appliesTo": {
+      "any": [
+       "fw:electron"
+      ]
+     }
+    },
+    {
+     "text": "Tauri: set bundle.windows.signCommand or certificateThumbprint in tauri.conf.json.",
+     "appliesTo": {
+      "any": [
+       "fw:tauri"
+      ]
+     }
+    },
+    {
+     "text": "Rust native: sign the .exe and the installer (cargo-packager's NSIS/WiX output) with signtool.",
+     "appliesTo": {
+      "any": [
+       "fw:gpui",
+       "fw:egui_iced",
+       "fw:slint"
+      ]
+     }
+    }
+   ],
+   "priority": "blocker",
+   "minutes": 90,
+   "appliesTo": {
+    "any": [
+     "os:windows"
+    ]
+   }
+  },
+  {
+   "id": "desk.linux-packages",
+   "checklist": "desktop-release",
+   "order": 30,
+   "title": "Linux: AppImage plus deb or rpm",
+   "why": "Linux users expect a package that fits their distro.",
+   "steps": [
+    {
+     "text": "Electron: add AppImage and deb targets in electron-builder.",
+     "appliesTo": {
+      "any": [
+       "fw:electron"
+      ]
+     }
+    },
+    {
+     "text": "Tauri: enable the appimage, deb and rpm bundle targets.",
+     "appliesTo": {
+      "any": [
+       "fw:tauri"
+      ]
+     }
+    },
+    {
+     "text": "Rust native: cargo-packager builds AppImage and deb; declare system deps (libxkbcommon, vulkan) in the deb.",
+     "appliesTo": {
+      "any": [
+       "fw:gpui",
+       "fw:egui_iced",
+       "fw:slint"
+      ]
+     }
+    },
+    "Test install and launch on a fresh Ubuntu VM under both X11 and Wayland."
+   ],
+   "priority": "recommended",
+   "minutes": 45,
+   "appliesTo": {
+    "any": [
+     "os:linux"
+    ]
+   }
+  },
+  {
+   "id": "desk.updates",
+   "checklist": "desktop-release",
+   "order": 40,
+   "title": "Auto-updates configured and signed",
+   "why": "Users won't come back for v1.0.1. The app has to update itself.",
+   "steps": [
+    {
+     "text": "Electron: use electron-updater with GitHub Releases or S3 as the feed.",
+     "appliesTo": {
+      "any": [
+       "fw:electron"
+      ]
+     }
+    },
+    {
+     "text": "Tauri: add the updater plugin, generate a signing key and publish latest.json.",
+     "appliesTo": {
+      "any": [
+       "fw:tauri"
+      ]
+     }
+    },
+    {
+     "text": "Rust native: use cargo-packager's updater or Velopack, with signed update manifests.",
+     "appliesTo": {
+      "any": [
+       "fw:gpui",
+       "fw:egui_iced",
+       "fw:slint"
+      ]
+     }
+    },
+    "Ship a test update from version N to N+1 before launch."
+   ],
+   "priority": "blocker",
+   "minutes": 60,
+   "appliesTo": {
+    "none": [
+     "store:mac_app_store",
+     "store:microsoft_store"
+    ]
+   }
+  },
+  {
+   "id": "desk.download-page",
+   "checklist": "desktop-release",
+   "order": 50,
+   "title": "Download page picks the right build per OS and CPU",
+   "why": "A wall of .dmg, .exe and .AppImage links loses people.",
+   "steps": [
+    "Detect the visitor's OS and highlight that download.",
+    {
+     "text": "Offer separate Apple Silicon and Intel builds, or a universal binary.",
+     "appliesTo": {
+      "any": [
+       "os:macos"
+      ]
+     }
+    },
+    "Show version, file size and system requirements."
+   ],
+   "priority": "recommended",
+   "minutes": 30,
+   "appliesTo": {
+    "any": [
+     "store:website"
+    ]
+   }
+  },
+  {
+   "id": "seo.title-meta",
+   "checklist": "technical-seo",
+   "order": 10,
+   "title": "Unique title (50–60 chars) and meta description (140–160)",
+   "why": "Search results and link previews use these first.",
+   "steps": [
+    "Write a unique title and description for each page.",
+    {
+     "text": "Next.js: export metadata (or generateMetadata) from each page.",
+     "appliesTo": {
+      "any": [
+       "fw:nextjs"
+      ]
+     }
+    },
+    {
+     "text": "React Router: export a meta function from each route.",
+     "appliesTo": {
+      "any": [
+       "fw:react_router"
+      ]
+     }
+    }
+   ],
+   "priority": "blocker",
+   "minutes": 20,
+   "tools": [
+    "meta-tags",
+    "seo-score"
+   ],
+   "kit": [
+    "name",
+    "tagline",
+    "description"
+   ],
+   "autoCheck": true
+  },
+  {
+   "id": "seo.og",
+   "checklist": "technical-seo",
+   "order": 20,
+   "title": "Open Graph and Twitter card tags with a 1200×630 image",
+   "why": "Without them, links on X, LinkedIn and Slack show as bare URLs.",
+   "steps": [
+    "Add og:title, og:description, og:image and twitter:card."
+   ],
+   "priority": "recommended",
+   "minutes": 20,
+   "tools": [
+    "meta-tags",
+    "link-preview"
+   ],
+   "autoCheck": true
+  },
+  {
+   "id": "seo.prerender",
+   "checklist": "technical-seo",
+   "order": 30,
+   "title": "Public pages are prerendered or server-rendered",
+   "why": "A client-rendered SPA shows search engines and link previews an empty page.",
+   "steps": [
+    {
+     "text": "React + Vite: prerender the landing and marketing pages (vite-plugin-prerender, or move them to Astro).",
+     "appliesTo": {
+      "any": [
+       "fw:react_vite"
+      ]
+     }
+    },
+    {
+     "text": "Angular: enable SSR or prerendering with @angular/ssr.",
+     "appliesTo": {
+      "any": [
+       "fw:angular"
+      ]
+     }
+    },
+    "Check with curl that the HTML contains your headline."
+   ],
+   "priority": "blocker",
+   "minutes": 60,
+   "appliesTo": {
+    "any": [
+     "render:spa"
+    ]
+   }
+  },
+  {
+   "id": "seo.noindex",
+   "checklist": "technical-seo",
+   "order": 40,
+   "title": "No accidental noindex on production",
+   "why": "A leftover staging noindex hides your whole site from Google.",
+   "steps": [
+    "View source on production and search for 'noindex'.",
+    "Check robots.txt doesn't Disallow: /."
+   ],
+   "priority": "blocker",
+   "minutes": 5,
+   "autoCheck": true
+  },
+  {
+   "id": "seo.sitemap",
+   "checklist": "technical-seo",
+   "order": 50,
+   "title": "sitemap.xml and robots.txt",
+   "why": "Helps search engines find every page quickly.",
+   "steps": [
+    {
+     "text": "Next.js: add app/sitemap.ts and app/robots.ts.",
+     "appliesTo": {
+      "any": [
+       "fw:nextjs"
+      ]
+     }
+    },
+    {
+     "text": "Astro: add @astrojs/sitemap.",
+     "appliesTo": {
+      "any": [
+       "fw:astro"
+      ]
+     }
+    },
+    "Reference the sitemap from /robots.txt."
+   ],
+   "priority": "recommended",
+   "minutes": 15,
+   "autoCheck": true
+  },
+  {
+   "id": "seo.search-console",
+   "checklist": "technical-seo",
+   "order": 60,
+   "title": "Google Search Console and Bing Webmaster verified",
+   "why": "Shows indexing errors and lets you submit your sitemap.",
+   "steps": [
+    "Verify via a DNS TXT record.",
+    "Submit your sitemap."
+   ],
+   "priority": "recommended",
+   "minutes": 15
+  },
+  {
+   "id": "seo.store-badges",
+   "checklist": "technical-seo",
+   "order": 70,
+   "title": "Official store badges linking to live listings",
+   "why": "Badges convert better than text links and reviewers check them.",
+   "steps": [
+    {
+     "text": "Use Apple's 'Download on the App Store' badge artwork unmodified.",
+     "appliesTo": {
+      "any": [
+       "store:app_store",
+       "store:mac_app_store"
+      ]
+     }
+    },
+    {
+     "text": "Use the 'Get it on Google Play' badge from Google's badge generator.",
+     "appliesTo": {
+      "any": [
+       "store:play_store"
+      ]
+     }
+    },
+    {
+     "text": "Use the official Chrome Web Store and Firefox Add-ons badges.",
+     "appliesTo": {
+      "any": [
+       "platform:extension"
+      ]
+     }
+    },
+    {
+     "text": "Use the Microsoft Store badge from the badge generator.",
+     "appliesTo": {
+      "any": [
+       "store:microsoft_store"
+      ]
+     }
+    }
+   ],
+   "priority": "recommended",
+   "minutes": 15,
+   "appliesTo": {
+    "any": [
+     "mobile",
+     "platform:extension",
+     "store:mac_app_store",
+     "store:microsoft_store"
+    ]
+   }
+  },
+  {
+   "id": "seo.smart-banner",
+   "checklist": "technical-seo",
+   "order": 80,
+   "title": "Smart App Banner for your iOS app",
+   "why": "Safari visitors get a one-tap install banner on your site.",
+   "steps": [
+    "Add <meta name=\"apple-itunes-app\" content=\"app-id=YOUR_ID\"> to your pages."
+   ],
+   "priority": "nice",
+   "minutes": 5,
+   "appliesTo": {
+    "any": [
+     "store:app_store"
+    ]
+   }
+  },
+  {
+   "id": "seo.software-schema",
+   "checklist": "technical-seo",
+   "order": 90,
+   "title": "SoftwareApplication structured data",
+   "why": "Lets Google show rating, price and OS for your app in results.",
+   "steps": [
+    "Add JSON-LD with @type SoftwareApplication, operatingSystem, applicationCategory and offers."
+   ],
+   "priority": "nice",
+   "minutes": 20,
+   "appliesTo": {
+    "any": [
+     "mobile",
+     "platform:desktop",
+     "platform:extension"
+    ]
+   },
+   "autoCheck": true
+  },
+  {
+   "id": "seo.docs",
+   "checklist": "technical-seo",
+   "order": 100,
+   "title": "Docs are public, indexable and fast",
+   "why": "Developers find tools through docs search results.",
+   "steps": [
+    "Host docs on your domain (docs.yourdomain.com or /docs).",
+    {
+     "text": "Rust: make sure docs.rs builds your crate; link it from the README.",
+     "appliesTo": {
+      "any": [
+       "store:crates_io"
+      ]
+     }
+    },
+    "Add an llms.txt so AI assistants can read your docs."
+   ],
+   "priority": "recommended",
+   "minutes": 60,
+   "appliesTo": {
+    "any": [
+     "platform:api",
+     "platform:library",
+     "platform:cli"
+    ]
+   }
+  },
+  {
+   "id": "appstore.membership",
+   "checklist": "apple-app-store",
+   "order": 10,
+   "title": "Apple Developer Program membership active",
+   "why": "You can't submit without it, and enrollment can take days.",
+   "steps": [
+    "Enroll at developer.apple.com ($99/year).",
+    "Organizations need a D-U-N-S number."
+   ],
+   "priority": "blocker",
+   "minutes": 30
+  },
+  {
+   "id": "appstore.copy",
+   "checklist": "apple-app-store",
+   "order": 20,
+   "title": "Name (30), subtitle (30), keywords (100) and description",
+   "why": "These fields drive App Store search ranking.",
+   "steps": [
+    "Don't repeat words between name, subtitle and keywords.",
+    "Separate keywords with commas, no spaces."
+   ],
+   "priority": "blocker",
+   "minutes": 45,
+   "kit": [
+    "name",
+    "tagline",
+    "description"
+   ],
+   "tools": [
+    "app-store-listing"
+   ]
+  },
+  {
+   "id": "appstore.icon",
+   "checklist": "apple-app-store",
+   "order": 30,
+   "title": "1024×1024 app icon, no transparency",
+   "why": "App Store Connect rejects icons with an alpha channel.",
+   "steps": [
+    "Export from your logo on a solid background."
+   ],
+   "priority": "blocker",
+   "minutes": 10,
+   "tools": [
+    "app-store-icons"
+   ],
+   "autoCheck": true
+  },
+  {
+   "id": "appstore.screenshots",
+   "checklist": "apple-app-store",
+   "order": 40,
+   "title": "iPhone 6.9-inch screenshots (and iPad if supported)",
+   "why": "Screenshots are the biggest factor in install conversion.",
+   "steps": [
+    "Upload 3–10 screenshots at 1320×2868.",
+    "Lead with your strongest benefit."
+   ],
+   "priority": "blocker",
+   "minutes": 60,
+   "tools": [
+    "app-store-assets"
+   ],
+   "appliesTo": {
+    "any": [
+     "store:app_store"
+    ]
+   }
+  },
+  {
+   "id": "appstore.mac-screenshots",
+   "checklist": "apple-app-store",
+   "order": 50,
+   "title": "Mac App Store screenshots (16:10, e.g. 2880×1800)",
+   "why": "The Mac App Store needs its own desktop-sized screenshots.",
+   "steps": [
+    "Upload 1–10 screenshots at 1280×800, 1440×900, 2560×1600 or 2880×1800."
+   ],
+   "priority": "blocker",
+   "minutes": 45,
+   "tools": [
+    "mac-app-store-assets"
+   ],
+   "appliesTo": {
+    "any": [
+     "store:mac_app_store"
+    ]
+   }
+  },
+  {
+   "id": "appstore.sandbox",
+   "checklist": "apple-app-store",
+   "order": 60,
+   "title": "App Sandbox entitlements set",
+   "why": "Every Mac App Store app must run sandboxed with only the entitlements it needs.",
+   "steps": [
+    {
+     "text": "Electron: build the mas target with entitlements.mas.plist and entitlements.mas.inherit.plist.",
+     "appliesTo": {
+      "any": [
+       "fw:electron"
+      ]
+     }
+    },
+    {
+     "text": "Tauri: add an Entitlements.plist with com.apple.security.app-sandbox and set bundle.macOS.entitlements.",
+     "appliesTo": {
+      "any": [
+       "fw:tauri"
+      ]
+     }
+    },
+    {
+     "text": "Rust native: sign the .app with an entitlements file containing com.apple.security.app-sandbox and a Mac App Store provisioning profile.",
+     "appliesTo": {
+      "any": [
+       "fw:gpui",
+       "fw:egui_iced",
+       "fw:slint"
+      ]
+     }
+    },
+    "Request only what you use (network client, user-selected files)."
+   ],
+   "priority": "blocker",
+   "minutes": 60,
+   "appliesTo": {
+    "any": [
+     "store:mac_app_store"
+    ]
+   }
+  },
+  {
+   "id": "appstore.privacy-label",
+   "checklist": "apple-app-store",
+   "order": 70,
+   "title": "App Privacy nutrition label answered accurately",
+   "why": "Mismatches with your SDKs' behaviour are a common rejection reason.",
+   "steps": [
+    "List data collected by your code and by every third-party SDK.",
+    {
+     "text": "Include Firebase Analytics/Crashlytics collection.",
+     "appliesTo": {
+      "any": [
+       "svc:firebase"
+      ]
+     }
+    },
+    {
+     "text": "Include crash data sent to Sentry.",
+     "appliesTo": {
+      "any": [
+       "svc:sentry"
+      ]
+     }
+    }
+   ],
+   "priority": "blocker",
+   "minutes": 30
+  },
+  {
+   "id": "appstore.privacy-manifest",
+   "checklist": "apple-app-store",
+   "order": 80,
+   "title": "Privacy manifest and required-reason APIs declared",
+   "why": "Apple rejects uploads whose SDKs use required-reason APIs without a PrivacyInfo.xcprivacy.",
+   "steps": [
+    "Add PrivacyInfo.xcprivacy declaring required-reason APIs (UserDefaults, file timestamps and so on).",
+    {
+     "text": "Expo: set ios.privacyManifests in app.json.",
+     "appliesTo": {
+      "any": [
+       "fw:expo"
+      ]
+     }
+    },
+    {
+     "text": "Flutter: update plugins to versions that ship their own privacy manifests.",
+     "appliesTo": {
+      "any": [
+       "fw:flutter"
+      ]
+     }
+    }
+   ],
+   "priority": "blocker",
+   "minutes": 30,
+   "appliesTo": {
+    "any": [
+     "store:app_store"
+    ]
+   },
+   "autoCheck": true
+  },
+  {
+   "id": "appstore.siwa",
+   "checklist": "apple-app-store",
+   "order": 90,
+   "title": "Sign in with Apple, if you offer other social logins",
+   "why": "Guideline 4.8 requires an equivalent privacy-focused login option.",
+   "steps": [
+    {
+     "text": "Expo: add expo-apple-authentication.",
+     "appliesTo": {
+      "any": [
+       "fw:expo"
+      ]
+     }
+    },
+    {
+     "text": "Supabase: enable the Apple provider in Auth settings.",
+     "appliesTo": {
+      "any": [
+       "svc:supabase"
+      ]
+     }
+    },
+    {
+     "text": "Clerk: enable Apple as a social connection.",
+     "appliesTo": {
+      "any": [
+       "svc:clerk"
+      ]
+     }
+    }
+   ],
+   "priority": "blocker",
+   "minutes": 60,
+   "appliesTo": {
+    "all": [
+     "store:app_store",
+     "data:accounts"
+    ]
+   }
+  },
+  {
+   "id": "appstore.review-notes",
+   "checklist": "apple-app-store",
+   "order": 100,
+   "title": "Demo account and review notes",
+   "why": "Reviewers reject apps they can't sign into.",
+   "steps": [
+    "Create a demo account with sample data.",
+    "Explain any non-obvious features."
+   ],
+   "priority": "recommended",
+   "minutes": 15,
+   "appliesTo": {
+    "any": [
+     "data:accounts"
+    ]
+   }
+  },
+  {
+   "id": "appstore.testflight",
+   "checklist": "apple-app-store",
+   "order": 110,
+   "title": "TestFlight beta before submission",
+   "why": "Catches crashes on real devices before App Review does.",
+   "steps": [
+    "Invite 5–10 testers.",
+    {
+     "text": "Expo: eas build --profile production, then eas submit -p ios sends it to TestFlight.",
+     "appliesTo": {
+      "any": [
+       "fw:expo"
+      ]
+     }
+    },
+    {
+     "text": "Flutter: flutter build ipa, then upload with Transporter.",
+     "appliesTo": {
+      "any": [
+       "fw:flutter"
+      ]
+     }
+    },
+    "Fix crash reports before submitting."
+   ],
+   "priority": "recommended",
+   "minutes": 60,
+   "appliesTo": {
+    "any": [
+     "store:app_store"
+    ]
+   }
+  },
+  {
+   "id": "play.account",
+   "checklist": "google-play",
+   "order": 10,
+   "title": "Play Console account verified",
+   "why": "Identity verification can take several days.",
+   "steps": [
+    "Register at play.google.com/console ($25 one-time).",
+    "Complete identity verification."
+   ],
+   "priority": "blocker",
+   "minutes": 30
+  },
+  {
+   "id": "play.closed-test",
+   "checklist": "google-play",
+   "order": 20,
+   "title": "Closed test with the required testers (new personal accounts)",
+   "why": "New personal accounts need a closed test before they get production access.",
+   "steps": [
+    "Run a closed test with the required number of testers for the required days."
+   ],
+   "priority": "blocker",
+   "minutes": 120
+  },
+  {
+   "id": "play.copy",
+   "checklist": "google-play",
+   "order": 30,
+   "title": "Title (30), short description (80), full description (4,000)",
+   "why": "Play indexes the full description for search, unlike the App Store.",
+   "steps": [
+    "Front-load the short description with your main benefit."
+   ],
+   "priority": "blocker",
+   "minutes": 45,
+   "kit": [
+    "name",
+    "tagline",
+    "description"
+   ],
+   "tools": [
+    "play-store-listing"
+   ]
+  },
+  {
+   "id": "play.graphics",
+   "checklist": "google-play",
+   "order": 40,
+   "title": "512×512 icon and 1024×500 feature graphic",
+   "why": "Both are required before you can publish.",
+   "steps": [
+    "Export the icon at 512×512 PNG.",
+    "Design a 1024×500 feature graphic without small text."
+   ],
+   "priority": "blocker",
+   "minutes": 30,
+   "tools": [
+    "play-store-icons",
+    "play-store-assets"
+   ],
+   "toolOptions": [
+    "play_feature"
+   ]
+  },
+  {
+   "id": "play.screenshots",
+   "checklist": "google-play",
+   "order": 50,
+   "title": "Phone screenshots (2–8)",
+   "why": "Required, and the main driver of installs.",
+   "steps": [
+    "Upload 1080×1920 screenshots with short captions."
+   ],
+   "priority": "blocker",
+   "minutes": 45,
+   "tools": [
+    "play-store-assets"
+   ],
+   "toolOptions": [
+    "play_phone",
+    "play_tablet7",
+    "play_tablet"
+   ]
+  },
+  {
+   "id": "play.data-safety",
+   "checklist": "google-play",
+   "order": 60,
+   "title": "Data safety form consistent with your privacy policy",
+   "why": "Inconsistencies get apps removed.",
+   "steps": [
+    "Declare every data type your app and its SDKs collect or share.",
+    {
+     "text": "Firebase SDKs collect device identifiers. Declare them.",
+     "appliesTo": {
+      "any": [
+       "svc:firebase"
+      ]
+     }
+    }
+   ],
+   "priority": "blocker",
+   "minutes": 30
+  },
+  {
+   "id": "play.target-api",
+   "checklist": "google-play",
+   "order": 70,
+   "title": "Targets the currently required Android API level",
+   "why": "Play blocks new apps and updates that target an old API level.",
+   "steps": [
+    {
+     "text": "Expo: upgrade to a current SDK; it sets targetSdkVersion for you.",
+     "appliesTo": {
+      "any": [
+       "fw:expo"
+      ]
+     }
+    },
+    {
+     "text": "Flutter: check targetSdkVersion in android/app/build.gradle.",
+     "appliesTo": {
+      "any": [
+       "fw:flutter"
+      ]
+     }
+    },
+    {
+     "text": "Kotlin: set targetSdk in your module's build.gradle.kts.",
+     "appliesTo": {
+      "any": [
+       "fw:kotlin"
+      ]
+     }
+    }
+   ],
+   "priority": "blocker",
+   "minutes": 30,
+   "autoCheck": true
+  },
+  {
+   "id": "play.ratings",
+   "checklist": "google-play",
+   "order": 80,
+   "title": "Content rating, target audience and ads declarations",
+   "why": "Required before release, and wrong answers cause takedowns.",
+   "steps": [
+    "Complete the IARC questionnaire.",
+    "Declare target audience and whether the app shows ads."
+   ],
+   "priority": "blocker",
+   "minutes": 20
+  },
+  {
+   "id": "cws.mv3",
+   "checklist": "chrome-web-store",
+   "order": 10,
+   "title": "Manifest V3 build",
+   "why": "Chrome no longer accepts Manifest V2 extensions.",
+   "steps": [
+    "Migrate background pages to service workers.",
+    {
+     "text": "WXT and Plasmo output MV3 by default; check manifest_version in the build.",
+     "appliesTo": {
+      "any": [
+       "fw:wxt",
+       "fw:plasmo"
+      ]
+     }
+    }
+   ],
+   "priority": "blocker",
+   "minutes": 60,
+   "autoCheck": true
+  },
+  {
+   "id": "cws.purpose",
+   "checklist": "chrome-web-store",
+   "order": 20,
+   "title": "Single, clearly described purpose",
+   "why": "Multi-purpose extensions are rejected under the single-purpose policy.",
+   "steps": [
+    "Describe the one thing your extension does in the listing."
+   ],
+   "priority": "blocker",
+   "minutes": 15,
+   "kit": [
+    "tagline"
+   ]
+  },
+  {
+   "id": "cws.permissions",
+   "checklist": "chrome-web-store",
+   "order": 30,
+   "title": "Justification for every permission",
+   "why": "Broad permissions slow review or cause rejection.",
+   "steps": [
+    "Request the minimum permissions; prefer activeTab over broad host permissions.",
+    "Justify each one in the privacy practices tab."
+   ],
+   "priority": "blocker",
+   "minutes": 20
+  },
+  {
+   "id": "cws.assets",
+   "checklist": "chrome-web-store",
+   "order": 40,
+   "title": "128×128 icon, 1280×800 screenshots, 440×280 promo tile",
+   "why": "Required listing assets; the promo tile helps you get featured.",
+   "steps": [
+    "Generate the icon set.",
+    "Make 1–5 screenshots at 1280×800."
+   ],
+   "priority": "recommended",
+   "minutes": 45,
+   "tools": [
+    "chrome-extension-icons",
+    "chrome-web-store-assets"
+   ],
+   "appliesTo": {
+    "any": [
+     "store:chrome_web_store"
+    ]
+   },
+   "autoCheck": true
+  },
+  {
+   "id": "cws.firefox",
+   "checklist": "chrome-web-store",
+   "order": 50,
+   "title": "Firefox Add-ons listing (AMO)",
+   "why": "AMO reviews separately and may ask for your source code if the build is bundled.",
+   "steps": [
+    "Add browser_specific_settings.gecko.id to the manifest.",
+    {
+     "text": "WXT: wxt zip -b firefox also produces the sources zip AMO asks for.",
+     "appliesTo": {
+      "any": [
+       "fw:wxt"
+      ]
+     }
+    },
+    "Upload source code and build instructions if your code is bundled or minified."
+   ],
+   "priority": "blocker",
+   "minutes": 45,
+   "tools": [
+    "firefox-addon-icons",
+    "firefox-addons-assets",
+    "firefox-addons-listing"
+   ],
+   "appliesTo": {
+    "any": [
+     "store:firefox_addons"
+    ]
+   }
+  },
+  {
+   "id": "cws.edge",
+   "checklist": "chrome-web-store",
+   "order": 60,
+   "title": "Edge Add-ons listing",
+   "why": "Edge has its own Partner Center review; the Chrome package usually works as-is.",
+   "steps": [
+    "Register in Partner Center for Microsoft Edge.",
+    "Upload the same zip and reuse your Chrome listing copy."
+   ],
+   "priority": "recommended",
+   "minutes": 30,
+   "tools": [
+    "edge-addon-icons",
+    "edge-addons-assets"
+   ],
+   "appliesTo": {
+    "any": [
+     "store:edge_addons"
+    ]
+   }
+  },
+  {
+   "id": "msstore.account",
+   "checklist": "microsoft-store",
+   "order": 10,
+   "title": "Partner Center developer account",
+   "why": "Required to reserve your app name and submit.",
+   "steps": [
+    "Register at partner.microsoft.com and reserve your product name."
+   ],
+   "priority": "blocker",
+   "minutes": 30
+  },
+  {
+   "id": "msstore.package",
+   "checklist": "microsoft-store",
+   "order": 20,
+   "title": "MSIX package, or a Win32 installer with silent install",
+   "why": "The Store only accepts these package types.",
+   "steps": [
+    {
+     "text": "Electron: add the appx target in electron-builder.",
+     "appliesTo": {
+      "any": [
+       "fw:electron"
+      ]
+     }
+    },
+    {
+     "text": "Tauri: submit the NSIS or MSI installer as a Win32 app with silent-install switches.",
+     "appliesTo": {
+      "any": [
+       "fw:tauri"
+      ]
+     }
+    },
+    {
+     "text": "Rust native: package with cargo-packager (NSIS/WiX) and submit as Win32, or wrap in MSIX with the MSIX Packaging Tool.",
+     "appliesTo": {
+      "any": [
+       "fw:gpui",
+       "fw:egui_iced",
+       "fw:slint"
+      ]
+     }
+    },
+    {
+     "text": "Flutter: build an MSIX with the msix pub package.",
+     "appliesTo": {
+      "any": [
+       "fw:flutter"
+      ]
+     }
+    },
+    {
+     "text": ".NET: use a Windows Application Packaging project or single-project MSIX.",
+     "appliesTo": {
+      "any": [
+       "fw:dotnet"
+      ]
+     }
+    }
+   ],
+   "priority": "blocker",
+   "minutes": 60
+  },
+  {
+   "id": "msstore.listing",
+   "checklist": "microsoft-store",
+   "order": 30,
+   "title": "Screenshots (1366×768+), age rating and privacy URL",
+   "why": "All required before certification.",
+   "steps": [
+    "Upload at least one 1366×768 screenshot.",
+    "Complete the IARC age rating questionnaire."
+   ],
+   "priority": "blocker",
+   "minutes": 45,
+   "tools": [
+    "microsoft-store-assets"
+   ],
+   "toolOptions": [
+    "ms_store"
+   ]
+  },
+  {
+   "id": "linux.flathub",
+   "checklist": "linux-stores",
+   "order": 10,
+   "title": "Flatpak manifest and AppStream metainfo",
+   "why": "Flathub requires a reproducible manifest and complete AppStream metadata.",
+   "steps": [
+    "Write a Flatpak manifest with minimal finish-args permissions.",
+    {
+     "text": "Rust: vendor crates with flatpak-cargo-generator so the build runs offline.",
+     "appliesTo": {
+      "any": [
+       "lang:rust"
+      ]
+     }
+    },
+    "Add a .metainfo.xml with screenshots, release notes and OARS content rating, and validate it with appstreamcli."
+   ],
+   "priority": "blocker",
+   "minutes": 120
+  },
+  {
+   "id": "linux.snap",
+   "checklist": "linux-stores",
+   "order": 20,
+   "title": "snapcraft.yaml with strict confinement",
+   "why": "Strict confinement avoids a manual review and builds trust.",
+   "steps": [
+    "Declare only the plugs you need (network, home, desktop).",
+    "Publish to the edge channel first, then stable."
+   ],
+   "priority": "recommended",
+   "minutes": 90
+  },
+  {
+   "id": "pkg.readme",
+   "checklist": "package-registries",
+   "order": 10,
+   "title": "README with install, quickstart and a demo",
+   "why": "The README is your landing page on every registry.",
+   "steps": [
+    "Install command first, then a 10-line example, then a GIF or screenshot.",
+    "Add badges for version, CI and license."
+   ],
+   "priority": "blocker",
+   "minutes": 45,
+   "tools": [
+    "screenshot-highlighter"
+   ],
+   "autoCheck": true
+  },
+  {
+   "id": "pkg.crates",
+   "checklist": "package-registries",
+   "order": 20,
+   "title": "crates.io metadata complete, dry run passes",
+   "why": "Missing metadata hurts discoverability, and a publish can't be undone.",
+   "steps": [
+    "Set description, license, repository, keywords (max 5) and categories in Cargo.toml.",
+    "Exclude large assets with include/exclude, then run cargo publish --dry-run.",
+    "Publish from CI using trusted publishing or a scoped token."
+   ],
+   "priority": "blocker",
+   "minutes": 30,
+   "appliesTo": {
+    "any": [
+     "store:crates_io"
+    ]
+   }
+  },
+  {
+   "id": "pkg.npm",
+   "checklist": "package-registries",
+   "order": 30,
+   "title": "npm package published from CI with provenance",
+   "why": "Provenance shows users the package was built from your repo.",
+   "steps": [
+    "Set files, exports, types and engines in package.json; check the tarball with npm pack --dry-run.",
+    "Publish from GitHub Actions with npm publish --provenance (or trusted publishing)."
+   ],
+   "priority": "blocker",
+   "minutes": 30,
+   "appliesTo": {
+    "any": [
+     "store:npm"
+    ]
+   }
+  },
+  {
+   "id": "pkg.pypi",
+   "checklist": "package-registries",
+   "order": 40,
+   "title": "PyPI trusted publishing from GitHub Actions",
+   "why": "No long-lived tokens, and every release is tied to a workflow run.",
+   "steps": [
+    "Configure the trusted publisher on PyPI.",
+    "Build sdist and wheel with python -m build and publish with pypa/gh-action-pypi-publish."
+   ],
+   "priority": "blocker",
+   "minutes": 30,
+   "appliesTo": {
+    "any": [
+     "store:pypi"
+    ]
+   }
+  },
+  {
+   "id": "pkg.homebrew",
+   "checklist": "package-registries",
+   "order": 50,
+   "title": "Homebrew tap formula or cask",
+   "why": "brew install is how most Mac developers expect to install tools.",
+   "steps": [
+    {
+     "text": "CLI: publish a formula in your own tap (yourname/homebrew-tap).",
+     "appliesTo": {
+      "any": [
+       "platform:cli"
+      ]
+     }
+    },
+    {
+     "text": "Desktop: publish a cask pointing at your signed, notarized .dmg.",
+     "appliesTo": {
+      "any": [
+       "platform:desktop"
+      ]
+     }
+    },
+    {
+     "text": "Rust: cargo-dist can generate the Homebrew formula and installers for you.",
+     "appliesTo": {
+      "any": [
+       "lang:rust"
+      ]
+     }
+    }
+   ],
+   "priority": "recommended",
+   "minutes": 45,
+   "appliesTo": {
+    "any": [
+     "store:homebrew"
+    ]
+   }
+  },
+  {
+   "id": "pkg.github-release",
+   "checklist": "package-registries",
+   "order": 60,
+   "title": "GitHub Releases with binaries for every target and checksums",
+   "why": "Users and package managers download from here.",
+   "steps": [
+    {
+     "text": "Rust: build all targets in CI with cargo-dist or a matrix (x86_64 and aarch64 for each OS).",
+     "appliesTo": {
+      "any": [
+       "lang:rust"
+      ]
+     }
+    },
+    {
+     "text": "Go: use GoReleaser.",
+     "appliesTo": {
+      "any": [
+       "lang:go"
+      ]
+     }
+    },
+    "Attach SHA-256 checksums and release notes generated from your changelog."
+   ],
+   "priority": "recommended",
+   "minutes": 60,
+   "appliesTo": {
+    "all": [
+     "store:github"
+    ],
+    "any": [
+     "platform:cli",
+     "platform:desktop"
+    ]
+   }
+  },
+  {
+   "id": "pkg.semver",
+   "checklist": "package-registries",
+   "order": 70,
+   "title": "Semver and a CHANGELOG",
+   "why": "Users need to know when an upgrade will break them.",
+   "steps": [
+    "Keep a CHANGELOG.md in Keep a Changelog format.",
+    {
+     "text": "Rust: run cargo-semver-checks before each release.",
+     "appliesTo": {
+      "any": [
+       "lang:rust"
+      ]
+     }
+    },
+    {
+     "text": "JavaScript: use changesets to version and write release notes.",
+     "appliesTo": {
+      "any": [
+       "lang:js"
+      ]
+     }
+    }
+   ],
+   "priority": "recommended",
+   "minutes": 20,
+   "appliesTo": {
+    "any": [
+     "platform:library",
+     "platform:cli"
+    ]
+   },
+   "autoCheck": true
+  },
+  {
+   "id": "pkg.repo-meta",
+   "checklist": "package-registries",
+   "order": 80,
+   "title": "Repo description, topics, license and contributing guide",
+   "why": "GitHub search and topic pages drive discovery for developer tools.",
+   "steps": [
+    "Add a one-line description, website link and 5–10 topics.",
+    "Add CONTRIBUTING.md and issue templates."
+   ],
+   "priority": "recommended",
+   "minutes": 20,
+   "tools": [
+    "github-social-preview"
+   ],
+   "appliesTo": {
+    "any": [
+     "store:github"
+    ]
+   },
+   "autoCheck": true
+  },
+  {
+   "id": "launch.product-hunt",
+   "checklist": "launchpad",
+   "order": 10,
+   "title": "Product Hunt",
+   "why": "A good launch day brings thousands of early adopters and backlinks.",
+   "steps": [
+    "Warm up your maker account 2–3 weeks ahead: comment and upvote genuinely.",
+    "Schedule for 12:01 AM Pacific. Weekends are easier to rank.",
+    {
+     "text": "Topics: Developer Tools, plus Open Source if the repo is public.",
+     "appliesTo": {
+      "any": [
+       "platform:api",
+       "platform:cli",
+       "platform:library"
+      ]
+     }
+    },
+    "Gallery: 3–5 images at 1270×760 and a 240×240 thumbnail.",
+    {
+     "text": "Lead the gallery with your terminal demo GIF.",
+     "appliesTo": {
+      "any": [
+       "platform:cli"
+      ]
+     }
+    },
+    "Maker comment: why you built it, who it's for, one question.",
+    {
+     "text": "Add a launch-day discount to the maker comment.",
+     "appliesTo": {
+      "any": [
+       "paid"
+      ]
+     }
+    },
+    {
+     "text": "Stripe: create a PH30 promo code.",
+     "appliesTo": {
+      "all": [
+       "paid",
+       "svc:stripe"
+      ]
+     }
+    },
+    "Tell supporters you're live (never ask for upvotes) and reply to every comment."
+   ],
+   "priority": "recommended",
+   "minutes": 240,
+   "tools": [
+    "product-hunt-assets",
+    "product-hunt-listing"
+   ],
+   "kit": [
+    "name",
+    "tagline",
+    "description",
+    "url"
+   ]
+  },
+  {
+   "id": "launch.show-hn",
+   "checklist": "launchpad",
+   "order": 20,
+   "title": "Hacker News (Show HN)",
+   "why": "Hacker News sends thousands of technical early adopters in a day.",
+   "steps": [
+    "Title: 'Show HN: <Name> – <what it does>', plainly, with no superlatives.",
+    "Link to something people can try without signing up, if you can.",
+    {
+     "text": "Open-source? Link the repo; HN favours it.",
+     "appliesTo": {
+      "any": [
+       "store:github"
+      ]
+     }
+    },
+    "Post on a weekday morning US time, then stay in the comments for the first few hours."
+   ],
+   "priority": "recommended",
+   "minutes": 60,
+   "kit": [
+    "name",
+    "url"
+   ],
+   "appliesTo": {
+    "any": [
+     "platform:web",
+     "platform:desktop",
+     "platform:api",
+     "platform:cli",
+     "platform:library"
+    ]
+   }
+  },
+  {
+   "id": "launch.peerpush",
+   "checklist": "launchpad",
+   "order": 30,
+   "title": "PeerPush",
+   "why": "A maker-focused launch platform: an extra launch day, a backlink and early users.",
+   "steps": [
+    "Create your product page on PeerPush.",
+    "Reuse the tagline, description, screenshots and links from your kit.",
+    "Share the page on launch day and reply to comments."
+   ],
+   "priority": "recommended",
+   "minutes": 30,
+   "kit": [
+    "name",
+    "tagline",
+    "description",
+    "url"
+   ]
+  },
+  {
+   "id": "launch.alternativeto",
+   "checklist": "launchpad",
+   "order": 40,
+   "title": "AlternativeTo",
+   "why": "People search 'alternative to X' at the exact moment they're ready to switch.",
+   "steps": [
+    "Add your app with a description, screenshots and links.",
+    "List it as an alternative to the 3–5 best-known tools you replace.",
+    {
+     "text": "Tick every platform you ship: Mac, Windows and Linux.",
+     "appliesTo": {
+      "any": [
+       "platform:desktop"
+      ]
+     }
+    },
+    {
+     "text": "Tick iPhone and iPad, and link the App Store listing.",
+     "appliesTo": {
+      "any": [
+       "platform:ios"
+      ]
+     }
+    },
+    {
+     "text": "Tick Android, and link the Google Play listing.",
+     "appliesTo": {
+      "any": [
+       "platform:android"
+      ]
+     }
+    },
+    {
+     "text": "Mark it as a browser extension and link the store listing.",
+     "appliesTo": {
+      "any": [
+       "platform:extension"
+      ]
+     }
+    },
+    {
+     "text": "Mark the license as open source and link the repo.",
+     "appliesTo": {
+      "any": [
+       "store:github"
+      ]
+     }
+    },
+    {
+     "text": "Mark the license as free.",
+     "appliesTo": {
+      "any": [
+       "pricing:free"
+      ],
+      "none": [
+       "store:github"
+      ]
+     }
+    }
+   ],
+   "priority": "recommended",
+   "minutes": 30,
+   "kit": [
+    "name",
+    "description",
+    "url"
+   ],
+   "appliesTo": {
+    "any": [
+     "platform:web",
+     "platform:desktop",
+     "mobile",
+     "platform:extension"
+    ]
+   }
+  },
+  {
+   "id": "launch.betalist",
+   "checklist": "launchpad",
+   "order": 50,
+   "title": "BetaList",
+   "why": "Reaches early adopters who sign up for products before they launch.",
+   "steps": [
+    "Submit before your public launch; the free queue takes weeks.",
+    "Link to a page with a signup or waitlist."
+   ],
+   "priority": "nice",
+   "minutes": 20,
+   "kit": [
+    "name",
+    "tagline",
+    "url"
+   ],
+   "appliesTo": {
+    "any": [
+     "platform:web",
+     "mobile"
+    ]
+   }
+  },
+  {
+   "id": "launch.uneed",
+   "checklist": "launchpad",
+   "order": 60,
+   "title": "Uneed",
+   "why": "A daily launch board with a backlink for ranked products.",
+   "steps": [
+    "Submit your product and pick a launch date.",
+    "Share it on launch day: ranking depends on upvotes that day."
+   ],
+   "priority": "nice",
+   "minutes": 20,
+   "kit": [
+    "name",
+    "tagline",
+    "description",
+    "url"
+   ],
+   "appliesTo": {
+    "none": [
+     "platform:library"
+    ]
+   }
+  },
+  {
+   "id": "launch.microlaunch",
+   "checklist": "launchpad",
+   "order": 70,
+   "title": "Microlaunch",
+   "why": "A month-long launch window that keeps sending traffic after day one.",
+   "steps": [
+    "Submit your product with screenshots.",
+    "Reply to comments and feedback during your launch month."
+   ],
+   "priority": "nice",
+   "minutes": 20,
+   "kit": [
+    "name",
+    "tagline",
+    "url"
+   ],
+   "appliesTo": {
+    "none": [
+     "platform:library"
+    ]
+   }
+  },
+  {
+   "id": "launch.devhunt",
+   "checklist": "launchpad",
+   "order": 80,
+   "title": "DevHunt",
+   "why": "A launch board just for developer tools: the audience is exactly your users.",
+   "steps": [
+    "Submit with your GitHub repo and a demo GIF.",
+    "Launch on a weekday and share in your developer circles."
+   ],
+   "priority": "recommended",
+   "minutes": 20,
+   "kit": [
+    "name",
+    "tagline",
+    "url"
+   ],
+   "appliesTo": {
+    "any": [
+     "platform:api",
+     "platform:cli",
+     "platform:library"
+    ]
+   }
+  },
+  {
+   "id": "launch.indie-hackers",
+   "checklist": "launchpad",
+   "order": 90,
+   "title": "Indie Hackers",
+   "why": "Founders there read launch stories and become early users and advocates.",
+   "steps": [
+    "Write a launch post with numbers: what you built, how long it took, what's next.",
+    "Add your product to the Indie Hackers product directory."
+   ],
+   "priority": "nice",
+   "minutes": 45,
+   "appliesTo": {
+    "any": [
+     "platform:web",
+     "mobile",
+     "platform:desktop",
+     "platform:extension"
+    ]
+   }
+  },
+  {
+   "id": "launch.saashub",
+   "checklist": "launchpad",
+   "order": 100,
+   "title": "SaaSHub",
+   "why": "Compares you against named alternatives and ranks well for 'X alternatives'.",
+   "steps": [
+    "Claim or add your product page.",
+    "Add the alternatives you compete with."
+   ],
+   "priority": "nice",
+   "minutes": 20,
+   "kit": [
+    "name",
+    "description",
+    "url"
+   ],
+   "appliesTo": {
+    "any": [
+     "platform:web",
+     "platform:api"
+    ]
+   }
+  },
+  {
+   "id": "launch.taaft",
+   "checklist": "launchpad",
+   "order": 110,
+   "title": "There's An AI For That",
+   "why": "The biggest AI tool directory, with heavy search traffic for AI use cases.",
+   "steps": [
+    "Submit with a clear use-case title (the task your AI does).",
+    "Pick the task category your users search for."
+   ],
+   "priority": "recommended",
+   "minutes": 20,
+   "kit": [
+    "name",
+    "tagline",
+    "url"
+   ],
+   "appliesTo": {
+    "any": [
+     "ai:any"
+    ]
+   }
+  },
+  {
+   "id": "launch.futurepedia",
+   "checklist": "launchpad",
+   "order": 120,
+   "title": "Futurepedia",
+   "why": "A large AI tools directory with category pages that rank in search.",
+   "steps": [
+    "Submit your tool with pricing and category.",
+    "Add screenshots of the AI feature in action."
+   ],
+   "priority": "nice",
+   "minutes": 20,
+   "kit": [
+    "name",
+    "description",
+    "url"
+   ],
+   "appliesTo": {
+    "any": [
+     "ai:any"
+    ]
+   }
+  },
+  {
+   "id": "com.reddit",
+   "checklist": "communities",
+   "order": 20,
+   "title": "Value-first posts in the subreddits your users read",
+   "why": "Reddit hates ads but loves a good story or a useful tool.",
+   "steps": [
+    "Read each subreddit's self-promotion rules first.",
+    {
+     "text": "r/rust: share it as a project with technical detail (what crates you used and why).",
+     "appliesTo": {
+      "any": [
+       "lang:rust"
+      ]
+     }
+    },
+    {
+     "text": "Show it in your UI framework's community: the egui or iced Discord, Slint's GitHub Discussions, or the Zed community for GPUI.",
+     "appliesTo": {
+      "any": [
+       "fw:egui_iced",
+       "fw:slint",
+       "fw:gpui"
+      ]
+     }
+    },
+    {
+     "text": "r/tauri and the Tauri Discord #showcase.",
+     "appliesTo": {
+      "any": [
+       "fw:tauri"
+      ]
+     }
+    },
+    {
+     "text": "r/macapps for Mac apps.",
+     "appliesTo": {
+      "any": [
+       "os:macos"
+      ],
+      "none": [
+       "platform:web"
+      ]
+     }
+    },
+    {
+     "text": "r/linux and r/opensource for Linux builds.",
+     "appliesTo": {
+      "any": [
+       "os:linux"
+      ]
+     }
+    },
+    {
+     "text": "r/iOSProgramming (dev story) and r/apple's app thread.",
+     "appliesTo": {
+      "any": [
+       "platform:ios"
+      ]
+     }
+    },
+    {
+     "text": "r/androidapps.",
+     "appliesTo": {
+      "any": [
+       "platform:android"
+      ]
+     }
+    },
+    {
+     "text": "r/chrome_extensions.",
+     "appliesTo": {
+      "any": [
+       "platform:extension"
+      ]
+     }
+    },
+    {
+     "text": "r/SaaS and r/SideProject.",
+     "appliesTo": {
+      "any": [
+       "platform:web"
+      ]
+     }
+    },
+    {
+     "text": "r/commandline for CLI tools.",
+     "appliesTo": {
+      "any": [
+       "platform:cli"
+      ]
+     }
+    }
+   ],
+   "priority": "recommended",
+   "minutes": 60
+  },
+  {
+   "id": "com.newsletters",
+   "checklist": "communities",
+   "order": 30,
+   "title": "Pitch ecosystem newsletters",
+   "why": "Niche newsletters often beat big press for developer tools.",
+   "steps": [
+    {
+     "text": "This Week in Rust: open a PR adding your project.",
+     "appliesTo": {
+      "any": [
+       "lang:rust"
+      ]
+     }
+    },
+    {
+     "text": "JavaScript Weekly / Node Weekly: submit via their sites.",
+     "appliesTo": {
+      "any": [
+       "lang:js"
+      ]
+     }
+    },
+    {
+     "text": "PyCoder's Weekly.",
+     "appliesTo": {
+      "any": [
+       "lang:python"
+      ]
+     }
+    },
+    {
+     "text": "Golang Weekly.",
+     "appliesTo": {
+      "any": [
+       "lang:go"
+      ]
+     }
+    }
+   ],
+   "priority": "recommended",
+   "minutes": 30,
+   "appliesTo": {
+    "any": [
+     "platform:api",
+     "platform:cli",
+     "platform:library"
+    ]
+   }
+  },
+  {
+   "id": "com.awesome-lists",
+   "checklist": "communities",
+   "order": 40,
+   "title": "Added to relevant awesome-lists",
+   "why": "Curated GitHub lists send steady, high-intent traffic for years.",
+   "steps": [
+    {
+     "text": "awesome-rust, and the awesome list for your UI framework.",
+     "appliesTo": {
+      "any": [
+       "lang:rust"
+      ]
+     }
+    },
+    {
+     "text": "awesome-tauri.",
+     "appliesTo": {
+      "any": [
+       "fw:tauri"
+      ]
+     }
+    },
+    {
+     "text": "awesome-electron.",
+     "appliesTo": {
+      "any": [
+       "fw:electron"
+      ]
+     }
+    },
+    {
+     "text": "awesome-macos for Mac apps.",
+     "appliesTo": {
+      "any": [
+       "os:macos"
+      ]
+     }
+    },
+    "Follow each list's contributing format exactly."
+   ],
+   "priority": "nice",
+   "minutes": 30,
+   "appliesTo": {
+    "any": [
+     "store:github",
+     "lang:rust",
+     "fw:tauri",
+     "fw:electron",
+     "platform:desktop"
+    ]
+   }
+  },
+  {
+   "id": "com.social",
+   "checklist": "communities",
+   "order": 60,
+   "title": "Launch thread on X and LinkedIn with a demo",
+   "why": "Your network is your first wave.",
+   "steps": [
+    "Lead with the demo GIF or video.",
+    "Reply to every comment on launch day."
+   ],
+   "priority": "recommended",
+   "minutes": 30
+  },
+  {
+   "id": "post.review-prompt",
+   "checklist": "post-launch",
+   "order": 10,
+   "title": "In-app review prompt after a success moment",
+   "why": "Ratings drive store ranking, and happy users rarely rate unprompted.",
+   "steps": [
+    {
+     "text": "Expo: expo-store-review's requestReview().",
+     "appliesTo": {
+      "any": [
+       "fw:expo"
+      ]
+     }
+    },
+    {
+     "text": "Flutter: the in_app_review package.",
+     "appliesTo": {
+      "any": [
+       "fw:flutter"
+      ]
+     }
+    },
+    {
+     "text": "Swift: SwiftUI's requestReview environment action.",
+     "appliesTo": {
+      "any": [
+       "fw:swift"
+      ]
+     }
+    },
+    {
+     "text": "Kotlin: the Play In-App Review API.",
+     "appliesTo": {
+      "any": [
+       "fw:kotlin"
+      ]
+     }
+    },
+    "Ask only after a success moment, never on first launch."
+   ],
+   "priority": "recommended",
+   "minutes": 30,
+   "appliesTo": {
+    "any": [
+     "mobile",
+     "store:mac_app_store"
+    ]
+   }
+  },
+  {
+   "id": "post.reply-reviews",
+   "checklist": "post-launch",
+   "order": 20,
+   "title": "Reply to every store review in the first month",
+   "why": "Replies show future users you're listening and can turn 1-star into 4-star.",
+   "steps": [
+    "Check reviews daily for the first two weeks.",
+    "Thank, fix, then reply that it's fixed."
+   ],
+   "priority": "recommended",
+   "minutes": 15,
+   "appliesTo": {
+    "any": [
+     "store:app_store",
+     "store:play_store",
+     "store:mac_app_store",
+     "store:microsoft_store",
+     "store:chrome_web_store"
+    ]
+   }
+  },
+  {
+   "id": "post.issues",
+   "checklist": "post-launch",
+   "order": 30,
+   "title": "Triage GitHub issues within 48 hours",
+   "why": "A fast first response turns bug reporters into contributors.",
+   "steps": [
+    "Label new issues, close duplicates, and thank reporters.",
+    "Pin a roadmap issue."
+   ],
+   "priority": "recommended",
+   "minutes": 30,
+   "appliesTo": {
+    "any": [
+     "store:github"
+    ]
+   }
+  },
+  {
+   "id": "post.aso",
+   "checklist": "post-launch",
+   "order": 40,
+   "title": "ASO iteration after 2–4 weeks",
+   "why": "Your first screenshots and keywords are a guess. Data makes them better.",
+   "steps": [
+    "Test a new first screenshot and keyword set.",
+    {
+     "text": "Play: use store listing experiments.",
+     "appliesTo": {
+      "any": [
+       "store:play_store"
+      ]
+     }
+    },
+    {
+     "text": "App Store: use product page optimization.",
+     "appliesTo": {
+      "any": [
+       "store:app_store"
+      ]
+     }
+    }
+   ],
+   "priority": "recommended",
+   "minutes": 60,
+   "appliesTo": {
+    "any": [
+     "store:app_store",
+     "store:play_store"
+    ]
+   }
+  },
+  {
+   "id": "post.retro",
+   "checklist": "post-launch",
+   "order": 50,
+   "title": "Launch retrospective",
+   "why": "Know which channel drove signups before you plan the next one.",
+   "steps": [
+    "Compare each channel's visits, signups and activation.",
+    {
+     "text": "Compare downloads per registry and per OS.",
+     "appliesTo": {
+      "any": [
+       "platform:desktop",
+       "platform:cli",
+       "platform:library"
+      ]
+     }
+    }
+   ],
+   "priority": "recommended",
+   "minutes": 45
+  },
+  {
+   "id": "post.second-wave",
+   "checklist": "post-launch",
+   "order": 60,
+   "title": "Second-wave plan",
+   "why": "Most products grow through repeated launches, not one big day.",
+   "steps": [
+    "Plan the next feature launch.",
+    "Relaunch on Product Hunt for a major version.",
+    {
+     "text": "Announce each release on crates.io, Reddit and This Week in Rust.",
+     "appliesTo": {
+      "any": [
+       "lang:rust"
+      ]
+     }
+    }
+   ],
+   "priority": "nice",
+   "minutes": 30
+  }
+ ]
+}

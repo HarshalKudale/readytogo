@@ -1,0 +1,1021 @@
+{
+ "steps": [
+  {
+   "id": "product",
+   "title": "Your product"
+  },
+  {
+   "id": "platform",
+   "title": "Platform and stack"
+  },
+  {
+   "id": "distribution",
+   "title": "Distribution"
+  },
+  {
+   "id": "business",
+   "title": "Business and data"
+  },
+  {
+   "id": "goals",
+   "title": "Goals"
+  },
+  {
+   "id": "assets",
+   "title": "Product kit assets"
+  }
+ ],
+ "questions": [
+  {
+   "key": "types",
+   "step": "platform",
+   "label": "What are you launching?",
+   "help": "Pick everything you ship. A web app with a companion iOS app gets both.",
+   "multiple": true,
+   "required": true,
+   "options": {
+    "web": {
+     "label": "Web app / SaaS",
+     "tags": [
+      "platform:web",
+      "ui:browser"
+     ]
+    },
+    "ios": {
+     "label": "iOS app",
+     "tags": [
+      "platform:ios",
+      "mobile"
+     ]
+    },
+    "android": {
+     "label": "Android app",
+     "tags": [
+      "platform:android",
+      "mobile"
+     ]
+    },
+    "desktop": {
+     "label": "Desktop app",
+     "tags": [
+      "platform:desktop"
+     ]
+    },
+    "chrome_ext": {
+     "label": "Browser extension",
+     "tags": [
+      "platform:extension",
+      "ui:browser"
+     ]
+    },
+    "api": {
+     "label": "Backend API or service",
+     "tags": [
+      "platform:api"
+     ]
+    },
+    "cli": {
+     "label": "Command-line tool",
+     "tags": [
+      "platform:cli"
+     ]
+    },
+    "library": {
+     "label": "Library or SDK",
+     "tags": [
+      "platform:library"
+     ]
+    }
+   }
+  },
+  {
+   "key": "os",
+   "step": "platform",
+   "label": "Which operating systems do you ship to?",
+   "help": "Each one has its own signing, packaging and stores.",
+   "multiple": true,
+   "required": true,
+   "appliesTo": {
+    "any": [
+     "platform:desktop",
+     "platform:cli"
+    ]
+   },
+   "options": {
+    "macos": {
+     "label": "macOS",
+     "tags": [
+      "os:macos"
+     ]
+    },
+    "windows": {
+     "label": "Windows",
+     "tags": [
+      "os:windows"
+     ]
+    },
+    "linux": {
+     "label": "Linux",
+     "tags": [
+      "os:linux"
+     ]
+    }
+   }
+  },
+  {
+   "key": "web_fw",
+   "step": "platform",
+   "label": "What's the web app built with?",
+   "help": "Build, SEO and security steps are tailored to it.",
+   "multiple": false,
+   "required": true,
+   "appliesTo": {
+    "any": [
+     "platform:web"
+    ]
+   },
+   "options": {
+    "nextjs": {
+     "label": "Next.js",
+     "tags": [
+      "fw:nextjs",
+      "lang:js",
+      "bundle:js",
+      "render:ssr"
+     ]
+    },
+    "react_vite": {
+     "label": "React + Vite (SPA)",
+     "tags": [
+      "fw:react_vite",
+      "lang:js",
+      "bundle:js",
+      "render:spa"
+     ]
+    },
+    "react_router": {
+     "label": "React Router / Remix",
+     "tags": [
+      "fw:react_router",
+      "lang:js",
+      "bundle:js",
+      "render:ssr"
+     ]
+    },
+    "nuxt": {
+     "label": "Nuxt / Vue",
+     "tags": [
+      "fw:nuxt",
+      "lang:js",
+      "bundle:js",
+      "render:ssr"
+     ]
+    },
+    "sveltekit": {
+     "label": "SvelteKit",
+     "tags": [
+      "fw:sveltekit",
+      "lang:js",
+      "bundle:js",
+      "render:ssr"
+     ]
+    },
+    "astro": {
+     "label": "Astro",
+     "tags": [
+      "fw:astro",
+      "lang:js",
+      "bundle:js",
+      "render:static"
+     ]
+    },
+    "angular": {
+     "label": "Angular",
+     "tags": [
+      "fw:angular",
+      "lang:js",
+      "bundle:js",
+      "render:spa"
+     ]
+    },
+    "leptos": {
+     "label": "Leptos / Dioxus (Rust)",
+     "tags": [
+      "fw:leptos",
+      "lang:rust",
+      "render:ssr"
+     ]
+    },
+    "server_mvc": {
+     "label": "Rails, Django or Laravel",
+     "tags": [
+      "fw:server_mvc",
+      "render:ssr"
+     ]
+    },
+    "nocode": {
+     "label": "WordPress / no-code builder",
+     "tags": [
+      "fw:nocode",
+      "render:ssr"
+     ]
+    }
+   }
+  },
+  {
+   "key": "mobile_fw",
+   "step": "platform",
+   "label": "What's the mobile app built with?",
+   "help": "Pick both if iOS and Android are separate native codebases.",
+   "multiple": true,
+   "required": true,
+   "appliesTo": {
+    "any": [
+     "mobile"
+    ]
+   },
+   "options": {
+    "expo": {
+     "label": "React Native / Expo",
+     "tags": [
+      "fw:expo",
+      "lang:js",
+      "bundle:js",
+      "ui:react_native"
+     ]
+    },
+    "flutter": {
+     "label": "Flutter",
+     "tags": [
+      "fw:flutter",
+      "lang:dart",
+      "ui:flutter"
+     ]
+    },
+    "capacitor": {
+     "label": "Capacitor / Ionic",
+     "tags": [
+      "fw:capacitor",
+      "lang:js",
+      "bundle:js",
+      "ui:browser"
+     ]
+    },
+    "swift": {
+     "label": "Swift / SwiftUI",
+     "tags": [
+      "fw:swift",
+      "lang:swift",
+      "ui:native"
+     ],
+     "appliesTo": {
+      "any": [
+       "platform:ios"
+      ]
+     }
+    },
+    "kotlin": {
+     "label": "Kotlin / Jetpack Compose",
+     "tags": [
+      "fw:kotlin",
+      "lang:kotlin",
+      "ui:native"
+     ],
+     "appliesTo": {
+      "any": [
+       "platform:android"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "key": "desktop_fw",
+   "step": "platform",
+   "label": "What's the desktop app built with?",
+   "help": "Native Rust, webview or cross-platform: each needs different build and test steps.",
+   "multiple": false,
+   "required": true,
+   "appliesTo": {
+    "any": [
+     "platform:desktop"
+    ]
+   },
+   "options": {
+    "gpui": {
+     "label": "GPUI (Rust)",
+     "tags": [
+      "fw:gpui",
+      "lang:rust",
+      "ui:native"
+     ]
+    },
+    "egui_iced": {
+     "label": "egui / iced (Rust)",
+     "tags": [
+      "fw:egui_iced",
+      "lang:rust",
+      "ui:native"
+     ]
+    },
+    "slint": {
+     "label": "Slint (Rust)",
+     "tags": [
+      "fw:slint",
+      "lang:rust",
+      "ui:native"
+     ]
+    },
+    "rust_other": {
+     "label": "Other Rust (winit, wgpu, …)",
+     "tags": [
+      "lang:rust",
+      "ui:native"
+     ]
+    },
+    "tauri": {
+     "label": "Tauri (Rust + webview)",
+     "tags": [
+      "fw:tauri",
+      "lang:rust",
+      "ui:browser"
+     ]
+    },
+    "electron": {
+     "label": "Electron",
+     "tags": [
+      "fw:electron",
+      "lang:js",
+      "bundle:js",
+      "ui:browser",
+      "runtime:node"
+     ]
+    },
+    "flutter": {
+     "label": "Flutter",
+     "tags": [
+      "fw:flutter",
+      "lang:dart",
+      "ui:flutter"
+     ]
+    },
+    "swift": {
+     "label": "SwiftUI / AppKit",
+     "tags": [
+      "fw:swift",
+      "lang:swift",
+      "ui:native"
+     ],
+     "appliesTo": {
+      "all": [
+       "os:macos"
+      ]
+     }
+    },
+    "dotnet": {
+     "label": ".NET / WinUI",
+     "tags": [
+      "fw:dotnet",
+      "lang:csharp",
+      "ui:native"
+     ],
+     "appliesTo": {
+      "all": [
+       "os:windows"
+      ]
+     }
+    },
+    "qt": {
+     "label": "Qt",
+     "tags": [
+      "fw:qt",
+      "lang:cpp",
+      "ui:native"
+     ]
+    }
+   }
+  },
+  {
+   "key": "tauri_frontend",
+   "step": "platform",
+   "label": "What's the Tauri frontend written in?",
+   "help": "Decides whether JavaScript bundle checks apply.",
+   "multiple": false,
+   "required": true,
+   "appliesTo": {
+    "any": [
+     "fw:tauri"
+    ]
+   },
+   "options": {
+    "js": {
+     "label": "React, Vue or Svelte (JS/TS)",
+     "tags": [
+      "lang:js",
+      "bundle:js"
+     ]
+    },
+    "rust": {
+     "label": "Leptos, Yew or Dioxus (Rust/WASM)",
+     "tags": [
+      "fw:leptos"
+     ]
+    }
+   }
+  },
+  {
+   "key": "ext_fw",
+   "step": "platform",
+   "label": "What's the extension built with?",
+   "multiple": false,
+   "required": true,
+   "appliesTo": {
+    "any": [
+     "platform:extension"
+    ]
+   },
+   "options": {
+    "wxt": {
+     "label": "WXT",
+     "tags": [
+      "fw:wxt",
+      "lang:js",
+      "bundle:js"
+     ]
+    },
+    "plasmo": {
+     "label": "Plasmo",
+     "tags": [
+      "fw:plasmo",
+      "lang:js",
+      "bundle:js"
+     ]
+    },
+    "vanilla_ext": {
+     "label": "Plain Manifest V3",
+     "tags": [
+      "fw:vanilla_ext",
+      "lang:js",
+      "bundle:js"
+     ]
+    }
+   }
+  },
+  {
+   "key": "backend_lang",
+   "step": "platform",
+   "label": "What language is your API, CLI or library written in?",
+   "multiple": true,
+   "required": true,
+   "appliesTo": {
+    "any": [
+     "platform:api",
+     "platform:cli",
+     "platform:library"
+    ]
+   },
+   "options": {
+    "rust": {
+     "label": "Rust",
+     "tags": [
+      "lang:rust"
+     ]
+    },
+    "node": {
+     "label": "TypeScript / Node.js",
+     "tags": [
+      "lang:js",
+      "runtime:node"
+     ]
+    },
+    "python": {
+     "label": "Python",
+     "tags": [
+      "lang:python"
+     ]
+    },
+    "go": {
+     "label": "Go",
+     "tags": [
+      "lang:go"
+     ]
+    }
+   }
+  },
+  {
+   "key": "hosting",
+   "step": "platform",
+   "label": "Where is it hosted?",
+   "multiple": false,
+   "appliesTo": {
+    "any": [
+     "platform:web",
+     "platform:api"
+    ]
+   },
+   "options": {
+    "vercel": {
+     "label": "Vercel",
+     "tags": [
+      "host:vercel"
+     ]
+    },
+    "cloudflare": {
+     "label": "Cloudflare",
+     "tags": [
+      "host:cloudflare"
+     ]
+    },
+    "netlify": {
+     "label": "Netlify",
+     "tags": [
+      "host:netlify"
+     ]
+    },
+    "paas": {
+     "label": "Railway, Render or Fly",
+     "tags": [
+      "host:paas"
+     ]
+    },
+    "aws": {
+     "label": "AWS / GCP / Azure",
+     "tags": [
+      "host:cloud"
+     ]
+    },
+    "self": {
+     "label": "Own server",
+     "tags": [
+      "host:self"
+     ]
+    }
+   }
+  },
+  {
+   "key": "services",
+   "step": "platform",
+   "label": "Which services does it use?",
+   "help": "Optional. Used for privacy disclosures, sub-processor lists and setup steps.",
+   "multiple": true,
+   "appliesTo": {
+    "none": [
+     "platform:library"
+    ]
+   },
+   "options": {
+    "supabase": {
+     "label": "Supabase",
+     "tags": [
+      "svc:supabase"
+     ]
+    },
+    "firebase": {
+     "label": "Firebase",
+     "tags": [
+      "svc:firebase"
+     ]
+    },
+    "clerk": {
+     "label": "Clerk / Auth0",
+     "tags": [
+      "svc:clerk"
+     ]
+    },
+    "stripe": {
+     "label": "Stripe",
+     "tags": [
+      "svc:stripe"
+     ]
+    },
+    "sentry": {
+     "label": "Sentry",
+     "tags": [
+      "svc:sentry"
+     ]
+    },
+    "posthog": {
+     "label": "PostHog / Mixpanel",
+     "tags": [
+      "svc:posthog"
+     ]
+    }
+   }
+  },
+  {
+   "key": "stores",
+   "step": "distribution",
+   "label": "Where will people get it?",
+   "help": "Only stores and registries that fit what you're building are shown.",
+   "multiple": true,
+   "required": true,
+   "options": {
+    "website": {
+     "label": "Own website",
+     "tags": [
+      "store:website"
+     ]
+    },
+    "app_store": {
+     "label": "Apple App Store",
+     "tags": [
+      "store:app_store"
+     ],
+     "appliesTo": {
+      "any": [
+       "platform:ios"
+      ]
+     }
+    },
+    "play_store": {
+     "label": "Google Play",
+     "tags": [
+      "store:play_store"
+     ],
+     "appliesTo": {
+      "any": [
+       "platform:android"
+      ]
+     }
+    },
+    "mac_app_store": {
+     "label": "Mac App Store",
+     "tags": [
+      "store:mac_app_store"
+     ],
+     "appliesTo": {
+      "all": [
+       "platform:desktop",
+       "os:macos"
+      ]
+     }
+    },
+    "microsoft_store": {
+     "label": "Microsoft Store",
+     "tags": [
+      "store:microsoft_store"
+     ],
+     "appliesTo": {
+      "all": [
+       "platform:desktop",
+       "os:windows"
+      ]
+     }
+    },
+    "snap_flathub": {
+     "label": "Snap / Flathub",
+     "tags": [
+      "store:snap_flathub"
+     ],
+     "appliesTo": {
+      "all": [
+       "platform:desktop",
+       "os:linux"
+      ]
+     }
+    },
+    "chrome_web_store": {
+     "label": "Chrome Web Store",
+     "tags": [
+      "store:chrome_web_store"
+     ],
+     "appliesTo": {
+      "any": [
+       "platform:extension"
+      ]
+     }
+    },
+    "firefox_addons": {
+     "label": "Firefox Add-ons",
+     "tags": [
+      "store:firefox_addons"
+     ],
+     "appliesTo": {
+      "any": [
+       "platform:extension"
+      ]
+     }
+    },
+    "edge_addons": {
+     "label": "Edge Add-ons",
+     "tags": [
+      "store:edge_addons"
+     ],
+     "appliesTo": {
+      "any": [
+       "platform:extension"
+      ]
+     }
+    },
+    "npm": {
+     "label": "npm",
+     "tags": [
+      "store:npm"
+     ],
+     "appliesTo": {
+      "all": [
+       "lang:js"
+      ],
+      "any": [
+       "platform:cli",
+       "platform:library"
+      ]
+     }
+    },
+    "pypi": {
+     "label": "PyPI",
+     "tags": [
+      "store:pypi"
+     ],
+     "appliesTo": {
+      "all": [
+       "lang:python"
+      ],
+      "any": [
+       "platform:cli",
+       "platform:library"
+      ]
+     }
+    },
+    "crates_io": {
+     "label": "crates.io",
+     "tags": [
+      "store:crates_io"
+     ],
+     "appliesTo": {
+      "all": [
+       "lang:rust"
+      ],
+      "any": [
+       "platform:cli",
+       "platform:library"
+      ]
+     }
+    },
+    "homebrew": {
+     "label": "Homebrew",
+     "tags": [
+      "store:homebrew"
+     ],
+     "appliesTo": {
+      "any": [
+       "platform:cli",
+       "platform:desktop"
+      ],
+      "none": [
+       "platform:web"
+      ]
+     }
+    },
+    "github": {
+     "label": "GitHub releases",
+     "tags": [
+      "store:github"
+     ],
+     "appliesTo": {
+      "any": [
+       "platform:desktop",
+       "platform:cli",
+       "platform:library",
+       "platform:extension"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "key": "monetization",
+   "step": "business",
+   "label": "Do you charge money?",
+   "multiple": false,
+   "required": true,
+   "options": {
+    "free": {
+     "label": "Free",
+     "tags": [
+      "pricing:free"
+     ]
+    },
+    "freemium": {
+     "label": "Freemium",
+     "tags": [
+      "pricing:freemium",
+      "paid"
+     ]
+    },
+    "subscription": {
+     "label": "Subscription",
+     "tags": [
+      "pricing:subscription",
+      "paid"
+     ]
+    },
+    "one_time": {
+     "label": "One-time purchase",
+     "tags": [
+      "pricing:one_time",
+      "paid"
+     ]
+    },
+    "iap": {
+     "label": "In-app purchases",
+     "tags": [
+      "pricing:iap",
+      "paid"
+     ],
+     "appliesTo": {
+      "any": [
+       "mobile",
+       "store:mac_app_store"
+      ]
+     }
+    }
+   }
+  },
+  {
+   "key": "data",
+   "step": "business",
+   "label": "What user data do you collect?",
+   "multiple": true,
+   "required": true,
+   "options": {
+    "accounts": {
+     "label": "Accounts",
+     "tags": [
+      "data:accounts",
+      "data:personal"
+     ]
+    },
+    "emails": {
+     "label": "Emails",
+     "tags": [
+      "data:emails",
+      "data:personal"
+     ]
+    },
+    "analytics": {
+     "label": "Usage analytics",
+     "tags": [
+      "data:analytics",
+      "data:personal"
+     ]
+    },
+    "payments": {
+     "label": "Payments",
+     "tags": [
+      "data:payments",
+      "data:personal"
+     ]
+    },
+    "ugc": {
+     "label": "User-generated content",
+     "tags": [
+      "data:ugc",
+      "data:personal"
+     ]
+    },
+    "kids": {
+     "label": "Data from children under 13",
+     "tags": [
+      "data:kids",
+      "data:personal"
+     ]
+    },
+    "none": {
+     "label": "None",
+     "tags": [
+      "data:none"
+     ]
+    }
+   }
+  },
+  {
+   "key": "regions",
+   "step": "business",
+   "label": "Where are your users?",
+   "multiple": true,
+   "required": true,
+   "options": {
+    "global": {
+     "label": "Everywhere",
+     "tags": [
+      "region:global",
+      "region:eu",
+      "region:us",
+      "region:india"
+     ]
+    },
+    "eu": {
+     "label": "EU / UK",
+     "tags": [
+      "region:eu"
+     ]
+    },
+    "us": {
+     "label": "US (incl. California)",
+     "tags": [
+      "region:us"
+     ]
+    },
+    "india": {
+     "label": "India",
+     "tags": [
+      "region:india"
+     ]
+    }
+   }
+  },
+  {
+   "key": "ai",
+   "step": "business",
+   "label": "Does it use AI?",
+   "multiple": false,
+   "required": true,
+   "options": {
+    "llm": {
+     "label": "LLM features",
+     "tags": [
+      "ai:llm",
+      "ai:any"
+     ]
+    },
+    "user_content_ai": {
+     "label": "User content is sent to AI",
+     "tags": [
+      "ai:user_content",
+      "ai:any"
+     ]
+    },
+    "none": {
+     "label": "No AI",
+     "tags": []
+    }
+   }
+  },
+  {
+   "key": "have",
+   "step": "goals",
+   "label": "What do you already have?",
+   "help": "We'll tick these off for you.",
+   "multiple": true,
+   "options": {
+    "domain": {
+     "label": "Domain",
+     "tags": [
+      "has:domain"
+     ]
+    },
+    "logo": {
+     "label": "Logo",
+     "tags": [
+      "has:logo"
+     ]
+    },
+    "landing": {
+     "label": "Landing page",
+     "tags": [
+      "has:landing"
+     ]
+    },
+    "analytics": {
+     "label": "Analytics",
+     "tags": [
+      "has:analytics"
+     ]
+    },
+    "social": {
+     "label": "Social accounts",
+     "tags": [
+      "has:social"
+     ]
+    }
+   }
+  },
+  {
+   "key": "goal",
+   "step": "goals",
+   "label": "What's the launch goal?",
+   "multiple": false,
+   "options": {
+    "users": {
+     "label": "Users",
+     "tags": [
+      "goal:users"
+     ]
+    },
+    "revenue": {
+     "label": "Revenue",
+     "tags": [
+      "goal:revenue"
+     ]
+    },
+    "feedback": {
+     "label": "Feedback",
+     "tags": [
+      "goal:feedback"
+     ]
+    }
+   }
+  }
+ ]
+}

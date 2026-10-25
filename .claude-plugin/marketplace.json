@@ -1,0 +1,11 @@
+{
+  "name": "readytogo",
+  "owner": { "name": "HarshalKudale" },
+  "plugins": [
+    {
+      "name": "readytogo",
+      "source": "./",
+      "description": "Audit a repo for launch readiness, fix what applies to it, and generate store assets, icons, screenshots and 2D/3D mockups."
+    }
+  ]
+}

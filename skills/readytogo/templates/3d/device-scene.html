@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Device scene</title>
+<!--
+  Deterministic three.js device mockup. Procedural phone, tablet, laptop (no model files needed), or your own GLB.
+  Everything is a pure function of time: window.__seek(seconds) renders that exact frame, so
+  `readytogo render` can capture stills and frame sequences with no timing drift.
+
+  Query parameters (all optional):
+    device      phone | tablet | laptop | phone-pair | model        (default phone)
+    screen      URL of the screenshot shown on the screen           (default: placeholder)
+    screen2     second screenshot for phone-pair                    (default: screen)
+    anim        none | float | turntable | orbit | reveal | open | hero-pair   (default float)
+    duration    loop length in seconds                               (default 6)
+    angle       static yaw in degrees, e.g. -25                      (default -26)
+    pitch       camera-facing tilt in degrees; + looks down on it    (default -5, laptop 18)
+    color       body colour                                          (default #2b2b30)
+    finish      titanium | matte | gloss                             (default titanium)
+    bg          transparent | any CSS background, URL-encoded        (default transparent)
+    shadow      0 turns the ground shadow off
+    zoom        1 = fit; 1.2 = tighter                               (default 1)
+    fov         camera field of view in degrees                      (default 30)
+    model       URL of a .glb (with device=model)   screenMesh  mesh name of its screen (default Screen)
+    screenAspect  width/height of the GLB screen mesh (default 0.5)
+    flipY       1 if the screenshot appears upside down on a GLB model
+    capture     1 disables autoplay (renderer only advances through __seek)
+  Spec: references/mockups-3d.md in the skill.
+-->
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: transparent; }
+  canvas { display: block; }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<script type="module">
+import * as THREE from "three";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+// ---------- parameters -------------------------------------------------------
+const q = new URLSearchParams(location.search);
+const P = {
+  device: q.get("device") || "phone",
+  screen: q.get("screen"),
+  screen2: q.get("screen2") || q.get("screen"),
+  anim: q.get("anim") || "float",
+  duration: +(q.get("duration") || 6),
+  angle: q.get("angle") != null ? +q.get("angle") : -26,
+  pitch: q.get("pitch") != null ? +q.get("pitch") : q.get("device") === "laptop" ? 18 : -5,
+  color: q.get("color") || "#2b2b30",
+  finish: q.get("finish") || "titanium",
+  bg: q.get("bg") || "transparent",
+  shadow: q.get("shadow") !== "0",
+  zoom: +(q.get("zoom") || 1),
+  fov: +(q.get("fov") || 30),
+  model: q.get("model"),
+  screenMesh: q.get("screenMesh") || "Screen",
+  screenAspect: +(q.get("screenAspect") || 0.5),
+  flipY: q.get("flipY") === "1",
+  capture: q.get("capture") === "1",
+};
+if (P.bg !== "transparent") document.body.style.background = P.bg;
+
+// ---------- renderer, scene, light ----------------------------------------------
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.VSMShadowMap;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
+scene.environmentIntensity = 0.9;
+const key = new THREE.DirectionalLight(0xffffff, 2.2);
+key.position.set(1.5, 6, 2.5);
+key.castShadow = true;
+key.shadow.mapSize.set(2048, 2048);
+Object.assign(key.shadow.camera, { left: -3, right: 3, top: 3, bottom: -3, near: 0.5, far: 12 });
+key.shadow.radius = 10; key.shadow.blurSamples = 20; key.shadow.bias = -0.0005;
+const rim = new THREE.DirectionalLight(0xbfd4ff, 1.1);
+rim.position.set(-3, 2, -2);
+scene.add(key, rim);
+const camera = new THREE.PerspectiveCamera(P.fov, innerWidth / innerHeight, 0.1, 60);
+
+// ---------- helpers ------------------------------------------------------------
+// Units: 1 = 10 cm. Real-world sizes keep proportions believable.
+function rrShape(w, h, r) {
+  const s = new THREE.Shape(), x = -w / 2, y = -h / 2;
+  s.moveTo(x + r, y);
+  s.lineTo(x + w - r, y); s.absarc(x + w - r, y + r, r, -Math.PI / 2, 0, false);
+  s.lineTo(x + w, y + h - r); s.absarc(x + w - r, y + h - r, r, 0, Math.PI / 2, false);
+  s.lineTo(x + r, y + h); s.absarc(x + r, y + h - r, r, Math.PI / 2, Math.PI, false);
+  s.lineTo(x, y + r); s.absarc(x + r, y + r, r, Math.PI, Math.PI * 1.5, false);
+  return s;
+}
+// Rounded slab with bevelled edges, centred on the origin, front face toward +z.
+function slab(w, h, d, r, bev = 0.012) {
+  const g = new THREE.ExtrudeGeometry(rrShape(w - 2 * bev, h - 2 * bev, Math.max(0.001, r - bev)), { depth: d - 2 * bev, bevelEnabled: true, bevelThickness: bev, bevelSize: bev, bevelSegments: 6, curveSegments: 32 });
+  g.translate(0, 0, -(d - 2 * bev) / 2);
+  return g;
+}
+function screenGeometry(w, h, r) {
+  const g = new THREE.ShapeGeometry(rrShape(w, h, r), 48), p = g.attributes.position, uv = g.attributes.uv;
+  for (let i = 0; i < p.count; i++) uv.setXY(i, (p.getX(i) + w / 2) / w, (p.getY(i) + h / 2) / h);
+  return g;
+}
+const bodyMat = () => new THREE.MeshPhysicalMaterial(
+  P.finish === "matte" ? { color: P.color, metalness: 0.15, roughness: 0.65 }
+  : P.finish === "gloss" ? { color: P.color, metalness: 0.35, roughness: 0.12, clearcoat: 1, clearcoatRoughness: 0.05 }
+  : { color: P.color, metalness: 0.88, roughness: 0.32, clearcoat: 0.25 });
+const black = new THREE.MeshStandardMaterial({ color: 0x050506, roughness: 0.4, metalness: 0.2 });
+const glassMat = new THREE.MeshPhysicalMaterial({ color: 0xffffff, transparent: true, opacity: 0.05, roughness: 0.04, metalness: 0, clearcoat: 1, depthWrite: false });
+const mesh = (geo, mat, x = 0, y = 0, z = 0) => { const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); m.castShadow = true; return m; };
+
+function placeholder(w, h, label) {
+  const c = document.createElement("canvas");
+  c.width = 1000; c.height = Math.round(1000 * h / w);
+  const x = c.getContext("2d"), g = x.createLinearGradient(0, 0, c.width, c.height);
+  g.addColorStop(0, "#6366f1"); g.addColorStop(1, "#0ea5e9");
+  x.fillStyle = g; x.fillRect(0, 0, c.width, c.height);
+  x.fillStyle = "rgba(255,255,255,.9)"; x.font = "600 64px Helvetica, Arial, sans-serif"; x.textAlign = "center";
+  x.fillText(label, c.width / 2, c.height / 2);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return Promise.resolve(t);
+}
+async function loadScreen(url, aspect, flipY = true) {
+  let tex;
+  try { tex = url ? await new THREE.TextureLoader().loadAsync(url) : await placeholder(aspect, 1, "Your screen"); }
+  catch { console.error("screen image failed to load: " + url); tex = await placeholder(aspect, 1, "Image not found"); }
+  tex.colorSpace = THREE.SRGBColorSpace; tex.flipY = flipY;
+  tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  // object-fit: cover, anchored to the top so headers stay visible.
+  const ia = tex.image.width / tex.image.height;
+  tex.repeat.set(1, 1); tex.offset.set(0, 0);
+  if (ia > aspect) { tex.repeat.x = aspect / ia; tex.offset.x = (1 - tex.repeat.x) / 2; }
+  else { tex.repeat.y = ia / aspect; tex.offset.y = flipY ? 1 - tex.repeat.y : 0; }
+  return tex;
+}
+const screenMat = (tex) => new THREE.MeshBasicMaterial({ map: tex, toneMapped: false });
+
+// ---------- devices ------------------------------------------------------------
+async function buildPhone(url) {
+  const W = 0.715, H = 1.467, D = 0.083, b = 0.03, sw = W - 2 * b, sh = H - 2 * b, g = new THREE.Group();
+  g.add(mesh(slab(W, H, D, 0.1), bodyMat()));
+  const scr = mesh(screenGeometry(sw, sh, 0.075), screenMat(await loadScreen(url, sw / sh)), 0, 0, D / 2 + 0.0006);
+  scr.castShadow = false; g.add(scr);
+  g.add(mesh(new THREE.ShapeGeometry(rrShape(sw, sh, 0.075), 32), glassMat, 0, 0, D / 2 + 0.0012));
+  g.add(mesh(new THREE.ShapeGeometry(rrShape(0.2, 0.058, 0.029), 24), black, 0, H / 2 - b - 0.065, D / 2 + 0.0018));
+  g.add(mesh(slab(0.29, 0.29, 0.012, 0.075, 0.004), bodyMat(), -W / 2 + 0.19, H / 2 - 0.2, -D / 2 - 0.004));
+  for (const [x, y] of [[-0.065, 0.065], [0.065, 0.065], [0, -0.065]]) {
+    const lens = mesh(new THREE.CylinderGeometry(0.052, 0.052, 0.016, 32), black, -W / 2 + 0.19 + x, H / 2 - 0.2 + y, -D / 2 - 0.012);
+    lens.rotation.x = Math.PI / 2; g.add(lens);
+  }
+  for (const [x, y, h] of [[-1, 0.4, 0.07], [-1, 0.28, 0.12], [-1, 0.1, 0.12], [1, 0.25, 0.18]]) g.add(mesh(new THREE.BoxGeometry(0.008, h, 0.014), bodyMat(), x * (W / 2 + 0.001), y, 0));
+  return { group: g, height: H };
+}
+async function buildTablet(url) {
+  const W = 1.79, H = 2.48, D = 0.053, b = 0.05, sw = W - 2 * b, sh = H - 2 * b, g = new THREE.Group();
+  g.add(mesh(slab(W, H, D, 0.12), bodyMat()));
+  const scr = mesh(screenGeometry(sw, sh, 0.08), screenMat(await loadScreen(url, sw / sh)), 0, 0, D / 2 + 0.0006);
+  scr.castShadow = false; g.add(scr);
+  g.add(mesh(new THREE.ShapeGeometry(rrShape(sw, sh, 0.08), 32), glassMat, 0, 0, D / 2 + 0.0012));
+  g.add(mesh(new THREE.CircleGeometry(0.012, 16), black, 0, H / 2 - b / 2, D / 2 + 0.0018));
+  return { group: g, height: H };
+}
+const OPEN = 1.85; // lid angle in radians (~106°)
+async function buildLaptop(url) {
+  const W = 3.13, H = 2.21, BD = 0.155, LD = 0.08, b = 0.07, g = new THREE.Group();
+  const base = mesh(slab(W, H, BD, 0.1), bodyMat()); base.rotation.x = -Math.PI / 2; g.add(base);
+  const c = document.createElement("canvas"); c.width = 1560; c.height = 1100;
+  const x = c.getContext("2d"); x.fillStyle = "#c9cacf"; x.fillRect(0, 0, c.width, c.height);
+  x.fillStyle = "#17171a";
+  for (let r = 0; r < 5; r++) for (let k = 0; k < 14; k++) { x.beginPath(); x.roundRect(80 + k * 100, 90 + r * 100, 88, 86, 12); x.fill(); }
+  x.fillStyle = "#b3b4ba"; x.beginPath(); x.roundRect(480, 640, 600, 380, 24); x.fill();
+  const deckTex = new THREE.CanvasTexture(c); deckTex.colorSpace = THREE.SRGBColorSpace; deckTex.anisotropy = 8;
+  const deck = new THREE.Mesh(new THREE.PlaneGeometry(W - 0.16, H - 0.16), new THREE.MeshStandardMaterial({ map: deckTex, roughness: 0.55, metalness: 0.3 }));
+  deck.rotation.x = -Math.PI / 2; deck.position.y = BD / 2 + 0.0008; g.add(deck);
+  const pivot = new THREE.Group(); pivot.position.set(0, BD / 2 + LD / 2, -H / 2); g.add(pivot);
+  const lidRot = new THREE.Group(); lidRot.rotation.x = Math.PI / 2; pivot.add(lidRot);
+  const lid = new THREE.Group(); lid.position.y = H / 2; lidRot.add(lid);
+  const sw = W - 2 * b, sh = H - 2 * b - 0.02;
+  lid.add(mesh(slab(W, H, LD, 0.1), bodyMat()));
+  const scr = mesh(screenGeometry(sw, sh, 0.04), screenMat(await loadScreen(url, sw / sh)), 0, -0.01, LD / 2 + 0.0006);
+  scr.castShadow = false; lid.add(scr);
+  lid.add(mesh(new THREE.ShapeGeometry(rrShape(sw, sh, 0.04), 32), glassMat, 0, -0.01, LD / 2 + 0.0012));
+  lid.add(mesh(new THREE.ShapeGeometry(rrShape(0.3, 0.05, 0.025), 24), black, 0, H / 2 - b - 0.012, LD / 2 + 0.0018));
+  return { group: g, height: H, pivot };
+}
+async function buildModel(url, screenUrl) {
+  const gltf = await new GLTFLoader().loadAsync(url);
+  const box = new THREE.Box3().setFromObject(gltf.scene), size = box.getSize(new THREE.Vector3());
+  gltf.scene.scale.setScalar(1.6 / Math.max(size.x, size.y, size.z));
+  const box2 = new THREE.Box3().setFromObject(gltf.scene);
+  gltf.scene.position.sub(box2.getCenter(new THREE.Vector3()));
+  const holder = new THREE.Group(); holder.add(gltf.scene);
+  let found = false;
+  gltf.scene.traverse((o) => { if (o.isMesh) { o.castShadow = true; if (o.name === P.screenMesh) found = true; } });
+  if (!found) console.warn(`no mesh named "${P.screenMesh}" in ${url}; set ?screenMesh=<name>`);
+  const target = gltf.scene.getObjectByName(P.screenMesh);
+  if (target) { const aspect = P.screenAspect; target.material = screenMat(await loadScreen(screenUrl, aspect, P.flipY ? true : false)); target.castShadow = false; }
+  return { group: holder, height: 1.6 };
+}
+
+// ---------- assemble ---------------------------------------------------------------
+const rig = new THREE.Group(); scene.add(rig);
+const devices = []; // { group, x, y, z, yaw, phase, pivot }
+const add = (built, extra = {}) => { rig.add(built.group); devices.push({ x: 0, y: 0, z: 0, yaw: 0, phase: 0, ...built, ...extra }); };
+switch (P.device) {
+  case "tablet": add(await buildTablet(P.screen)); break;
+  case "laptop": add(await buildLaptop(P.screen)); break;
+  case "model": add(await buildModel(P.model, P.screen)); break;
+  case "phone-pair":
+    add(await buildPhone(P.screen), { x: -0.5, yaw: 0.3, phase: 0 });
+    add(await buildPhone(P.screen2), { x: 0.5, y: 0.1, z: -0.15, yaw: -0.3, phase: Math.PI });
+    break;
+  default: add(await buildPhone(P.screen));
+}
+const dev0 = devices[0];
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(14, 14), new THREE.ShadowMaterial({ opacity: 0.2 }));
+ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; ground.visible = P.shadow;
+scene.add(ground);
+
+// ---------- timeline: a pure function of time ------------------------------------------
+const TAU = Math.PI * 2;
+const clamp = (x) => Math.min(1, Math.max(0, x));
+const ease = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+const easeOut = (x) => 1 - Math.pow(1 - x, 3);
+function pose(t) {
+  const d = P.duration, u = (((t % d) + d) % d) / d, base = (P.angle * Math.PI) / 180, p0 = (P.pitch * Math.PI) / 180;
+  const s = { yaw: base, pitch: p0, roll: 0, y: 0, scale: 1, az: 0, open: OPEN, bob: 0 };
+  switch (P.anim) {
+    case "float": s.y = Math.sin(u * TAU) * 0.035; s.yaw = base + Math.sin(u * TAU) * 0.28; s.pitch = p0 + Math.sin(u * TAU + 1.2) * 0.04; s.bob = 0.03; break;
+    case "turntable": s.yaw = base + u * TAU; break;
+    case "orbit": s.az = Math.sin(u * TAU) * 0.7; s.yaw = 0; s.pitch = p0 + 0.05; break;
+    case "reveal": { // plays once over 1.4s, then drifts; not seamless as a loop
+      const k = easeOut(clamp(t / 1.4)), f = Math.max(0, t - 1.4);
+      s.scale = 0.7 + 0.3 * k; s.y = -(1 - k) * 0.5 + Math.sin((f / d) * TAU) * 0.025;
+      s.yaw = base - (1 - k) * 1.4 + Math.sin((f / d) * TAU) * 0.1; s.pitch = p0 + (1 - k) * 0.25; break;
+    }
+    case "open": { // laptop: closed, opens, holds, closes: seamless loop
+      const o = u < 0.3 ? ease(u / 0.3) : u < 0.85 ? 1 : 1 - ease((u - 0.85) / 0.15);
+      s.open = OPEN * o; s.pitch = p0 - 0.04; s.yaw = base * 0.6 + Math.sin(u * TAU) * 0.12; break;
+    }
+    case "hero-pair": s.yaw = Math.sin(u * TAU) * 0.12; s.pitch = p0 + 0.04; s.bob = 0.03; break;
+  }
+  return s;
+}
+
+// ---------- framing ----------------------------------------------------------------------
+let dist = 5;
+const off = new THREE.Vector3(); // rig-space centre of the device, so it rotates about its middle
+function layout(s, u) {
+  rig.rotation.set(s.pitch, s.yaw, s.roll); rig.scale.setScalar(s.scale); rig.position.y = s.y;
+  for (const d of devices) {
+    d.group.position.set(d.x - off.x, d.y - off.y + Math.sin(u * TAU + d.phase) * s.bob, d.z - off.z);
+    d.group.rotation.y = d.yaw;
+    if (d.pivot) d.pivot.rotation.x = -s.open;
+  }
+}
+function frame() {
+  camera.aspect = innerWidth / innerHeight;
+  // Measure the device fully open and unrotated, so framing is stable for every animation.
+  off.set(0, 0, 0); layout({ yaw: 0, pitch: 0, roll: 0, y: 0, scale: 1, open: OPEN, bob: 0 }, 0); rig.updateMatrixWorld(true);
+  const box = new THREE.Box3().setFromObject(rig), R = box.getSize(new THREE.Vector3()).length() / 2;
+  box.getCenter(off);
+  const v = (P.fov * Math.PI) / 180, h = 2 * Math.atan(Math.tan(v / 2) * camera.aspect);
+  dist = (R * 1.02) / Math.sin(Math.min(v, h) / 2) / P.zoom;
+  camera.updateProjectionMatrix();
+  ground.position.y = box.min.y - off.y - 0.02;
+  renderer.setSize(innerWidth, innerHeight);
+}
+let t0 = 0;
+function render(t) {
+  const s = pose(t), u = (((t % P.duration) + P.duration) % P.duration) / P.duration;
+  layout(s, u);
+  camera.position.set(Math.sin(s.az) * dist, dist * 0.06, Math.cos(s.az) * dist);
+  camera.lookAt(0, 0, 0);
+  key.position.set(1.5 + Math.sin(s.az) * 2, 6, 2.5 + Math.cos(s.az));
+  renderer.render(scene, camera);
+}
+addEventListener("resize", () => { frame(); render(performance.now() / 1000 - t0); });
+
+window.__duration = P.duration;
+window.__seek = (t) => render(t);
+frame(); render(0);
+window.__ready = true;
+if (!P.capture) { t0 = performance.now() / 1000; renderer.setAnimationLoop(() => render(performance.now() / 1000 - t0)); }
+</script>
+</body>
+</html>

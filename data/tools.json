@@ -1,0 +1,251 @@
+[
+ {
+  "slug": "app-store-assets",
+  "component": "store-kit",
+  "scope": [
+   "app_store",
+   "ipad"
+  ]
+ },
+ {
+  "slug": "mac-app-store-assets",
+  "component": "store-kit",
+  "scope": [
+   "mac_app_store"
+  ]
+ },
+ {
+  "slug": "play-store-assets",
+  "component": "store-kit",
+  "scope": [
+   "play_phone",
+   "play_tablet7",
+   "play_tablet",
+   "play_feature"
+  ]
+ },
+ {
+  "slug": "microsoft-store-assets",
+  "component": "store-kit",
+  "scope": [
+   "ms_store",
+   "ms_logo",
+   "ms_poster",
+   "ms_box",
+   "ms_hero",
+   "ms_promo"
+  ]
+ },
+ {
+  "slug": "chrome-web-store-assets",
+  "component": "store-kit",
+  "scope": [
+   "chrome",
+   "cws_small",
+   "cws_marquee"
+  ]
+ },
+ {
+  "slug": "edge-addons-assets",
+  "component": "store-kit",
+  "scope": [
+   "edge",
+   "edge_logo",
+   "edge_small",
+   "edge_large"
+  ]
+ },
+ {
+  "slug": "firefox-addons-assets",
+  "component": "store-kit",
+  "scope": [
+   "firefox"
+  ]
+ },
+ {
+  "slug": "product-hunt-assets",
+  "component": "store-kit",
+  "scope": [
+   "product_hunt",
+   "ph_thumb"
+  ]
+ },
+ {
+  "slug": "app-store-icons",
+  "component": "icon-pack",
+  "scope": [
+   "app_store"
+  ]
+ },
+ {
+  "slug": "play-store-icons",
+  "component": "icon-pack",
+  "scope": [
+   "play_store"
+  ]
+ },
+ {
+  "slug": "chrome-extension-icons",
+  "component": "icon-pack",
+  "scope": [
+   "chrome_web_store"
+  ]
+ },
+ {
+  "slug": "firefox-addon-icons",
+  "component": "icon-pack",
+  "scope": [
+   "firefox_addons"
+  ]
+ },
+ {
+  "slug": "edge-addon-icons",
+  "component": "icon-pack",
+  "scope": [
+   "edge_addons"
+  ]
+ },
+ {
+  "slug": "macos-icns",
+  "component": "app-icon-file",
+  "scope": [
+   "icns"
+  ]
+ },
+ {
+  "slug": "windows-ico",
+  "component": "app-icon-file",
+  "scope": [
+   "ico"
+  ]
+ },
+ {
+  "slug": "favicon",
+  "component": "favicon"
+ },
+ {
+  "slug": "og-image",
+  "component": "store-kit",
+  "scope": [
+   "og"
+  ]
+ },
+ {
+  "slug": "social-media-kit",
+  "component": "store-kit",
+  "scope": [
+   "x_card",
+   "linkedin_card",
+   "x_header",
+   "linkedin_banner",
+   "yt_thumb"
+  ]
+ },
+ {
+  "slug": "github-social-preview",
+  "component": "store-kit",
+  "scope": [
+   "github_social"
+  ]
+ },
+ {
+  "slug": "phone-mockup",
+  "component": "device-mockup",
+  "scope": [
+   "phone"
+  ]
+ },
+ {
+  "slug": "browser-mockup",
+  "component": "device-mockup",
+  "scope": [
+   "browser"
+  ]
+ },
+ {
+  "slug": "desktop-window-mockup",
+  "component": "device-mockup",
+  "scope": [
+   "window"
+  ]
+ },
+ {
+  "slug": "3d-phone-mockup",
+  "component": "device-mockup",
+  "scope": [
+   "phone-3d",
+   "phone-3d-pair"
+  ]
+ },
+ {
+  "slug": "app-store-listing",
+  "component": "listing-copy",
+  "scope": [
+   "as_name",
+   "as_subtitle",
+   "as_promo",
+   "as_keywords",
+   "as_description"
+  ]
+ },
+ {
+  "slug": "play-store-listing",
+  "component": "listing-copy",
+  "scope": [
+   "gp_title",
+   "gp_short",
+   "gp_full"
+  ]
+ },
+ {
+  "slug": "chrome-web-store-listing",
+  "component": "listing-copy",
+  "scope": [
+   "cws_name",
+   "cws_summary"
+  ]
+ },
+ {
+  "slug": "firefox-addons-listing",
+  "component": "listing-copy",
+  "scope": [
+   "amo_name",
+   "amo_summary"
+  ]
+ },
+ {
+  "slug": "product-hunt-listing",
+  "component": "listing-copy",
+  "scope": [
+   "ph_name",
+   "ph_tagline",
+   "ph_description"
+  ]
+ },
+ {
+  "slug": "meta-tags",
+  "component": "meta-tags"
+ },
+ {
+  "slug": "link-preview",
+  "component": "link-preview"
+ },
+ {
+  "slug": "seo-score",
+  "component": "seo-score"
+ },
+ {
+  "slug": "screenshot-highlighter",
+  "component": "annotate",
+  "scope": [
+   "highlight"
+  ]
+ },
+ {
+  "slug": "screenshot-redactor",
+  "component": "annotate",
+  "scope": [
+   "redact"
+  ]
+ }
+]
