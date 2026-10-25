@@ -65,7 +65,9 @@ async function iconCandidates(c, sharp, minSize) {
 export const CHECKS = {
   "brand.app-icon": async (c, sharp) => {
     const hit = await iconCandidates(c, sharp, 1024);
-    return hit.length ? ok(`${hit[0].f} (${hit[0].w}px square)`) : bad("No square PNG of at least 1024px named like an icon or logo. Provide a master icon, then run `readytogo icons`.");
+    if (hit.length) return ok(`${hit[0].f} (${hit[0].w}px square)`);
+    const svg = c.find(/(^|\/)(app-?icon|icon|logo)[\w-]*\.svg$/i)[0];
+    return svg ? ok(`${svg} is a vector master; icons are rasterised from it at every size`) : bad("No square PNG of at least 1024px or SVG named like an icon or logo. Provide a master icon, then run `readytogo icons`.");
   },
   "appstore.icon": async (c, sharp) => {
     const hit = await iconCandidates(c, sharp, 1024);

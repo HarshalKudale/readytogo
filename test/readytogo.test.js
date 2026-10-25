@@ -67,7 +67,7 @@ test("shot: exact store pixels, opaque", async () => {
 });
 
 test("frames render at the requested canvas", async () => {
-  for (const [kind, size] of [["phone", "landscape"], ["tablet", "square"], ["browser", "og"], ["window", "hero"], ["laptop", "hero"]]) {
+  for (const [kind, size] of [["phone", "landscape"], ["tablet", "square"], ["browser", "og"], ["window", "hero"], ["laptop", "hero"], ["card", "landscape"]]) {
     const r = await makeFrame(shot, kind, join(out, `${kind}.png`), { size, bg: kind === "phone" ? "grad:#0ea5e9,#6366f1,135" : "#eef2ff", url: "app.example.com" });
     const [w, h] = await dims(r.file);
     assert.deepEqual([w, h], size === "landscape" ? [1600, 1200] : size === "square" ? [1080, 1080] : size === "og" ? [1200, 630] : [1920, 1080]);

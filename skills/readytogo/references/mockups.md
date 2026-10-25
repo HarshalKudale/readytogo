@@ -34,6 +34,7 @@ Principles first, then recipes by destination. These are design guidelines, not 
 - **tablet**: iPad-style; use for tablet listings or showing responsive layouts.
 - **browser** with `--url`: web apps; use your real domain, never `localhost` or a placeholder.
 - **window** (`--dark` optional): desktop apps without a browser bar.
+- **card**: no chrome, just rounded corners and a shadow at the screenshot's own aspect. Use it for **extension popups**, side panels and widgets; a popup forced into a window or phone frame is cropped or lost.
 - **laptop**: marketing hero for web/desktop; give it a **landscape screenshot** (≈ 16:10), a portrait one will be cropped to its top.
 
 Backgrounds: a soft two-colour gradient from the logo colours (`grad:#hex,#hex,135`) or a flat tint of the brand colour. Avoid busy photos and pure white behind white UIs (no separation).

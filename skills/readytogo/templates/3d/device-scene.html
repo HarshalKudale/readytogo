@@ -176,7 +176,7 @@ async function buildTablet(url) {
 }
 const OPEN = 1.85; // lid angle in radians (~106°)
 async function buildLaptop(url) {
-  const W = 3.13, H = 2.21, BD = 0.155, LD = 0.08, b = 0.07, g = new THREE.Group();
+  const W = 3.13, H = 2.12, BD = 0.155, LD = 0.08, b = 0.05, g = new THREE.Group();
   const base = mesh(slab(W, H, BD, 0.1), bodyMat()); base.rotation.x = -Math.PI / 2; g.add(base);
   const c = document.createElement("canvas"); c.width = 1560; c.height = 1100;
   const x = c.getContext("2d"); x.fillStyle = "#c9cacf"; x.fillRect(0, 0, c.width, c.height);
@@ -189,12 +189,12 @@ async function buildLaptop(url) {
   const pivot = new THREE.Group(); pivot.position.set(0, BD / 2 + LD / 2, -H / 2); g.add(pivot);
   const lidRot = new THREE.Group(); lidRot.rotation.x = Math.PI / 2; pivot.add(lidRot);
   const lid = new THREE.Group(); lid.position.y = H / 2; lidRot.add(lid);
-  const sw = W - 2 * b, sh = H - 2 * b - 0.02;
+  const sw = W - 2 * b, sh = sw / 1.6, sy = H / 2 - 0.065 - sh / 2; // 16:10 screen, so standard captures fit uncropped
   lid.add(mesh(slab(W, H, LD, 0.1), bodyMat()));
-  const scr = mesh(screenGeometry(sw, sh, 0.04), screenMat(await loadScreen(url, sw / sh)), 0, -0.01, LD / 2 + 0.0006);
+  const scr = mesh(screenGeometry(sw, sh, 0.04), screenMat(await loadScreen(url, sw / sh)), 0, sy, LD / 2 + 0.0006);
   scr.castShadow = false; lid.add(scr);
-  lid.add(mesh(new THREE.ShapeGeometry(rrShape(sw, sh, 0.04), 32), glassMat, 0, -0.01, LD / 2 + 0.0012));
-  lid.add(mesh(new THREE.ShapeGeometry(rrShape(0.3, 0.05, 0.025), 24), black, 0, H / 2 - b - 0.012, LD / 2 + 0.0018));
+  lid.add(mesh(new THREE.ShapeGeometry(rrShape(sw, sh, 0.04), 32), glassMat, 0, sy, LD / 2 + 0.0012));
+  lid.add(mesh(new THREE.ShapeGeometry(rrShape(0.3, 0.05, 0.025), 24), black, 0, H / 2 - 0.04, LD / 2 + 0.0018));
   return { group: g, height: H, pivot };
 }
 async function buildModel(url, screenUrl) {

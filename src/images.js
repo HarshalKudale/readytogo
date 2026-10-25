@@ -128,12 +128,19 @@ const FRAMES = {
     return sharp(body).composite([{ input: screen, left: Math.round(b), top: Math.round(b) }]).png().toBuffer();
   },
   async window(shot, { width = 2000, dark = false, url }) {
-    const W = width, H = Math.round(W * 0.66), bar = Math.round(H * 0.07), r = H * 0.025;
+    // Height follows the screenshot (so nothing is cropped) within a sensible window range.
+    const m = await sharp(shot).metadata();
+    const W = width, contentH = Math.round(W * Math.min(1.1, Math.max(0.45, m.height / m.width))), bar = Math.round(W * 0.046), H = contentH + bar, r = W * 0.0165;
     const lights = ["#ff5f57", "#febc2e", "#28c840"].map((c, i) => `<circle cx="${bar * (0.7 + i * 0.6)}" cy="${bar / 2}" r="${bar * 0.18}" fill="${c}"/>`).join("");
     const pill = url === undefined ? "" : `<rect x="${W * 0.25}" y="${bar * 0.2}" width="${W * 0.5}" height="${bar * 0.6}" rx="${bar * 0.3}" fill="${dark ? "#3a3a42" : "#fff"}"/><text x="${W / 2}" y="${bar * 0.5}" dominant-baseline="central" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="${bar * 0.32}" fill="${dark ? "#b4b4be" : "#6b6b76"}">${esc(url.replace(/^https?:\/\//, "").slice(0, 60))}</text>`;
     const body = svg(W, H, `<rect width="${W}" height="${H}" rx="${r}" fill="${dark ? "#2a2a30" : "#e9e9ee"}"/>${lights}${pill}`);
-    const screen = await screenFor(shot, W, H - bar, (w, h) => bottomRoundedMask(w, h, r));
+    const screen = await screenFor(shot, W, contentH, (w, h) => bottomRoundedMask(w, h, r));
     return sharp(body).composite([{ input: screen, left: 0, top: bar }]).png().toBuffer();
+  },
+  // Rounded card with no chrome, at the screenshot's own size: extension popups, widgets, panels.
+  async card(shot) {
+    const m = await sharp(shot).metadata();
+    return sharp(shot).ensureAlpha().composite([{ input: roundedMask(m.width, m.height, Math.round(m.width * 0.03)), blend: "dest-in" }]).png().toBuffer();
   },
   async laptop(shot, { color = "#0f0f12", width = 2000 }) {
     const lidW = Math.round(width * 0.9), lidH = Math.round(lidW * 0.63), b = Math.round(lidW * 0.02), baseH = Math.round(width * 0.035);

@@ -24,7 +24,7 @@ Assets (exact pixels, no AI)
   specs [--store chrome_web_store] [--json]
   icons <src.png|svg> --for <set> [--out dir] [--bg #hex] [--padding 0.1] [--round] [--mac-grid] [--name App]
   shot <screenshot...> --target <id> [--fit cover|contain] [--bg #hex] [--out dir]
-  frame <screenshot> --frame phone|tablet|browser|window|laptop [--size landscape|og|square|hero|none|WxH]
+  frame <screenshot> --frame phone|tablet|browser|window|laptop|card [--size landscape|og|square|hero|none|WxH]
         [--bg "#hex|grad:#a,#b,135|transparent"] [--url example.com] [--dark] [--out file]
   promo --target <id> --title "…" [--subtitle "…"] [--logo file] [--bg …] [--fg #fff] [--out file]
   annotate <image> --box x,y,w,h [--box …] [--mode highlight|redact] [--out file]
@@ -142,7 +142,7 @@ const main = async () => {
       const ids = plan.checklists.flatMap((c) => c.items).filter((i) => i.autoCheck && (!v.only || list(v.only).includes(i.id))).map((i) => i.id);
       const ctx = context(root, walk(root), new Set(s.profile.tags));
       const results = await runChecks(ctx, ids, await sharpLib());
-      save(root, "checks.json", { at: new Date().toISOString(), results });
+      save(root, "checks.json", { at: new Date().toISOString(), results: { ...s.checks.results, ...results } });
       for (const [id, r] of Object.entries(results)) log(`${r.pass === true ? "PASS" : r.pass === false ? "FAIL" : "????"}  ${id}  ${r.detail}`);
       const n = (x) => Object.values(results).filter((r) => r.pass === x).length;
       return log(`\n${ids.length} checks: ${n(true)} pass, ${n(false)} fail, ${n(null)} need judgement. Results saved to .readytogo/checks.json`);
@@ -199,7 +199,7 @@ const main = async () => {
     }
     case "frame": {
       const [src] = args;
-      if (!src || !v.frame) throw new Error("Usage: readytogo frame <screenshot> --frame phone|tablet|browser|window|laptop");
+      if (!src || !v.frame) throw new Error("Usage: readytogo frame <screenshot> --frame phone|tablet|browser|window|laptop|card");
       const { makeFrame } = await import("../src/images.js");
       const r = await makeFrame(resolve(src), v.frame, resolve(v.out ?? assetsDir("mockups", `${basename(src).replace(/\.\w+$/, "")}-${v.frame}.png`)), { size: v.size, bg: v.bg, url: v.url, dark: v.dark, color: v.color });
       return log(`wrote ${r.file}${r.width ? ` (${r.width}×${r.height})` : ""}`);

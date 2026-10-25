@@ -39,8 +39,8 @@ Warns when the source is not square or smaller than the largest output.
 ### `shot <screenshot...> --target <id> [--fit cover|contain] [--bg #hex] [--out dir]`
 Resizes/crops each screenshot to the exact store size, opaque PNG, numbered `<id>-01.png`…. `cover` crops (anchored to the top), `contain` pads with `--bg`. Warns when cropping would remove more than 15% or the input is much smaller than the target.
 
-### `frame <screenshot> --frame phone|tablet|browser|window|laptop [--size landscape|og|square|hero|none|WxH] [--bg "<color>|grad:#a,#b,135|transparent"] [--url example.com] [--dark] [--color #hex] [--out file]`
-Puts the screenshot in a device frame on a canvas with a soft shadow. Sizes: `landscape` 1600×1200, `og` 1200×630, `square` 1080², `hero` 1920×1080, `none` = the frame alone with transparency.
+### `frame <screenshot> --frame phone|tablet|browser|window|laptop|card [--size landscape|og|square|hero|none|WxH] [--bg "<color>|grad:#a,#b,135|transparent"] [--url example.com] [--dark] [--color #hex] [--out file]`
+Puts the screenshot in a device frame on a canvas with a soft shadow. `window` and `browser` heights follow the screenshot (no cropping within a 0.45–1.1 height/width range); `card` is a rounded card at the screenshot's own aspect, right for extension popups and panels. Sizes: `landscape` 1600×1200, `og` 1200×630, `square` 1080², `hero` 1920×1080, `none` = the frame alone with transparency.
 
 ### `promo --target <id> --title "…" [--subtitle "…"] [--logo file] [--bg …] [--fg #fff] [--accent #hex] [--out file]`
 Text-and-logo tile at a store's exact size (ids with `kind: graphic` in `specs`, e.g. `cws_small`, `cws_marquee`, `play_feature`, `ms_*`, `ph_thumb`, `og`, `x_card`, `github_social`). Text is fitted to the box. Uses system fonts; for brand fonts or screenshots in the art use `templates/promo/tile.html`.
