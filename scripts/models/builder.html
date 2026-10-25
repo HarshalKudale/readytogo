@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Model builder</title>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<script type="module">
+// Builds the bundled device models and exports them as .glb. Driven by scripts/build-models.mjs.
+// Contract (see assets/3d/models/README.md): units 1 = 10 cm, front faces +z, a mesh named "Screen" with 0-1 UVs,
+// materials named "Body" take the scene's colour/finish, laptops have a "LidPivot" node (rotation.x = -open angle).
+import * as THREE from "three";
+import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
+
+function rrShape(w, h, r) {
+  const s = new THREE.Shape(), x = -w / 2, y = -h / 2;
+  s.moveTo(x + r, y);
+  s.lineTo(x + w - r, y); s.absarc(x + w - r, y + r, r, -Math.PI / 2, 0, false);
+  s.lineTo(x + w, y + h - r); s.absarc(x + w - r, y + h - r, r, 0, Math.PI / 2, false);
+  s.lineTo(x + r, y + h); s.absarc(x + r, y + h - r, r, Math.PI / 2, Math.PI, false);
+  s.lineTo(x, y + r); s.absarc(x + r, y + r, r, Math.PI, Math.PI * 1.5, false);
+  return s;
+}
+function slab(w, h, d, r, bev = 0.012) {
+  const g = new THREE.ExtrudeGeometry(rrShape(w - 2 * bev, h - 2 * bev, Math.max(0.001, r - bev)), { depth: d - 2 * bev, bevelEnabled: true, bevelThickness: bev, bevelSize: bev, bevelSegments: 3, curveSegments: 14 });
+  g.translate(0, 0, -(d - 2 * bev) / 2);
+  g.clearGroups();
+  return g;
+}
+function shapeGeo(w, h, r, uv = false) {
+  const g = new THREE.ShapeGeometry(rrShape(w, h, r), 16), p = g.attributes.position, t = g.attributes.uv;
+  for (let i = 0; i < p.count; i++) t.setXY(i, (p.getX(i) + w / 2) / w, (p.getY(i) + h / 2) / h);
+  return g;
+}
+
+const bodyMat = (color, metal = 0.88, rough = 0.32) => Object.assign(new THREE.MeshPhysicalMaterial({ color, metalness: metal, roughness: rough, clearcoat: 0.25 }), { name: "Body" });
+const blackMat = Object.assign(new THREE.MeshStandardMaterial({ color: 0x050506, roughness: 0.4, metalness: 0.2 }), { name: "Black" });
+const lensMat = Object.assign(new THREE.MeshStandardMaterial({ color: 0x0a0d14, roughness: 0.15, metalness: 0.6 }), { name: "Lens" });
+const screenMat = () => Object.assign(new THREE.MeshBasicMaterial({ color: 0x0b0b10 }), { name: "Screen" });
+const glassMat = Object.assign(new THREE.MeshPhysicalMaterial({ color: 0xffffff, transparent: true, opacity: 0.05, roughness: 0.04, metalness: 0, clearcoat: 1, depthWrite: false }), { name: "Glass" });
+const node = (name, geo, mat, x = 0, y = 0, z = 0) => { const m = new THREE.Mesh(geo, mat); m.name = name; m.position.set(x, y, z); return m; };
+const group = (name, x = 0, y = 0, z = 0) => { const g = new THREE.Group(); g.name = name; g.position.set(x, y, z); return g; };
+
+// ---------------------------------------------------------------- phones
+// cutout: island | punch | notch | none   plate: square | pill | dual | none   edge: round | flat
+function phone(o) {
+  const { W, H, D, b, corner, bev = 0.012 } = o, sw = W - 2 * b, sh = H - 2 * b, root = group("Phone");
+  root.userData = { kind: "phone", screenAspect: +(sw / sh).toFixed(4), defaultColor: o.color };
+  root.add(node("Body", slab(W, H, D, corner, bev), bodyMat(o.color, o.metal ?? 0.88, o.rough ?? 0.32)));
+  root.add(node("Screen", shapeGeo(sw, sh, corner - b * 0.8), screenMat(), 0, 0, D / 2 + 0.0006));
+  root.add(node("Glass", new THREE.ShapeGeometry(rrShape(sw, sh, corner - b * 0.8), 12), glassMat, 0, 0, D / 2 + 0.0012));
+  const top = H / 2 - b;
+  if (o.cutout === "island") root.add(node("Cutout", new THREE.ShapeGeometry(rrShape(0.2, 0.058, 0.029), 24), blackMat, 0, top - 0.065, D / 2 + 0.0018));
+  if (o.cutout === "punch") root.add(node("Cutout", new THREE.CircleGeometry(0.021, 32), blackMat, 0, top - 0.045, D / 2 + 0.0018));
+  if (o.cutout === "notch") root.add(node("Cutout", new THREE.ShapeGeometry(rrShape(0.31, 0.075, 0.03), 24), blackMat, 0, top - 0.02, D / 2 + 0.0018));
+  const lens = (x, y, r = 0.05) => { const l = node("Lens", new THREE.CylinderGeometry(r, r, 0.016, 20), lensMat, x, y, -D / 2 - 0.012); l.rotation.x = Math.PI / 2; root.add(l); };
+  if (o.plate === "square") {
+    const px = -W / 2 + 0.19, py = H / 2 - 0.2;
+    root.add(node("CameraPlate", slab(0.29, 0.29, 0.012, 0.075, 0.004), bodyMat(o.color, o.metal ?? 0.88, 0.2), px, py, -D / 2 - 0.004));
+    lens(px - 0.065, py + 0.065); lens(px + 0.065, py + 0.065); lens(px, py - 0.065);
+  } else if (o.plate === "pill") {
+    const py = H / 2 - 0.17;
+    root.add(node("CameraPlate", slab(W - 0.06, 0.2, 0.01, 0.09, 0.004), bodyMat(o.color, o.metal ?? 0.88, 0.2), 0, py, -D / 2 - 0.003));
+    lens(-0.17, py, 0.046); lens(0, py, 0.046); lens(0.17, py, 0.03);
+  } else if (o.plate === "dual") {
+    const px = -W / 2 + 0.15;
+    lens(px, H / 2 - 0.14, 0.05); lens(px, H / 2 - 0.29, 0.05);
+  }
+  const btn = (x, y, h) => root.add(node("Button", new THREE.BoxGeometry(0.008, h, 0.014), bodyMat(o.color, o.metal ?? 0.88, 0.4), x * (W / 2 + 0.001), y, 0));
+  btn(-1, 0.4, 0.07); btn(-1, 0.28, 0.12); btn(-1, 0.1, 0.12); btn(1, 0.25, 0.18);
+  return root;
+}
+
+// ---------------------------------------------------------------- laptops
+function keyboardTexture(o) {
+  const c = document.createElement("canvas"); c.width = 1560; c.height = 1100;
+  const x = c.getContext("2d");
+  x.fillStyle = o.deck; x.fillRect(0, 0, c.width, c.height);
+  x.fillStyle = o.keys;
+  const rows = o.rows ?? 5, cols = o.cols ?? 14, kw = (1400 - (cols - 1) * 12) / cols, kh = 86;
+  for (let r = 0; r < rows; r++) for (let k = 0; k < cols; k++) {
+    const h = r === 0 && o.slimFn ? kh * 0.6 : kh;
+    x.beginPath(); x.roundRect(80 + k * (kw + 12), 80 + r * (kh + 14), kw, h, 12); x.fill();
+  }
+  x.fillStyle = o.pad; x.beginPath(); x.roundRect(480, 640, 600, 380, 24); x.fill();
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; return t;
+}
+// cutout: notch | webcam | none
+function laptop(o) {
+  const { W, H, BD, LD, side, top, aspect } = o, sw = W - 2 * side, sh = sw / aspect, root = group("Laptop");
+  root.userData = { kind: "laptop", screenAspect: +(sw / sh).toFixed(4), defaultColor: o.color, hinge: "LidPivot" };
+  const base = node("Base", slab(W, H, BD, o.corner ?? 0.1), bodyMat(o.color, o.metal ?? 0.88, o.rough ?? 0.32));
+  base.rotation.x = -Math.PI / 2; root.add(base);
+  const deckMat = Object.assign(new THREE.MeshStandardMaterial({ map: keyboardTexture(o), roughness: 0.55, metalness: 0.3 }), { name: "Deck" });
+  const deck = node("Deck", new THREE.PlaneGeometry(W - 0.16, H - 0.16), deckMat, 0, BD / 2 + 0.0008, 0);
+  deck.rotation.x = -Math.PI / 2;
+  root.add(deck);
+  const pivot = group("LidPivot", 0, BD / 2 + LD / 2, -H / 2);
+  pivot.rotation.x = -1.83; // open by default (~105 deg)
+  const lidRot = group("LidRot"); lidRot.rotation.x = Math.PI / 2; pivot.add(lidRot);
+  const lid = group("Lid", 0, H / 2, 0); lidRot.add(lid);
+  lid.add(node("LidBody", slab(W, H, LD, o.corner ?? 0.1), bodyMat(o.bezelColor ?? o.color, o.metal ?? 0.88, o.rough ?? 0.32)));
+  const sy = H / 2 - top - sh / 2;
+  lid.add(node("Screen", shapeGeo(sw, sh, 0.04), screenMat(), 0, sy, LD / 2 + 0.0006));
+  lid.add(node("Glass", new THREE.ShapeGeometry(rrShape(sw, sh, 0.04), 12), glassMat, 0, sy, LD / 2 + 0.0012));
+  if (o.cutout === "notch") lid.add(node("Cutout", new THREE.ShapeGeometry(rrShape(0.3, 0.05, 0.025), 24), blackMat, 0, H / 2 - 0.04, LD / 2 + 0.0018));
+  if (o.cutout === "webcam") lid.add(node("Cutout", new THREE.CircleGeometry(0.014, 24), blackMat, 0, H / 2 - top / 2, LD / 2 + 0.0018));
+  root.add(pivot);
+  return root;
+}
+
+// ---------------------------------------------------------------- catalogue
+const MODELS = [
+  { id: "phone-island", kind: "phone", description: "Modern flagship: rounded titanium edge, dynamic-island style cutout, square triple-camera plate", make: () => phone({ W: 0.715, H: 1.467, D: 0.083, b: 0.03, corner: 0.1, color: "#2b2b30", cutout: "island", plate: "square" }) },
+  { id: "phone-punchhole", kind: "phone", description: "Android-style: tall 20:9 screen, small punch-hole camera, horizontal camera bar", make: () => phone({ W: 0.76, H: 1.64, D: 0.08, b: 0.022, corner: 0.085, color: "#1f2937", metal: 0.5, rough: 0.35, cutout: "punch", plate: "pill" }) },
+  { id: "phone-notch", kind: "phone", description: "Earlier generation: top notch, glossy edge, dual lens", make: () => phone({ W: 0.715, H: 1.47, D: 0.085, b: 0.035, corner: 0.09, color: "#c9ccd2", metal: 0.7, rough: 0.2, cutout: "notch", plate: "dual" }) },
+  { id: "phone-flat", kind: "phone", description: "Flat-edge slab with thin bezels and a large square camera plate", make: () => phone({ W: 0.715, H: 1.5, D: 0.078, b: 0.026, corner: 0.07, bev: 0.004, color: "#3a3f4b", cutout: "island", plate: "square" }) },
+  { id: "laptop-notch", kind: "laptop", description: "Premium 16:10 laptop: thin bezels, notch, dark aluminium", make: () => laptop({ W: 3.13, H: 2.12, BD: 0.155, LD: 0.08, side: 0.05, top: 0.065, aspect: 1.6, color: "#2d2d32", cutout: "notch", deck: "#c9cacf", keys: "#17171a", pad: "#b3b4ba" }) },
+  { id: "laptop-slim", kind: "laptop", description: "Ultrabook: very thin silver body, tiny bezels, no notch", make: () => laptop({ W: 3.0, H: 2.0, BD: 0.11, LD: 0.06, side: 0.035, top: 0.045, aspect: 1.6, color: "#bfc1c8", bezelColor: "#bfc1c8", metal: 0.95, rough: 0.28, corner: 0.09, cutout: "webcam", deck: "#d6d7dc", keys: "#2a2a2f", pad: "#c3c4ca" }) },
+  { id: "laptop-classic", kind: "laptop", description: "Classic 16:9 laptop: black plastic, thick bezel and chin, webcam dot", make: () => laptop({ W: 3.2, H: 2.3, BD: 0.22, LD: 0.1, side: 0.11, top: 0.13, aspect: 16 / 9, color: "#1d1d20", metal: 0.1, rough: 0.55, corner: 0.07, cutout: "webcam", deck: "#26262a", keys: "#0e0e10", pad: "#2f2f34", rows: 6, slimFn: true }) },
+];
+
+function toB64(buf) {
+  let s = ""; const a = new Uint8Array(buf);
+  for (let i = 0; i < a.length; i += 0x8000) s += String.fromCharCode.apply(null, a.subarray(i, i + 0x8000));
+  return btoa(s);
+}
+window.buildAll = async () => {
+  const out = [];
+  for (const m of MODELS) {
+    const root = m.make();
+    const buf = await new GLTFExporter().parseAsync(root, { binary: true });
+    out.push({ id: m.id, kind: m.kind, description: m.description, screenAspect: root.userData.screenAspect, defaultColor: root.userData.defaultColor, b64: toB64(buf) });
+  }
+  return out;
+};
+window.__ready = true;
+</script>
+</body>
+</html>

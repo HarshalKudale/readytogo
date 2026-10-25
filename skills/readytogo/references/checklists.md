@@ -1,6 +1,6 @@
 # Checklists
 
-Generated from `data/catalog.json`. Run `readytogo plan` to see which apply to this repo, then read only those files.
+Generated from `data/catalog.json` (the source of truth). Run `readytogo plan` to see which apply to this repo, then read only those files.
 
 ## Foundation
 
@@ -22,11 +22,11 @@ _Icons, screenshots, mockups, demos_
 
 _Build, tests, SEO and store submissions_
 
-- [Release build hygiene](checklists/release-build.md) — What ships in your production build, and what must not. (18 items; applies: always)
+- [Release build hygiene](checklists/release-build.md) — What ships in your production build, and what must not. (19 items; applies: always)
 - [Testing and QA](checklists/testing-qa.md) — Automated checks on the flows that matter. (12 items; applies: always)
 - [Analytics and monitoring](checklists/analytics-monitoring.md) — Know what launch day did, and when something breaks. (6 items; applies: none of platform:library)
 - [Desktop distribution](checklists/desktop-release.md) — Signing, packaging and updates for each OS. (5 items; applies: any of platform:desktop)
-- [Technical SEO](checklists/technical-seo.md) — Indexable pages that look good when shared. (10 items; applies: any of store:website)
+- [Technical SEO](checklists/technical-seo.md) — Indexable pages that look good when shared. (11 items; applies: any of store:website)
 - [Apple App Store](checklists/apple-app-store.md) — Listing, assets and privacy answers App Review checks. (11 items; applies: any of store:app_store, store:mac_app_store)
 - [Google Play](checklists/google-play.md) — Console setup, listing assets and the data safety form. (8 items; applies: any of store:play_store)
 - [Browser extension stores](checklists/chrome-web-store.md) — Manifest, permissions and listings for Chrome, Firefox and Edge. (6 items; applies: any of store:chrome_web_store, store:firefox_addons, store:edge_addons)
@@ -45,4 +45,4 @@ _Product Hunt, communities, directories_
 
 _Reviews, iteration, second wave_
 
-- [After launch](checklists/post-launch.md) — Reviews, iteration and the second wave. (6 items; applies: always)
+- [After launch](checklists/post-launch.md) — Reviews, iteration and the second wave. (7 items; applies: always)

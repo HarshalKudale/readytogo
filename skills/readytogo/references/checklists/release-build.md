@@ -104,6 +104,16 @@ Phase: Pre-launch · Last verified: 2026-10-24 · Checklist applies when: always
   2. (any of fw:gpui) GPUI: serve embedded assets through your AssetSource implementation.
   3. Install the release build on a clean machine and check fonts and icons render.
 
+## build.dead-code: Unused code and imports removed
+
+- **Priority:** recommended · ~30 min · **Applies when:** none of fw:nocode
+- **Why:** Dead code ships to users, inflates bundles, hides real bugs and leaks removed features.
+- **Run:** `readytogo setup deadcode   (once)` · `readytogo deadcode --min medium`
+- **Steps:**
+  1. Run the analyser, review HIGH findings (unused imports, unreachable code, unreferenced private declarations) and delete them.
+  2. Treat MEDIUM and LOW findings (unused exports, unreferenced files) as questions: public API, entry points and framework routes can look unused.
+  3. Re-run tests and the build after deleting.
+
 ## build.flutter-obfuscate: Flutter release builds obfuscated, symbols uploaded
 
 - **Priority:** recommended · ~20 min · **Applies when:** any of fw:flutter

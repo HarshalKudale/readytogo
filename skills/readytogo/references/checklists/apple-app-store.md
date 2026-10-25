@@ -35,7 +35,7 @@ Phase: Pre-launch · Last verified: 2026-10-24 · Checklist applies when: any of
 
 - **Priority:** blocker · ~60 min · **Applies when:** any of store:app_store
 - **Why:** Screenshots are the biggest factor in install conversion.
-- **Generate:** `readytogo shot <screenshot> --target <id>` (ids: app_store, ipad)
+- **Generate:** capture a real screenshot (references/capture.md), then `readytogo shot <file> --target <id>` (ids: app_store, ipad)
 - **Steps:**
   1. Upload 3–10 screenshots at 1320×2868.
   2. Lead with your strongest benefit.
@@ -44,7 +44,7 @@ Phase: Pre-launch · Last verified: 2026-10-24 · Checklist applies when: any of
 
 - **Priority:** blocker · ~45 min · **Applies when:** any of store:mac_app_store
 - **Why:** The Mac App Store needs its own desktop-sized screenshots.
-- **Generate:** `readytogo shot <screenshot> --target <id>` (ids: mac_app_store)
+- **Generate:** capture a real screenshot (references/capture.md), then `readytogo shot <file> --target <id>` (ids: mac_app_store)
 - **Steps:**
   1. Upload 1–10 screenshots at 1280×800, 1440×900, 2560×1600 or 2880×1800.
 

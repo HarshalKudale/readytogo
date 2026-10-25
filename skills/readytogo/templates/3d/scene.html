@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Device scene</title>
+<!--
+  A prebuilt stage for phone and laptop models. It does NOT decide what the shot looks like: the director script does.
+    1. Copy examples/<closest>.js next to this file and edit it (devices, screen image/video, camera keyframes, background).
+    2. Render:  readytogo render ".../scene.html?config=/path/to/director.js" --size 1920x1080 --video out.webm
+                readytogo render "...?config=..." --at 2.5 --out still.png          (single frame)
+  Everything is a pure function of time. window.__seek(t) renders exactly that moment, so frames never drift.
+  Full schema and guidelines: references/mockups-3d.md.
+-->
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: transparent; }
+  canvas { display: block; position: absolute; inset: 0; }
+  #overlay { position: absolute; inset: 0; pointer-events: none; }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<div id="overlay"></div>
+<script type="module">
+import * as THREE from "three";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+// ---------------------------------------------------------------- config
+const q = new URLSearchParams(location.search);
+const user = q.get("config") ? (await import(new URL(q.get("config"), location.href).href)).default : {};
+const C = {
+  duration: 6, fps: 30, loop: true, background: "transparent", shadow: true, floor: null, exposure: 1,
+  environment: { intensity: 0.9 },
+  ...user,
+  lights: { key: { intensity: 2.2, color: "#ffffff", position: [1.5, 6, 2.5] }, rim: { intensity: 1.1, color: "#bfd4ff", position: [-3, 2, -2] }, ...user.lights },
+  camera: { fov: 30, keys: [{ t: 0, az: -25, el: 10, zoom: 1, target: [0, 0, 0] }], ...user.camera },
+  devices: user.devices?.length ? user.devices : [{ model: "laptop-notch", keys: [{ t: 0, open: 105 }] }],
+};
+if (C.background !== "transparent") document.body.style.background = C.background;
+if (C.overlay) document.getElementById("overlay").innerHTML = C.overlay;
+
+// ---------------------------------------------------------------- keyframes
+const EASE = {
+  linear: (t) => t, smooth: (t) => t * t * (3 - 2 * t), hold: () => 0,
+  inSine: (t) => 1 - Math.cos((t * Math.PI) / 2), outSine: (t) => Math.sin((t * Math.PI) / 2), inOutSine: (t) => -(Math.cos(Math.PI * t) - 1) / 2,
+  inCubic: (t) => t * t * t, outCubic: (t) => 1 - Math.pow(1 - t, 3), inOutCubic: (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2),
+  outQuart: (t) => 1 - Math.pow(1 - t, 4), inOutQuart: (t) => (t < 0.5 ? 8 * t ** 4 : 1 - Math.pow(-2 * t + 2, 4) / 2),
+  outExpo: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -10 * t)), outBack: (t) => 1 + 2.70158 * Math.pow(t - 1, 3) + 1.70158 * Math.pow(t - 1, 2),
+};
+const mix = (a, b, u) => (Array.isArray(a) ? a.map((x, i) => x + (b[i] - x) * u) : a + (b - a) * u);
+// Value of `prop` at time t. A key without the prop is skipped, so props animate independently. Easing comes from the key being approached.
+function sample(keys, prop, t, fallback) {
+  const ks = keys.filter((k) => k[prop] !== undefined).sort((a, b) => a.t - b.t);
+  if (!ks.length) return fallback;
+  if (t <= ks[0].t) return ks[0][prop];
+  const last = ks[ks.length - 1];
+  if (t >= last.t) return last[prop];
+  for (let i = 0; i < ks.length - 1; i++) {
+    const a = ks[i], b = ks[i + 1];
+    if (t < b.t) return mix(a[prop], b[prop], (EASE[b.ease ?? a.ease ?? "inOutCubic"] ?? EASE.inOutCubic)((t - a.t) / (b.t - a.t)));
+  }
+}
+const rad = (d) => (d * Math.PI) / 180;
+const wrapT = (t) => (C.loop && C.duration > 0 ? ((t % C.duration) + C.duration) % C.duration : t);
+
+// ---------------------------------------------------------------- renderer, scene
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = C.exposure;
+renderer.shadowMap.enabled = C.shadow;
+renderer.shadowMap.type = THREE.VSMShadowMap;
+document.body.insertBefore(renderer.domElement, document.getElementById("overlay"));
+
+const scene = new THREE.Scene();
+scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
+scene.environmentIntensity = C.environment.intensity;
+const key = new THREE.DirectionalLight(C.lights.key.color, C.lights.key.intensity);
+key.position.set(...C.lights.key.position);
+key.castShadow = C.shadow;
+key.shadow.mapSize.set(2048, 2048);
+Object.assign(key.shadow.camera, { left: -4, right: 4, top: 4, bottom: -4, near: 0.5, far: 14 });
+key.shadow.radius = 10; key.shadow.blurSamples = 20; key.shadow.bias = -0.0005;
+const rim = new THREE.DirectionalLight(C.lights.rim.color, C.lights.rim.intensity);
+rim.position.set(...C.lights.rim.position);
+scene.add(key, rim);
+const camera = new THREE.PerspectiveCamera(C.camera.fov, innerWidth / innerHeight, 0.05, 80);
+
+// ---------------------------------------------------------------- models
+const gltf = new GLTFLoader();
+async function modelUrl(id) {
+  if (/\.(glb|gltf)(\?|$)/i.test(id) || /^(\/|https?:|\.)/.test(id)) return id;
+  for (const u of [`./models/${id}.glb`, `/__skill/assets/3d/models/${id}.glb`]) if ((await fetch(u, { method: "HEAD" }).catch(() => ({}))).ok) return u;
+  throw new Error(`model "${id}" not found. Run \`readytogo models\` for the list.`);
+}
+function finish(root, d) {
+  root.traverse((o) => {
+    if (!o.isMesh || o.material?.name !== "Body") return;
+    o.material = o.material.clone();
+    if (d.color) o.material.color.set(d.color);
+    const f = { matte: [0.15, 0.65, 0], gloss: [0.35, 0.12, 1] }[d.finish];
+    if (f) Object.assign(o.material, { metalness: f[0], roughness: f[1], clearcoat: f[2] });
+    o.castShadow = true;
+  });
+  root.traverse((o) => { if (o.isMesh && o.material?.name !== "Screen") o.castShadow = true; });
+}
+
+// ---------------------------------------------------------------- screens (image or video)
+const sources = new Map();
+const isVideo = (s) => s.type === "video" || /\.(webm|mp4|mov|ogv)(\?|$)/i.test(s.src ?? "");
+function placeholderCanvas(label, aspect) {
+  const c = document.createElement("canvas");
+  c.width = 1400; c.height = Math.round(1400 / aspect);
+  const x = c.getContext("2d"), g = x.createLinearGradient(0, 0, c.width, c.height);
+  g.addColorStop(0, "#6366f1"); g.addColorStop(1, "#0ea5e9");
+  x.fillStyle = g; x.fillRect(0, 0, c.width, c.height);
+  x.fillStyle = "rgba(255,255,255,.92)"; x.font = "600 72px Helvetica, Arial, sans-serif"; x.textAlign = "center";
+  x.fillText(label, c.width / 2, c.height / 2);
+  return c;
+}
+function loadImage(url) {
+  return new Promise((ok, no) => { const i = new Image(); i.crossOrigin = "anonymous"; i.onload = () => ok(i); i.onerror = () => no(new Error("image failed to load: " + url)); i.src = url; });
+}
+async function makeSource(spec, aspect) {
+  const id = JSON.stringify([spec.src, spec.fit, spec.align, aspect]);
+  if (sources.has(id)) return sources.get(id);
+  const src = { spec, aspect, video: null, tex: null };
+  const align = { top: 1, center: 0.5, bottom: 0 }[spec.align ?? "top"] ?? 1;
+  let content;
+  if (!spec.src) content = placeholderCanvas("Your screen", aspect);
+  else if (isVideo(spec)) {
+    const v = document.createElement("video");
+    Object.assign(v, { src: spec.src, muted: true, playsInline: true, preload: "auto", crossOrigin: "anonymous" });
+    await new Promise((ok, no) => { v.addEventListener("loadeddata", ok, { once: true }); v.addEventListener("error", () => no(new Error(`video failed to load (use .webm for headless rendering; convert with \`readytogo video\`): ${spec.src}`)), { once: true }); });
+    src.video = v; content = v;
+  } else {
+    try { content = await loadImage(spec.src); } catch (e) { console.error(e.message); content = placeholderCanvas("Image not found", aspect); }
+  }
+  const w = content.videoWidth ?? content.naturalWidth ?? content.width, h = content.videoHeight ?? content.naturalHeight ?? content.height;
+  let tex;
+  if (spec.fit === "contain" && !src.video) { // letterbox onto a canvas with the bg colour
+    const c = document.createElement("canvas"); c.width = 2048; c.height = Math.round(2048 / aspect);
+    const x = c.getContext("2d"); x.fillStyle = spec.bg ?? "#000"; x.fillRect(0, 0, c.width, c.height);
+    const s = Math.min(c.width / w, c.height / h); x.drawImage(content, (c.width - w * s) / 2, (c.height - h * s) / 2, w * s, h * s);
+    tex = new THREE.CanvasTexture(c);
+  } else {
+    tex = src.video ? new THREE.VideoTexture(content) : content instanceof HTMLCanvasElement ? new THREE.CanvasTexture(content) : new THREE.Texture(content);
+    const ia = w / h; // object-fit: cover; with flipY the image top is at v = 1, so align top = offset (1 - repeat)
+    if (ia > aspect) { tex.repeat.x = aspect / ia; tex.offset.x = (1 - tex.repeat.x) / 2; }
+    else { tex.repeat.y = ia / aspect; tex.offset.y = (1 - tex.repeat.y) * align; }
+  }
+  tex.flipY = true; tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = renderer.capabilities.getMaxAnisotropy(); tex.needsUpdate = true;
+  src.tex = tex;
+  sources.set(id, src);
+  return src;
+}
+async function seekVideo(src, t) {
+  const v = src.video, s = src.spec;
+  if (!v) return;
+  const d = v.duration || 1;
+  let time = Math.max(0, (t - (s.start ?? 0)) * (s.rate ?? 1));
+  time = s.loop === false ? Math.min(time, d - 0.001) : time % d;
+  if (Math.abs(v.currentTime - time) < 0.001) return;
+  v.currentTime = time;
+  await new Promise((ok) => v.addEventListener("seeked", ok, { once: true }));
+  src.tex.needsUpdate = true;
+}
+
+// ---------------------------------------------------------------- devices
+const devices = [];
+for (const d of C.devices) {
+  const { scene: root } = await gltf.loadAsync(await modelUrl(d.model));
+  const holder = new THREE.Group(); holder.add(root); scene.add(holder);
+  finish(root, d);
+  let kind; root.traverse((o) => { kind ??= o.userData?.kind; });
+  // anchor "bottom": the model's lowest point is the holder origin, so pos y = 0 stands it on the ground (default for laptops).
+  const anchor = d.anchor ?? (kind === "laptop" ? "bottom" : "center");
+  if (anchor === "bottom") { root.updateWorldMatrix(true, true); root.position.y -= new THREE.Box3().setFromObject(root).min.y; }
+  const screen = root.getObjectByName("Screen");
+  if (!screen) console.warn(`model "${d.model}" has no mesh named "Screen"`);
+  let aspect = 1;
+  if (screen) { screen.geometry.computeBoundingBox(); const b = screen.geometry.boundingBox; aspect = (b.max.x - b.min.x) / (b.max.y - b.min.y); screen.castShadow = false; }
+  const list = (d.screens ?? [d.screen ?? {}]).map((s) => ({ at: 0, ...s })).sort((a, b) => a.at - b.at);
+  const srcs = [];
+  for (const s of list) srcs.push({ at: s.at, src: await makeSource(s, aspect) });
+  if (screen) screen.material = new THREE.MeshBasicMaterial({ map: srcs[0].src.tex, toneMapped: false });
+  devices.push({ d, anchor, holder, root, screen, srcs, hinge: root.getObjectByName("LidPivot"), keys: d.keys ?? [] });
+}
+
+// ---------------------------------------------------------------- stage
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(40, 40), C.floor ? new THREE.MeshStandardMaterial({ color: C.floor.color ?? C.floor, roughness: 0.9, metalness: 0 }) : new THREE.ShadowMaterial({ opacity: 0.2 }));
+ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; ground.visible = C.shadow || Boolean(C.floor);
+scene.add(ground);
+
+function applyDevices(t) {
+  for (const dv of devices) {
+    const k = dv.keys;
+    dv.holder.position.set(...sample(k, "pos", t, dv.d.pos ?? [0, 0, 0]));
+    const r = sample(k, "rot", t, dv.d.rot ?? [0, 0, 0]);
+    dv.holder.rotation.set(rad(r[0]), rad(r[1]), rad(r[2]));
+    dv.holder.scale.setScalar(sample(k, "scale", t, dv.d.scale ?? 1));
+    if (dv.hinge) dv.hinge.rotation.x = -rad(sample(k, "open", t, dv.d.open ?? 105));
+    if (dv.screen) { const cur = [...dv.srcs].reverse().find((s) => s.at <= t) ?? dv.srcs[0]; if (dv.screen.material.map !== cur.src.tex) { dv.screen.material.map = cur.src.tex; dv.screen.material.needsUpdate = true; } }
+  }
+}
+
+// Fit distance for zoom = 1: every device unrotated and fully open, at its position/scale over the whole timeline, so the framing is stable.
+let fitR = 3, groundY = 0, center = [0, 0, 0]; // center of all devices: the camera looks here unless a key offsets it
+function measure() {
+  const saved = devices.map((dv) => [dv.holder.rotation.clone(), dv.hinge?.rotation.x]);
+  const all = new THREE.Box3(), grounded = new THREE.Box3();
+  const steps = C.duration > 0 ? 8 : 0;
+  for (let i = 0; i <= steps; i++) {
+    applyDevices(steps ? (i / steps) * C.duration : 0);
+    for (const dv of devices) {
+      dv.holder.rotation.set(0, 0, 0);
+      if (dv.hinge) dv.hinge.rotation.x = -rad(Math.max(105, ...dv.keys.map((k) => k.open ?? 0)));
+      dv.holder.updateWorldMatrix(true, true);
+      const box = new THREE.Box3().setFromObject(dv.holder);
+      all.union(box);
+      if (i === 0 && dv.anchor === "bottom") grounded.union(box);
+    }
+  }
+  fitR = all.getSize(new THREE.Vector3()).length() / 2;
+  center = all.getCenter(new THREE.Vector3()).toArray();
+  groundY = (grounded.isEmpty() ? all : grounded).min.y - 0.02;
+  devices.forEach((dv, i) => { dv.holder.rotation.copy(saved[i][0]); if (dv.hinge) dv.hinge.rotation.x = saved[i][1]; });
+}
+function applyCamera(t) {
+  const k = C.camera.keys, fov = sample(k, "fov", t, C.camera.fov);
+  const az = rad(sample(k, "az", t, -25)), el = rad(sample(k, "el", t, 10)), zoom = sample(k, "zoom", t, 1), off = sample(k, "target", t, [0, 0, 0]), target = center.map((c, i) => c + off[i]); // target: offset from the auto-centred point
+  camera.fov = fov; camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+  const v = rad(fov), h = 2 * Math.atan(Math.tan(v / 2) * camera.aspect);
+  const dist = sample(k, "dist", t, null) ?? (fitR * 1.02) / Math.sin(Math.min(v, h) / 2) / zoom;
+  camera.position.set(target[0] + dist * Math.sin(az) * Math.cos(el), target[1] + dist * Math.sin(el), target[2] + dist * Math.cos(az) * Math.cos(el));
+  camera.lookAt(target[0], target[1], target[2]);
+  camera.rotateZ(rad(sample(k, "roll", t, 0)));
+}
+
+// Hooks for cosmetics the keyframes cannot express (extra meshes, particles, text). Keep them pure functions of t.
+const ctx = { THREE, scene, camera, renderer, devices, overlay: document.getElementById("overlay"), C };
+await C.setup?.(ctx);
+measure();
+ground.position.y = groundY;
+
+function frameAt(t) {
+  t = wrapT(t);
+  applyDevices(t); applyCamera(t);
+  C.update?.(t, ctx);
+  renderer.render(scene, camera);
+}
+async function seek(t) {
+  t = wrapT(t);
+  for (const dv of devices) for (const s of dv.srcs) await seekVideo(s.src, t);
+  frameAt(t);
+}
+addEventListener("resize", () => { renderer.setSize(innerWidth, innerHeight); frameAt(live ? performance.now() / 1000 - t0 : lastT); });
+
+let live = false, t0 = 0, lastT = 0;
+window.__duration = C.duration; window.__fps = C.fps;
+window.__seek = (t) => { lastT = t; return seek(t); };
+await seek(0);
+window.__ready = true;
+if (q.get("capture") !== "1" && !navigator.webdriver) { // live preview in a normal browser
+  live = true; t0 = performance.now() / 1000;
+  for (const dv of devices) for (const s of dv.srcs) s.src.video?.play().catch(() => {});
+  renderer.setAnimationLoop(() => frameAt(performance.now() / 1000 - t0));
+}
+</script>
+</body>
+</html>

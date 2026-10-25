@@ -1,60 +1,87 @@
 ---
 name: readytogo
-description: Get a product ready to ship. Audits a repo for launch readiness, works out which checks apply (web, iOS, Android, desktop, browser extension, CLI, library, API), fixes what it can, and generates the assets stores require (app icons, favicons, store screenshots at exact sizes, promo tiles, OG images, device mockups, 3D three.js mockups and animations). Use when the user says ship, launch, release, publish, "submit to App Store / Google Play / Chrome Web Store / Firefox / Edge / Microsoft Store", Product Hunt, "launch checklist", "store assets", "app icon", "favicon", "screenshots", "mockup", or "is this ready to launch".
+description: Get a product ready to ship. Audits a repo for launch readiness, works out which checks apply (web, iOS, Android, desktop, browser extension, CLI, library, API), fixes what it can, and produces what a launch needs: exact-size store icons, favicons and screenshots, SEO, link and backlink audits, unused-code analysis, plus guided 2D and 3D product mockups from shipped OS frames, phone and laptop models and a camera-directed scene. Use when the user says ship, launch, release, publish, "submit to App Store / Google Play / Chrome Web Store / Firefox / Edge / Microsoft Store", Product Hunt, "launch checklist", "store assets", "app icon", "favicon", "screenshots", "mockup", "product video", "backlinks", "dead code", or "is this ready to launch".
 ---
 
 # ReadyToGo
 
 Turn "is this ready to ship?" into a verified list, and produce the assets a launch needs.
-You do the thinking (what applies, what to write, what to fix). The CLI does the exact work (pixels, sizes, state, checks).
 
-Run the CLI as `npx -y readytogo@latest <command>` (written `readytogo` below). In a Claude Code plugin install it is
-`node "${CLAUDE_PLUGIN_ROOT}/bin/readytogo.js"`. Needs Node 20+. Rendering HTML/3D also needs `npm i -D playwright && npx playwright install chromium`; `readytogo doctor` shows what is missing.
+**The rule that organises everything here:**
+- **Static and repeated across projects → a tool** (the `readytogo` CLI). Deterministic converters, resizers and analysers: same input, same output, no creativity.
+- **Dynamic and customised per product → a guideline plus shipped assets.** Mockups, promo art, 3D shots, camera moves and copy are *yours to author* from the frames, models, templates and guidelines in this skill. No tool designs anything for you, so results are never the same stock output.
+
+Run the CLI as `npx -y readytogo@latest <command>` (written `readytogo`; alias `rtg`). In a Claude Code plugin install: `node "${CLAUDE_PLUGIN_ROOT}/bin/readytogo.js"`. Needs Node 20+.
+
+## One-time setup (ask first)
+
+External tools are **downloaded on demand, never bundled**, so they stay current. `readytogo doctor` shows what is missing. Ask the user before downloading; say what and how big:
+
+| Command | Installs | Needed for |
+|---|---|---|
+| `readytogo setup render` | Playwright + Chromium (~250 MB) into `~/.readytogo/tools` | `render`, frames, 3D scenes, capturing screenshots |
+| `readytogo setup deadcode` | tree-sitter + grammars (~55 MB) | `deadcode` |
+| ffmpeg (install yourself: `brew`/`winget`/`apt install ffmpeg`) | – | `video`, MP4/GIF output |
+
+`readytogo setup --update` refreshes them to current versions.
 
 ## Workflow
 
-1. **Profile the product.** `readytogo scan --write` reads the repo and proposes tags (platform, framework, hosting, services).
-   - It lists tags marked *assumed* and questions the repo cannot answer: `stores, monetization, data, regions, ai, have, goal`.
-   - Answer what you can from README, docs and config; **ask the user once, in one batch, for the rest** (options in `data/questions.json`).
-   - Record with `readytogo profile --add tag,tag --remove tag --name "…" --tagline "…" --confirm`. List valid tags with `readytogo profile --tags`.
-2. **Plan.** `readytogo plan --open` lists only the checklists and items that apply, grouped by phase. Read `references/checklists/<slug>.md` for the checklists you will work on (not all of them; the index is `references/checklists.md`).
-3. **Check and fix.** `readytogo check` runs the automatic checks (secrets, icons and alpha, manifest, SEO tags, CI, privacy page, and more) and saves results. Fix what is fixable in code, config and content. Re-run `check`. Items with no automatic check are yours to verify from the item's steps: look at the repo, then `readytogo mark <id> done --note "evidence"`.
-4. **Generate assets** the plan calls for. See the table below, and `references/assets.md` for sources, placement and capture.
-5. **Hand the rest to the human.** Accounts, payments, legal sign-off, DNS, store submission and reviews cannot be done by you. List each with the exact steps from the checklist. Do not mark them done without the user's confirmation or real evidence.
-6. **Report.** `readytogo report` writes `READYTOGO.md` and exits non-zero while blockers are open. End your reply with: blockers still open, what you changed, what only the user can do.
+1. **Profile the product.** `readytogo scan --write` reads the repo and proposes tags (platform, framework, hosting, services). It lists *assumed* tags and questions only the user can answer (`stores, monetization, data, regions, ai, have, goal`). Answer what you can from README and config; **ask the user once, in one batch**, for the rest (options in `data/questions.json`). Record with `readytogo profile --add tag,tag --name "…" --tagline "…" --confirm`.
+2. **Plan.** `readytogo plan --open` lists only the checklists and items that apply. Read `references/checklists/<slug>.md` for the ones you will work on (index: `references/checklists.md`).
+3. **Check and fix.** `readytogo check` runs the automatic checks and saves results. Fix what is fixable in code, config and content; re-run. For items without a check, verify from the item's steps and `readytogo mark <id> done --note "evidence"`.
+4. **Analyse** where the plan says so: `seo`, `links`, `backlinks`, `deadcode` (below).
+5. **Produce assets.** Icons, screenshots and listing text with tools; mockups and promo art by authoring them (below).
+6. **Hand the rest to the human.** Accounts, payments, legal sign-off, DNS, store submission cannot be done by you. List each with exact steps. Do not mark them done without confirmation or real evidence.
+7. **Report.** `readytogo report` writes `READYTOGO.md` and exits non-zero while blockers are open. End with: blockers still open, what you changed, what only the user can do.
 
-## Generate assets (exact pixels, no AI drawing)
+## Tools (converters, resizers, analysers)
 
-| Need | Command | Read |
+| Need | Command |
+|---|---|
+| App icons for a store or OS (App Store, Play, Chrome, Firefox, Edge, favicon, icns, ico) | `readytogo icons <master.png\|svg> --for <set>` |
+| Fit a screenshot to a store's exact pixels | `readytogo shot <file...> --target <id>` (ids: `readytogo specs --store <store>`) |
+| Does this file meet the store spec? (size, format, alpha, bytes) | `readytogo verify <file...> --target <id\|WxH>` |
+| Convert/trim/probe a screen recording (MP4 → WebM, GIF) | `readytogo video <in> --out <file>` |
+| Hide secrets/PII or highlight a region of a screenshot | `readytogo annotate <img> --box x,y,w,h --mode redact\|highlight` |
+| Store listing text within character limits | `readytogo listing fields.json` |
+| On-page SEO score and link-preview tags | `readytogo seo <page.html\|url>` |
+| Broken, redirecting or unsafe links on a page | `readytogo links <page.html\|url>` |
+| Who links to you, and do they still? (Search Console / SEO-tool export or URL list) | `readytogo backlinks <export> --target yoursite.com --verify` |
+| Unused imports, locals, unreachable code, unreferenced declarations and files | `readytogo deadcode [dir]` |
+| HTML/3D page → PNG, WebM, MP4 or GIF at exact size | `readytogo render <page> --size WxH --out …` |
+
+Outputs go to `.readytogo/assets/…` unless you pass `--out`. Do not overwrite existing user assets without asking.
+
+## Guidelines (author these; assets are provided)
+
+| Goal | Read | Assets you start from |
 |---|---|---|
-| App icons for a store or OS | `readytogo icons <master.png\|svg> --for app_store\|play_store\|chrome_web_store\|firefox_addons\|edge_addons\|favicon\|icns\|ico` | `references/assets.md` |
-| Store screenshots at the store's size | `readytogo shot <screenshot...> --target <id>` (ids: `readytogo specs --store <store>`) | `references/store-specs.md` |
-| Screenshot inside a phone / tablet / browser / window / laptop frame | `readytogo frame <screenshot> --frame phone --size landscape --bg "grad:#hex,#hex"` | `references/mockups.md` |
-| Promo tile, feature graphic, OG image, social card | `readytogo promo --target <id> --title "…" --logo logo.svg` or the HTML template for richer art | `references/mockups.md` |
-| 3D device mockup, hero image, animated loop or video | scaffold `templates/3d`, then `readytogo render … --video out.mp4` | `references/mockups-3d.md` |
-| Listing text within limits | write it, then `readytogo listing fields.json` | `references/store-specs.md` |
-| Hide secrets/PII in a screenshot, or highlight a region | `readytogo annotate img.png --box x,y,w,h --mode redact\|highlight` | `references/assets.md` |
-| On-page SEO score and link-preview tags | `readytogo seo page.html\|https://…` | `references/checklists/technical-seo.md` |
+| **Where do the screenshots / recordings come from?** | `references/capture.md` | – |
+| 2D mockups: screenshot in a macOS, Windows or Linux browser or app window; store screenshot sets; promo tiles; OG and social images | `references/mockups.md` | `assets/frames/` (7 OS frames, light/dark, `compose.html`), `templates/promo/` |
+| 3D: phone and laptop shots with camera moves, video on the screen, backgrounds | `references/mockups-3d.md` | `assets/3d/models/` (4 phones, 3 laptops), `templates/3d/scene.html` + `examples/` |
+| Icon master, capture, placement per platform, listing copy | `references/assets.md` | – |
 
-Every command writes to `.readytogo/assets/…` unless you pass `--out`. Copy results to where the project expects them (see placement in `references/assets.md`); do not overwrite existing user assets without asking.
+### Always ask before making mockups
+
+Before any mockup or promo asset, ask the user (in one message):
+1. **Media source:** "Do you have screenshots or screen recordings I should use, or should I capture fresh ones (Playwright for web and extensions, simulator/emulator for mobile, OS capture for desktop)?" If they have files, ask for the paths. If fresh, confirm what to show (flows, account state, theme, language) and that it is safe to run the app and use demo data.
+2. **Surface and style:** where it will be used (store listing, landing hero, Product Hunt, social), still or video, light/dark, brand colours.
+
+Do not capture the user's real data, sign in with their accounts, or run their app without their go-ahead.
 
 ## Rules
 
-- **Screenshots show the real product.** Capture them from the running app (Playwright for web and extensions, simulator or `adb` for mobile, see `references/assets.md`). Never draw UI that does not exist or claim features the product lacks. Seed demo data; redact personal data.
-- **Store rules drift.** Each checklist has a `Last verified` date. If it is older than ~90 days, or the item is high-stakes (privacy label, data safety, signing), confirm against the store's live documentation before bulk-generating.
+- **Screenshots show the real product.** Never draw UI that does not exist or claim features the product lacks. Seed demo data; redact personal data.
+- **Store rules drift.** Each checklist has a `Last verified` date; if older than ~90 days, or the item is high-stakes (privacy label, data safety, signing), confirm against the store's live documentation first.
 - **Do not submit, publish, pay or sign for the user.** Prepare everything; stop before the irreversible step.
-- **Legal text is a draft.** You may draft privacy policy, terms and refund text from the product facts, but say plainly that it needs the owner's review. Never invent company details, addresses or registrations.
-- **Never write secrets** into files, logs or assets. `build.secrets-repo` failures are fixed by rotating the key, not only deleting the line.
-- **Marks are claims.** `done` means you or the user verified it; put the evidence in `--note`.
-- Use the product's own name, tagline and description from the profile for all copy; keep to the character limits in `references/store-specs.md`.
+- **Legal text is a draft** that needs the owner's review. Never invent company details.
+- **Never write secrets** into files, logs or assets. `build.secrets-repo` failures are fixed by rotating the key.
+- **Analysers advise, you decide.** `deadcode` and `backlinks` are heuristics: confirm before deleting code or disavowing links.
+- **Marks are claims.** `done` means verified; put the evidence in `--note`.
+- Use the profile's name, tagline and description for all copy; keep to the limits in `references/store-specs.md`.
 
 ## Files
 
-- `references/workflow.md`: details on profiling, monorepos, state files, CI gating, re-runs.
-- `references/commands.md`: every CLI command and option.
-- `references/assets.md`: master icon rules, capture, placement per platform, promo copy.
-- `references/mockups.md`: 2D mockup and screenshot composition guidelines.
-- `references/mockups-3d.md`: three.js mockups, motion design, render pipeline, GLB model contract.
-- `references/store-specs.md`: generated size and limit tables. `references/checklists/`: generated checklists.
-- `templates/3d/device-scene.html`, `templates/promo/tile.html`: editable render templates.
-- `assets/3d/models/`: bundled GLB device models (none yet) and their contract.
+`references/`: `workflow.md` (state, monorepos, CI), `commands.md` (every command), `capture.md`, `assets.md`, `mockups.md`, `mockups-3d.md`, `store-specs.md` and `checklists/` (generated from `data/*.json`).
+`assets/frames/` OS frames · `assets/3d/models/` device models · `templates/3d/` director-driven scene + examples · `templates/promo/` HTML promo starter.

@@ -1,5 +1,5 @@
 {
- "version": "1ssbw3g",
+ "version": "1ssbw3g-rtg2",
  "phases": [
   {
    "id": "foundation",
@@ -3053,7 +3053,10 @@
     "tagline",
     "description"
    ],
-   "autoCheck": true
+   "autoCheck": true,
+   "commands": [
+    "readytogo seo <page.html|https://yoursite.com/>"
+   ]
   },
   {
    "id": "seo.og",
@@ -3070,7 +3073,10 @@
     "meta-tags",
     "link-preview"
    ],
-   "autoCheck": true
+   "autoCheck": true,
+   "commands": [
+    "readytogo seo <page.html|https://yoursite.com/>"
+   ]
   },
   {
    "id": "seo.prerender",
@@ -3146,7 +3152,10 @@
    ],
    "priority": "recommended",
    "minutes": 15,
-   "autoCheck": true
+   "autoCheck": true,
+   "commands": [
+    "readytogo seo <page.html|https://yoursite.com/>"
+   ]
   },
   {
    "id": "seo.search-console",
@@ -4230,6 +4239,9 @@
     "tagline",
     "description",
     "url"
+   ],
+   "commands": [
+    "readytogo backlinks <listing-urls.txt> --target yoursite.com --verify   (after you are listed)"
    ]
   },
   {
@@ -4265,7 +4277,10 @@
      "platform:cli",
      "platform:library"
     ]
-   }
+   },
+   "commands": [
+    "readytogo backlinks <listing-urls.txt> --target yoursite.com --verify   (after you are listed)"
+   ]
   },
   {
    "id": "launch.peerpush",
@@ -4285,6 +4300,9 @@
     "tagline",
     "description",
     "url"
+   ],
+   "commands": [
+    "readytogo backlinks <listing-urls.txt> --target yoursite.com --verify   (after you are listed)"
    ]
   },
   {
@@ -4362,7 +4380,10 @@
      "mobile",
      "platform:extension"
     ]
-   }
+   },
+   "commands": [
+    "readytogo backlinks <listing-urls.txt> --target yoursite.com --verify   (after you are listed)"
+   ]
   },
   {
    "id": "launch.betalist",
@@ -4386,7 +4407,10 @@
      "platform:web",
      "mobile"
     ]
-   }
+   },
+   "commands": [
+    "readytogo backlinks <listing-urls.txt> --target yoursite.com --verify   (after you are listed)"
+   ]
   },
   {
    "id": "launch.uneed",
@@ -4410,7 +4434,10 @@
     "none": [
      "platform:library"
     ]
-   }
+   },
+   "commands": [
+    "readytogo backlinks <listing-urls.txt> --target yoursite.com --verify   (after you are listed)"
+   ]
   },
   {
    "id": "launch.microlaunch",
@@ -4433,7 +4460,10 @@
     "none": [
      "platform:library"
     ]
-   }
+   },
+   "commands": [
+    "readytogo backlinks <listing-urls.txt> --target yoursite.com --verify   (after you are listed)"
+   ]
   },
   {
    "id": "launch.devhunt",
@@ -4458,7 +4488,10 @@
      "platform:cli",
      "platform:library"
     ]
-   }
+   },
+   "commands": [
+    "readytogo backlinks <listing-urls.txt> --target yoursite.com --verify   (after you are listed)"
+   ]
   },
   {
    "id": "launch.indie-hackers",
@@ -4479,7 +4512,10 @@
      "platform:desktop",
      "platform:extension"
     ]
-   }
+   },
+   "commands": [
+    "readytogo backlinks <listing-urls.txt> --target yoursite.com --verify   (after you are listed)"
+   ]
   },
   {
    "id": "launch.saashub",
@@ -4503,7 +4539,10 @@
      "platform:web",
      "platform:api"
     ]
-   }
+   },
+   "commands": [
+    "readytogo backlinks <listing-urls.txt> --target yoursite.com --verify   (after you are listed)"
+   ]
   },
   {
    "id": "launch.taaft",
@@ -4526,7 +4565,10 @@
     "any": [
      "ai:any"
     ]
-   }
+   },
+   "commands": [
+    "readytogo backlinks <listing-urls.txt> --target yoursite.com --verify   (after you are listed)"
+   ]
   },
   {
    "id": "launch.futurepedia",
@@ -4549,7 +4591,10 @@
     "any": [
      "ai:any"
     ]
-   }
+   },
+   "commands": [
+    "readytogo backlinks <listing-urls.txt> --target yoursite.com --verify   (after you are listed)"
+   ]
   },
   {
    "id": "com.reddit",
@@ -4930,6 +4975,76 @@
    ],
    "priority": "nice",
    "minutes": 30
+  },
+  {
+   "id": "build.dead-code",
+   "checklist": "release-build",
+   "order": 95,
+   "title": "Unused code and imports removed",
+   "priority": "recommended",
+   "minutes": 30,
+   "why": "Dead code ships to users, inflates bundles, hides real bugs and leaks removed features.",
+   "steps": [
+    "Run the analyser, review HIGH findings (unused imports, unreachable code, unreferenced private declarations) and delete them.",
+    "Treat MEDIUM and LOW findings (unused exports, unreferenced files) as questions: public API, entry points and framework routes can look unused.",
+    "Re-run tests and the build after deleting."
+   ],
+   "appliesTo": {
+    "none": [
+     "fw:nocode"
+    ]
+   },
+   "commands": [
+    "readytogo setup deadcode   (once)",
+    "readytogo deadcode --min medium"
+   ]
+  },
+  {
+   "id": "seo.links",
+   "checklist": "technical-seo",
+   "order": 25,
+   "title": "No broken, insecure or chained links on key pages",
+   "priority": "recommended",
+   "minutes": 20,
+   "why": "Broken links lose visitors and search trust; redirect chains slow pages; http links on https pages warn browsers.",
+   "steps": [
+    "Run the link audit on the home page, pricing, docs and download pages (the live URL).",
+    "Fix every ERROR; fix WARN chains by linking to the final URL.",
+    "Add rel=\"noopener noreferrer\" to external target=\"_blank\" links."
+   ],
+   "appliesTo": {
+    "any": [
+     "store:website"
+    ]
+   },
+   "commands": [
+    "readytogo links https://yoursite.com/",
+    "readytogo seo https://yoursite.com/"
+   ]
+  },
+  {
+   "id": "post.backlinks",
+   "checklist": "post-launch",
+   "order": 15,
+   "title": "Launch listings and mentions actually link back",
+   "priority": "recommended",
+   "minutes": 30,
+   "why": "Directory and community listings only help if the link exists, is not nofollow-only everywhere, and the page is indexable.",
+   "steps": [
+    "Collect the URLs of your listings (Product Hunt, directories, posts) into a text file, or export links from Google Search Console (Links, Top linking sites) or your SEO tool.",
+    "Verify each still links to you and note rel flags; follow up on missing links.",
+    "Review risky domains before taking any disavow action; do not disavow on heuristics alone."
+   ],
+   "appliesTo": {
+    "any": [
+     "store:website",
+     "store:github",
+     "store:npm"
+    ]
+   },
+   "commands": [
+    "readytogo backlinks links.csv --target yoursite.com --verify"
+   ]
   }
  ]
 }

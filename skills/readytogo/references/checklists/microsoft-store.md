@@ -26,7 +26,7 @@ Phase: Pre-launch · Last verified: 2026-10-24 · Checklist applies when: any of
 
 - **Priority:** blocker · ~45 min · **Applies when:** the checklist applies
 - **Why:** All required before certification.
-- **Generate:** `readytogo shot <screenshot> --target <id>` · `readytogo promo --target <id> --title "…"` (ids: ms_store, ms_logo, ms_poster, ms_box, ms_hero, ms_promo)
+- **Generate:** capture a real screenshot (references/capture.md), then `readytogo shot <file> --target <id>` · design it as HTML at the exact size (references/mockups.md), `readytogo render` it, then `readytogo verify <file> --target <id>` (ids: ms_store, ms_logo, ms_poster, ms_box, ms_hero, ms_promo)
 - **Asset ids needed:** ms_store
 - **Steps:**
   1. Upload at least one 1366×768 screenshot.

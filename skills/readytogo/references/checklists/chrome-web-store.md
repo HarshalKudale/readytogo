@@ -34,7 +34,7 @@ Phase: Pre-launch · Last verified: 2026-10-24 · Checklist applies when: any of
 - **Priority:** recommended · ~45 min · **Applies when:** any of store:chrome_web_store
 - **Why:** Required listing assets; the promo tile helps you get featured.
 - **Auto-check:** `readytogo check` verifies this one.
-- **Generate:** `readytogo icons <master-icon.png|svg> --for chrome_web_store` · `readytogo shot <screenshot> --target <id>` · `readytogo promo --target <id> --title "…"` (ids: chrome, cws_small, cws_marquee)
+- **Generate:** `readytogo icons <master-icon.png|svg> --for chrome_web_store` · capture a real screenshot (references/capture.md), then `readytogo shot <file> --target <id>` · design it as HTML at the exact size (references/mockups.md), `readytogo render` it, then `readytogo verify <file> --target <id>` (ids: chrome, cws_small, cws_marquee)
 - **Steps:**
   1. Generate the icon set.
   2. Make 1–5 screenshots at 1280×800.
@@ -43,7 +43,7 @@ Phase: Pre-launch · Last verified: 2026-10-24 · Checklist applies when: any of
 
 - **Priority:** blocker · ~45 min · **Applies when:** any of store:firefox_addons
 - **Why:** AMO reviews separately and may ask for your source code if the build is bundled.
-- **Generate:** `readytogo icons <master-icon.png|svg> --for firefox_addons` · `readytogo shot <screenshot> --target <id>` (ids: firefox) · `readytogo listing <fields.json>` (field ids: amo_name, amo_summary)
+- **Generate:** `readytogo icons <master-icon.png|svg> --for firefox_addons` · capture a real screenshot (references/capture.md), then `readytogo shot <file> --target <id>` (ids: firefox) · `readytogo listing <fields.json>` (field ids: amo_name, amo_summary)
 - **Steps:**
   1. Add browser_specific_settings.gecko.id to the manifest.
   2. (any of fw:wxt) WXT: wxt zip -b firefox also produces the sources zip AMO asks for.
@@ -53,7 +53,7 @@ Phase: Pre-launch · Last verified: 2026-10-24 · Checklist applies when: any of
 
 - **Priority:** recommended · ~30 min · **Applies when:** any of store:edge_addons
 - **Why:** Edge has its own Partner Center review; the Chrome package usually works as-is.
-- **Generate:** `readytogo icons <master-icon.png|svg> --for edge_addons` · `readytogo shot <screenshot> --target <id>` · `readytogo promo --target <id> --title "…"` (ids: edge, edge_logo, edge_small, edge_large)
+- **Generate:** `readytogo icons <master-icon.png|svg> --for edge_addons` · capture a real screenshot (references/capture.md), then `readytogo shot <file> --target <id>` · design it as HTML at the exact size (references/mockups.md), `readytogo render` it, then `readytogo verify <file> --target <id>` (ids: edge, edge_logo, edge_small, edge_large)
 - **Steps:**
   1. Register in Partner Center for Microsoft Edge.
   2. Upload the same zip and reuse your Chrome listing copy.

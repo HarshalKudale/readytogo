@@ -32,7 +32,7 @@ Phase: Pre-launch · Last verified: 2026-10-24 · Checklist applies when: any of
 
 - **Priority:** blocker · ~30 min · **Applies when:** the checklist applies
 - **Why:** Both are required before you can publish.
-- **Generate:** `readytogo icons <master-icon.png|svg> --for play_store` · `readytogo shot <screenshot> --target <id>` · `readytogo promo --target <id> --title "…"` (ids: play_phone, play_tablet7, play_tablet, play_feature)
+- **Generate:** `readytogo icons <master-icon.png|svg> --for play_store` · capture a real screenshot (references/capture.md), then `readytogo shot <file> --target <id>` · design it as HTML at the exact size (references/mockups.md), `readytogo render` it, then `readytogo verify <file> --target <id>` (ids: play_phone, play_tablet7, play_tablet, play_feature)
 - **Asset ids needed:** play_feature
 - **Steps:**
   1. Export the icon at 512×512 PNG.
@@ -42,7 +42,7 @@ Phase: Pre-launch · Last verified: 2026-10-24 · Checklist applies when: any of
 
 - **Priority:** blocker · ~45 min · **Applies when:** the checklist applies
 - **Why:** Required, and the main driver of installs.
-- **Generate:** `readytogo shot <screenshot> --target <id>` · `readytogo promo --target <id> --title "…"` (ids: play_phone, play_tablet7, play_tablet, play_feature)
+- **Generate:** capture a real screenshot (references/capture.md), then `readytogo shot <file> --target <id>` · design it as HTML at the exact size (references/mockups.md), `readytogo render` it, then `readytogo verify <file> --target <id>` (ids: play_phone, play_tablet7, play_tablet, play_feature)
 - **Asset ids needed:** play_phone, play_tablet7, play_tablet
 - **Steps:**
   1. Upload 1080×1920 screenshots with short captions.

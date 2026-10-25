@@ -21,19 +21,11 @@
   },
   "scripts": {
     "build:docs": "node scripts/build-references.mjs",
-    "export": "node scripts/export-from-sass.mjs",
+    "build:models": "node scripts/build-models.mjs",
     "test": "node --test test/*.test.js"
   },
   "dependencies": {
     "sharp": "^0.35.5"
-  },
-  "peerDependencies": {
-    "playwright": ">=1.45"
-  },
-  "peerDependenciesMeta": {
-    "playwright": {
-      "optional": true
-    }
   },
   "devDependencies": {
     "playwright": "^1.64.1"

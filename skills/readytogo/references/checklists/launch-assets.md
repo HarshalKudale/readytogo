@@ -8,7 +8,7 @@ Phase: Build assets · Last verified: 2026-10-24 · Checklist applies when: alwa
 
 - **Priority:** recommended · ~20 min · **Applies when:** any of platform:web, mobile, platform:desktop, platform:extension
 - **Why:** A product shot in a device frame reads as a real product at a glance.
-- **Generate:** `readytogo frame <screenshot> --frame phone` · `readytogo frame <screenshot> --frame browser` · `readytogo frame <screenshot> --frame window` · 3D: see `references/mockups-3d.md`
+- **Generate:** frame the screenshot: see `references/mockups.md` (OS frames in assets/frames, device scene in templates/3d) · 3D scene: see `references/mockups-3d.md`
 - **Steps:**
   1. Pick your 3 strongest screens.
   2. Drop them into a frame that matches where it runs.
@@ -18,7 +18,7 @@ Phase: Build assets · Last verified: 2026-10-24 · Checklist applies when: alwa
 - **Priority:** recommended · ~15 min · **Applies when:** any of store:website
 - **Why:** Used whenever someone shares your link on X, LinkedIn, Slack or WhatsApp.
 - **Auto-check:** `readytogo check` verifies this one.
-- **Generate:** `readytogo promo --target <id> --title "…"` (ids: og) · `readytogo frame <screenshot> --frame browser`
+- **Generate:** design it as HTML at the exact size (references/mockups.md), `readytogo render` it, then `readytogo verify <file> --target <id>` (ids: og) · frame the screenshot: see `references/mockups.md` (OS frames in assets/frames, device scene in templates/3d)
 - **Asset ids needed:** og
 - **Steps:**
   1. Use a mockup or your logo with your tagline.

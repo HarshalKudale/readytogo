@@ -29,31 +29,19 @@ Always ask before replacing an existing icon or screenshot set.
 
 ## 3. Capturing real screenshots
 
-Screenshots must show the actual product with believable demo data. Pick the right capture route:
+Ask first: use the user's own screenshots or recordings, or capture fresh? The per-platform capture recipes (web, extension, iOS, Android, Electron, desktop, CLI), the status-bar and demo-data preparation, and ready templates are in `references/capture.md`.
 
-| Product | How |
-|---|---|
-| Web app | Playwright, a fixed viewport, seeded account, `page.screenshot({ path, fullPage: false })`. Capture at the **aspect the target needs** (see `specs`), at device scale 2 for sharpness. Both light and dark if the product has both. |
-| Browser extension | Playwright with `chromium.launchPersistentContext` + `--load-extension=<dist>` (and `--disable-extensions-except`); open the popup page URL `chrome-extension://<id>/popup.html` at a popup-sized viewport, and the options/new-tab pages at 1280×800. Capture the *extension's value on a real page*, not only its settings. |
-| iOS | Simulator at the device size the store wants: `xcrun simctl boot "<device>"`, then `xcrun simctl io booted screenshot out.png`. Set a clean status bar: `xcrun simctl status_bar booted override --time "9:41" --batteryState charged --batteryLevel 100 --cellularBars 4`. |
-| Android | Emulator or device: `adb exec-out screencap -p > out.png`; demo mode for the status bar: `adb shell settings put global sysui_demo_allowed 1` then `adb shell am broadcast -a com.android.systemui.demo -e command clock -e hhmm 1200`. |
-| Electron | `@playwright/test` `_electron.launch()`, `window.screenshot()`; or OS screenshot of a fixed window size. |
-| Tauri / native desktop | OS-level window capture at a fixed size (macOS `screencapture -l <windowid>`, Windows Snipping/`PrintWindow`, Linux `import -window`), or WebDriver for Tauri. |
-| CLI / TUI | Record with `asciinema` or `vhs` (a `.tape` script) and render a PNG/GIF from the final frame. |
+Then fit to the store: `readytogo shot cap/*.png --target play_phone`, and `readytogo verify` the result. If `shot` warns about cropping, recapture at the right aspect instead of accepting a bad crop.
 
-Preparation checklist: seeded, plausible data (no lorem ipsum, no real customers); no debug banners, dev toolbars or localhost URLs; consistent theme and language; notifications and unrelated windows off; no personal data (use `annotate --mode redact` if unavoidable).
+## 4. Promo tiles, mockups and graphics
 
-Then fit to the store: `readytogo shot cap/*.png --target play_phone`. If it warns about cropping, recapture at the right aspect instead of accepting a bad crop.
-
-## 4. Promo tiles and graphics
-
-Use `readytogo promo --target <id>` for clean text-and-logo tiles. Rules of thumb:
+These are designed, not generated: there is no `promo` or `frame` command. Compose them from the shipped parts (OS frames, 3D models, promo tile) following `references/mockups.md` and `references/mockups-3d.md`, render with `readytogo render`, and check the exact size with `readytogo verify`. Rules of thumb:
 
 - One idea per tile: product name plus a benefit of at most six words. The small tiles (440×280, 240×240) are read at thumbnail size; if you cannot read it at 25% zoom, cut words.
 - High contrast (WCAG AA at least), brand colours from the logo, logo clearly visible, safe margin 8–10%.
 - No store badges, no pricing, no "#1", no claims you cannot prove, no screenshots of competitors.
 - Feature graphics and marquees get cropped differently across surfaces; keep key content in the centre 80%.
-- For art that needs real screenshots, brand fonts or layered shapes, copy `templates/promo/tile.html`, edit it, and render it: `readytogo render "/__skill/templates/promo/tile.html?title=…&logo=/logo.png&shot=/shot.png" --size 1400x560 --out marquee.png`.
+- Start from `readytogo scaffold promo`, then `readytogo render "tile.html?title=…&logo=/logo.png&shot=/shot.png" --size 1400x560 --out marquee.png`.
 
 ## 5. Listing copy
 
@@ -68,5 +56,5 @@ Write from the product's real README, site and features; never invent features o
 ## 6. Licensing hygiene
 
 - Fonts and icons used in art must be licensed for commercial use; prefer the product's own brand assets.
-- Device frames from `frame` and the 3D template are generic and original, not any manufacturer's artwork, so they are safe to publish. Do not add Apple/Google trademarked badges or logos to art unless the user supplies the official badge from the vendor's marketing guidelines.
+- The OS frames and the 3D models are generic and original, not any manufacturer's artwork, so they are safe to publish. Do not add Apple/Google trademarked badges or logos to art unless the user supplies the official badge from the vendor's marketing guidelines.
 - GLB models: see `assets/3d/models/README.md`; keep `license` and attribution.

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Frame composer</title>
+<!--
+  Puts a screenshot or screen recording inside an OS browser/app frame on a background. Pure HTML: copy and edit freely.
+    readytogo render "/__skill/assets/frames/compose.html?frame=browser-macos-tabs&theme=dark&screen=/shot.png&url=acme.com&tab=Dashboard&bg=linear-gradient(135deg,%23e0e7ff,%23fce7f3)" --size 1920x1080 --out hero.png
+  Parameters
+    frame   browser-macos-tabs | browser-macos-compact | browser-windows-tabs | browser-linux | app-macos | app-windows | app-linux
+    theme   light | dark              screen  image URL, or .webm for a recording (use `readytogo video` to convert)
+    url     address shown in browsers  tab / title  tab text or window title
+    bg      CSS background (URL-encode) default transparent        pad  margin around the frame, 0-0.4 (default 0.08)
+    shadow  0 removes the drop shadow  align  top | center (vertical position of the frame, default center)
+  Size comes from `render --size`. The frame width is solved so the whole frame fits with no cropping.
+-->
+<link rel="stylesheet" href="frames.css">
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: transparent; }
+  #stage { position: absolute; inset: 0; display: flex; justify-content: center; }
+  .rtg-frame.noshadow { box-shadow: none; }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script type="module">
+import { frameHTML, fitWidth, FRAMES } from "./frames.js";
+
+const q = new URLSearchParams(location.search);
+const name = q.get("frame") || "browser-macos-tabs";
+const pad = +(q.get("pad") ?? 0.08);
+if (q.get("bg")) document.body.style.background = q.get("bg");
+const stage = document.getElementById("stage");
+stage.style.alignItems = q.get("align") === "top" ? "flex-start" : "center";
+stage.innerHTML = frameHTML(name, { theme: q.get("theme") || "light", url: q.get("url") || "example.com", title: q.get("title") || "App", tab: q.get("tab") || q.get("title") || "App" });
+const frame = stage.firstElementChild;
+if (q.get("shadow") === "0") frame.classList.add("noshadow");
+if (q.get("align") === "top") frame.style.marginTop = `${pad * innerHeight}px`;
+
+const src = q.get("screen");
+let media;
+if (!src) {
+  media = document.createElement("canvas"); media.width = 1600; media.height = 1000;
+  const x = media.getContext("2d"), g = x.createLinearGradient(0, 0, 1600, 1000); g.addColorStop(0, "#6366f1"); g.addColorStop(1, "#0ea5e9");
+  x.fillStyle = g; x.fillRect(0, 0, 1600, 1000); x.fillStyle = "rgba(255,255,255,.9)"; x.font = "600 80px Helvetica, Arial"; x.textAlign = "center"; x.fillText("Your screen", 800, 520);
+} else if (/\.(webm|mp4|mov)(\?|$)/i.test(src)) {
+  media = Object.assign(document.createElement("video"), { src, muted: true, playsInline: true, preload: "auto" });
+  await new Promise((ok, no) => { media.addEventListener("loadeddata", ok, { once: true }); media.addEventListener("error", () => no(new Error("video failed to load: " + src)), { once: true }); });
+} else {
+  media = new Image(); media.src = src; await media.decode();
+}
+frame.querySelector(".rtg-screen").append(media);
+const ar = (media.videoWidth || media.naturalWidth || media.width) / (media.videoHeight || media.naturalHeight || media.height);
+
+function layout() {
+  frame.style.setProperty("--fw", `${fitWidth(name, ar, innerWidth, innerHeight, pad)}px`);
+  // The chrome has 1px rules, so measure and shrink once if the frame is a hair too tall.
+  const h = frame.getBoundingClientRect().height, max = innerHeight * (1 - 2 * pad);
+  if (h > max) frame.style.setProperty("--fw", `${(parseFloat(frame.style.getPropertyValue("--fw")) * max) / h}px`);
+}
+layout();
+addEventListener("resize", layout);
+
+// Recordings are sampled from the timeline so renders are frame-exact.
+window.__duration = media.duration || 0;
+window.__seek = async (t) => {
+  if (media.tagName !== "VIDEO") return;
+  media.currentTime = media.duration ? t % media.duration : 0;
+  await new Promise((ok) => media.addEventListener("seeked", ok, { once: true }));
+};
+if (media.tagName === "VIDEO" && q.get("capture") !== "1" && !navigator.webdriver) { media.loop = true; media.play(); }
+window.__ready = true;
+</script>
+</body>
+</html>

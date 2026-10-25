@@ -72,7 +72,7 @@ Phase: Pre-launch · Last verified: 2026-10-24 · Checklist applies when: any of
 - **Priority:** recommended · ~20 min · **Applies when:** any of store:github
 - **Why:** GitHub search and topic pages drive discovery for developer tools.
 - **Auto-check:** `readytogo check` verifies this one.
-- **Generate:** `readytogo promo --target <id> --title "…"` (ids: github_social)
+- **Generate:** design it as HTML at the exact size (references/mockups.md), `readytogo render` it, then `readytogo verify <file> --target <id>` (ids: github_social)
 - **Steps:**
   1. Add a one-line description, website link and 5–10 topics.
   2. Add CONTRIBUTING.md and issue templates.

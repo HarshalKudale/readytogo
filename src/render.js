@@ -3,25 +3,18 @@
 import { spawnSync } from "node:child_process";
 import { createReadStream, cpSync, existsSync, mkdirSync, readFileSync, rmSync, statSync } from "node:fs";
 import { createServer } from "node:http";
-import { createRequire } from "node:module";
 import { dirname, extname, join, normalize, relative, resolve, sep } from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
+import { importTool } from "./tools.js";
 
 export const SKILL_DIR = fileURLToPath(new URL("../skills/readytogo/", import.meta.url));
 
 const MIME = { ".html": "text/html", ".js": "text/javascript", ".mjs": "text/javascript", ".css": "text/css", ".json": "application/json", ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp", ".svg": "image/svg+xml", ".glb": "model/gltf-binary", ".gltf": "model/gltf+json", ".bin": "application/octet-stream", ".hdr": "application/octet-stream", ".woff2": "font/woff2", ".ttf": "font/ttf", ".mp4": "video/mp4" };
 
 export async function loadPlaywright(cwd) {
-  for (const base of [join(cwd, "noop.js"), import.meta.url]) {
-    try {
-      const path = createRequire(base).resolve("playwright");
-      const mod = await import(pathToFileURL(path).href);
-      return mod.chromium ? mod : mod.default; // CJS package: named exports may sit on default
-    } catch {
-      // try the next resolution base
-    }
-  }
-  throw new Error("Playwright is not installed. Run: npm i -D playwright && npx playwright install chromium");
+  const mod = await importTool("playwright", [cwd]);
+  if (!mod) throw new Error("Playwright is not set up. Run: readytogo setup render");
+  return mod.chromium ? mod : mod.default;
 }
 
 // Serves `root` (the project) and `/__skill/` (templates and models that ship with this skill) on localhost only.
@@ -40,7 +33,7 @@ function serve(root) {
   return new Promise((ok) => server.listen(0, "127.0.0.1", () => ok(server)));
 }
 
-export async function render({ html, size = "1280x800", out, scale = 1, transparent = false, wait = 0, frames, fps = 30, duration, video, at, root = process.cwd() }) {
+export async function render({ html, size = "1280x800", out, scale = 1, transparent = false, wait = 0, frames, fps, duration, video, at, root = process.cwd() }) {
   const [width, height] = size.split("x").map(Number);
   if (!width || !height) throw new Error(`Bad --size "${size}", want WxH`);
   const pw = await loadPlaywright(root);
@@ -51,7 +44,7 @@ export async function render({ html, size = "1280x800", out, scale = 1, transpar
     const page = await (await browser.newContext({ viewport: { width, height }, deviceScaleFactor: scale })).newPage();
     const errors = [];
     page.on("pageerror", (e) => errors.push(e.message));
-    page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
+    page.on("console", (m) => m.type() === "error" && !/.glb/.test(m.location().url) && errors.push(m.text())); // model path probes 404 by design
     const rel = html.startsWith("/__skill/") ? html : "/" + relative(root, resolve(root, html.split("?")[0])).split(sep).join("/") + (html.includes("?") ? "?" + html.split("?")[1] : "");
     await page.goto(`http://127.0.0.1:${server.address().port}${rel}`, { waitUntil: "networkidle" });
     // Pages that load assets asynchronously set window.__ready = true when the first frame is final.
@@ -60,6 +53,10 @@ export async function render({ html, size = "1280x800", out, scale = 1, transpar
     if (wait) await page.waitForTimeout(wait);
     const shot = (path) => page.screenshot({ path, omitBackground: transparent });
 
+    // Scene pages declare their own length (window.__duration) and frame rate (window.__fps).
+    const pageDuration = video || frames || duration ? await page.evaluate(() => window.__duration) : undefined;
+    duration ??= video && !frames ? pageDuration : duration;
+    fps ??= (await page.evaluate(() => window.__fps)) ?? 30;
     if (!frames && !duration) {
       mkdirSync(dirname(resolve(out)), { recursive: true });
       await shot(out);
@@ -91,17 +88,19 @@ export async function render({ html, size = "1280x800", out, scale = 1, transpar
   }
 }
 
-// Copies a template folder (and optionally models) into the project so the agent can edit it.
+// Copies a starter folder (and optionally bundled models) into the project so the agent can edit it.
+const STARTERS = { "3d": ["templates", "3d"], frames: ["assets", "frames"], promo: ["templates", "promo"] };
 export function scaffold(kind, dir, models = []) {
-  const from = join(SKILL_DIR, "templates", kind);
-  if (!existsSync(from)) throw new Error(`Unknown template "${kind}". Available: 3d, promo`);
+  if (!STARTERS[kind]) throw new Error(`Unknown starter "${kind}". Available: ${Object.keys(STARTERS).join(", ")}`);
+  const from = join(SKILL_DIR, ...STARTERS[kind]);
   cpSync(from, dir, { recursive: true });
   const copied = [];
-  for (const m of models) {
-    const src = join(SKILL_DIR, "assets", "3d", "models", m);
-    if (!existsSync(src)) throw new Error(`Model "${m}" not found. List them with \`readytogo models\`.`);
-    cpSync(src, join(dir, "models", m), { recursive: true });
-    copied.push(m);
+  for (const id of models) {
+    const m = listModels().find((x) => x.id === id);
+    if (!m) throw new Error(`Model "${id}" not found. List them with \`readytogo models\`.`);
+    mkdirSync(join(dir, "models"), { recursive: true });
+    cpSync(join(SKILL_DIR, "assets", "3d", "models", m.file), join(dir, "models", m.file));
+    copied.push(id);
   }
   return { dir, copied };
 }

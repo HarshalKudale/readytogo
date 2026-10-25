@@ -1,0 +1,60 @@
+/* OS window frames. Set --fw (the frame width in px) on .rtg-frame or an ancestor; everything else scales from it. */
+.rtg-frame {
+  --u: calc(var(--fw, 1000px) / 100);
+  --bar: #e9e9ed; --tool: #f7f7f9; --omni: #e4e4e9; --fg: #3a3a42; --muted: #8a8a94; --line: #d3d3da; --tabbg: #f7f7f9; --accent: #0ea5e9;
+  --radius: 1.2; --shadow: 0 calc(var(--u) * 2.2) calc(var(--u) * 6) rgba(0, 0, 0, .28), 0 0 0 1px rgba(0, 0, 0, .08);
+  width: var(--fw, 1000px); border-radius: calc(var(--u) * var(--radius)); background: var(--bar); box-shadow: var(--shadow);
+  overflow: hidden; color: var(--fg); font: 500 calc(var(--u) * 1.35) / 1 system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+}
+.rtg-frame[data-theme="dark"] { --bar: #2b2b30; --tool: #36363c; --omni: #232327; --fg: #e8e8ee; --muted: #9a9aa6; --line: #1c1c20; --tabbg: #36363c; --shadow: 0 calc(var(--u) * 2.2) calc(var(--u) * 6) rgba(0, 0, 0, .6), 0 0 0 1px rgba(255, 255, 255, .08); }
+.rtg-frame[data-frame$="macos-tabs"], .rtg-frame[data-frame$="macos-compact"], .rtg-frame[data-frame="app-macos"] { --radius: 1.2; }
+.rtg-frame[data-os="windows"] { --radius: .8; }
+.rtg-frame[data-os="linux"] { --radius: 1; }
+
+.rtg-chrome { display: block; }
+.bar { display: flex; align-items: center; gap: calc(var(--u) * 1.1); padding: 0 calc(var(--u) * 1.8); box-sizing: border-box; white-space: nowrap; }
+.bar.tabs { height: calc(var(--u) * 5.6); background: var(--bar); padding-top: calc(var(--u) * .8); align-items: flex-end; }
+.bar.tool { height: calc(var(--u) * 6); background: var(--tool); border-bottom: 1px solid var(--line); }
+.bar.tool.only { height: calc(var(--u) * 5.4); }
+.rtg-frame[data-frame="browser-linux"] .bar.tool.only { height: calc(var(--u) * 5.8); background: var(--bar); }
+.bar.title { height: calc(var(--u) * 4.8); background: var(--bar); border-bottom: 1px solid var(--line); position: relative; }
+.rtg-frame[data-frame="app-windows"] .bar.title { height: calc(var(--u) * 4.4); padding-right: 0; }
+.rtg-frame[data-frame="app-linux"] .bar.title { height: calc(var(--u) * 5); }
+.rtg-frame[data-os="windows"] .bar.tabs { padding-right: 0; }
+.rtg-frame[data-os="windows"] .bar.tool { padding-right: calc(var(--u) * 1.8); }
+
+.lights { display: inline-flex; gap: calc(var(--u) * 1); margin-right: calc(var(--u) * 1); align-self: center; }
+.lights i { width: calc(var(--u) * 1.5); height: calc(var(--u) * 1.5); border-radius: 50%; background: #ff5f57; box-shadow: inset 0 0 0 .5px rgba(0, 0, 0, .15); }
+.lights i:nth-child(2) { background: #febc2e; } .lights i:nth-child(3) { background: #28c840; }
+.bar.tabs .lights { align-self: center; margin-bottom: calc(var(--u) * .8); }
+
+.tab { display: inline-flex; align-items: center; gap: calc(var(--u) * 1); height: calc(var(--u) * 4.4); width: calc(var(--u) * 20); padding: 0 calc(var(--u) * 1.4); box-sizing: border-box; background: var(--tabbg); border-radius: calc(var(--u) * 1.1) calc(var(--u) * 1.1) 0 0; overflow: hidden; }
+.rtg-frame[data-os="windows"] .tab { border-radius: calc(var(--u) * .9) calc(var(--u) * .9) 0 0; margin-left: calc(var(--u) * 1.2); }
+.tab .txt { flex: 1; overflow: hidden; text-overflow: ellipsis; color: var(--fg); }
+.fav { width: calc(var(--u) * 1.5); height: calc(var(--u) * 1.5); border-radius: calc(var(--u) * .4); background: var(--accent); flex: none; }
+
+.ic { display: inline-flex; width: calc(var(--u) * 2.6); height: calc(var(--u) * 2.6); align-items: center; justify-content: center; color: var(--muted); flex: none; }
+.ic.sm { width: calc(var(--u) * 1.9); height: calc(var(--u) * 1.9); }
+.ic svg { width: 62%; height: 62%; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ic svg.fill { fill: currentColor; stroke: none; }
+
+.omni { display: inline-flex; align-items: center; gap: calc(var(--u) * 1); height: calc(var(--u) * 3.4); padding: 0 calc(var(--u) * 1.4); border-radius: calc(var(--u) * 1.7); background: var(--omni); color: var(--fg); min-width: 0; }
+.omni.wide { flex: 1; }
+.omni.center { flex: 0 1 calc(var(--u) * 48); margin: 0 auto; justify-content: center; }
+.omni svg { width: calc(var(--u) * 1.3); height: calc(var(--u) * 1.3); fill: var(--muted); flex: none; }
+.omni .txt { overflow: hidden; text-overflow: ellipsis; }
+.spacer { flex: 1; }
+.title { font-weight: 600; color: var(--fg); }
+.title.center { position: absolute; left: 50%; transform: translateX(-50%); }
+
+.wc { display: inline-flex; align-self: stretch; }
+.wc .ic { width: calc(var(--u) * 4.6); height: auto; color: var(--fg); border-radius: 0; }
+.wc .ic svg { width: 30%; height: 30%; stroke-width: 1.6; }
+.wc .ic:last-child:hover, .rtg-frame[data-os="windows"] .wc .ic:last-child { }
+.wc.round { align-self: center; gap: calc(var(--u) * .8); margin-left: calc(var(--u) * .6); }
+.wc.round .ic { width: calc(var(--u) * 2.4); height: calc(var(--u) * 2.4); border-radius: 50%; background: color-mix(in srgb, var(--fg) 12%, transparent); }
+.wc.round .ic svg { width: 56%; height: 56%; }
+
+.rtg-screen { position: relative; background: #000; line-height: 0; overflow: hidden; }
+.rtg-screen > img, .rtg-screen > video, .rtg-screen > canvas { display: block; width: 100%; height: auto; }

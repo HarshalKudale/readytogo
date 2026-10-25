@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { basename, join, resolve } from "node:path";
+import { basename, join, relative, resolve, sep } from "node:path";
 import { parseArgs } from "node:util";
 import { runChecks, context } from "../src/checks.js";
 import { buildPlan, isClosed, summarize } from "../src/plan.js";
@@ -20,24 +20,29 @@ Readiness
   mark <item-id> <done|skipped|na|open> [--note "…"]
   report [--out READYTOGO.md] [--no-fail]
 
-Assets (exact pixels, no AI)
+Converters, resizers, analysers (exact and deterministic; they never design anything)
   specs [--store chrome_web_store] [--json]
   icons <src.png|svg> --for <set> [--out dir] [--bg #hex] [--padding 0.1] [--round] [--mac-grid] [--name App]
   shot <screenshot...> --target <id> [--fit cover|contain] [--bg #hex] [--out dir]
-  frame <screenshot> --frame phone|tablet|browser|window|laptop|card [--size landscape|og|square|hero|none|WxH]
-        [--bg "#hex|grad:#a,#b,135|transparent"] [--url example.com] [--dark] [--out file]
-  promo --target <id> --title "…" [--subtitle "…"] [--logo file] [--bg …] [--fg #fff] [--out file]
+  verify <image...> --target <id|WxH>     does the file meet the store spec (size, format, alpha, bytes)?
+  video <in> [--out file.webm|mp4|gif] [--width 1280] [--fps 30] [--start s] [--duration s] [--crf n]   (no --out: probe only)
   annotate <image> --box x,y,w,h [--box …] [--mode highlight|redact] [--out file]
   listing <fields.json>                 check store listing text against character limits
   seo <page.html|https://url>           on-page SEO score and link-preview tags
+  links <page.html|https://url> [--no-check] [--limit 150] [--allow-local]   broken/redirecting/unsafe links on a page
+  backlinks <export.csv|urls.txt> --target example.com [--verify] [--limit 100] [--json]   who links to you, and do they still?
+  deadcode [dir] [--lang ts,py] [--ignore glob,glob] [--min high|medium|low] [--max 200] [--strict] [--json]   unused code via tree-sitter
 
-Rendering / 3D (needs: npm i -D playwright && npx playwright install chromium)
-  scaffold <3d|promo> [--dir .readytogo/mockups] [--model name]
-  models                                list bundled 3D device models
-  render <page.html[?query]> --size 1600x1200 --out file.png [--transparent] [--scale 2]
-         [--at 2.0] [--duration 4 --fps 30 --video out.mp4|webm|gif | --frames N --out dir]
+Setup: tools that are downloaded, never bundled, so they stay current
+  setup [deadcode] [render] [--update]   installs tree-sitter + grammars / Playwright + Chromium into ~/.readytogo/tools
 
-  doctor                                check Node, sharp, Playwright, ffmpeg
+Mockup base assets and rendering (needs: readytogo setup render)
+  scaffold <3d|frames|promo> [--dir path] [--model id]   copy the scene / frames / starter into the project to edit
+  models                                list the bundled 3D phone and laptop models
+  render <page.html[?query]> --size 1600x1200 --out file.png [--transparent] [--scale 2] [--at 2.0]
+         [--video out.webm|mp4|gif [--duration s] [--fps 30] | --frames N --out dir]   (scene pages report their own duration)
+
+  doctor                                check Node, sharp, setup tools, ffmpeg
 Global: --root <dir> (default: current directory)`;
 
 const OPTIONS = {
@@ -45,9 +50,8 @@ const OPTIONS = {
   name: { type: "string" }, tagline: { type: "string" }, confirm: { type: "boolean" }, tags: { type: "boolean" }, open: { type: "boolean" },
   priority: { type: "string" }, checklist: { type: "string" }, only: { type: "string" }, note: { type: "string" }, out: { type: "string" },
   "no-fail": { type: "boolean" }, store: { type: "string" }, for: { type: "string" }, bg: { type: "string" }, padding: { type: "string" },
-  round: { type: "boolean" }, "mac-grid": { type: "boolean" }, target: { type: "string" }, fit: { type: "string" }, frame: { type: "string" },
-  size: { type: "string" }, url: { type: "string" }, dark: { type: "boolean" }, color: { type: "string" }, title: { type: "string" },
-  subtitle: { type: "string" }, logo: { type: "string" }, fg: { type: "string" }, accent: { type: "string" }, mode: { type: "string" },
+  round: { type: "boolean" }, "mac-grid": { type: "boolean" }, target: { type: "string" }, fit: { type: "string" }, width: { type: "string" }, limit: { type: "string" }, verify: { type: "boolean" }, "no-check": { type: "boolean" }, "allow-local": { type: "boolean" }, lang: { type: "string" }, ignore: { type: "string" }, min: { type: "string" }, max: { type: "string" }, strict: { type: "boolean" }, update: { type: "boolean" }, start: { type: "string" }, crf: { type: "string" },
+  size: { type: "string" }, color: { type: "string" }, mode: { type: "string" },
   box: { type: "string", multiple: true }, scale: { type: "string" }, transparent: { type: "boolean" }, wait: { type: "string" },
   frames: { type: "string" }, at: { type: "string" }, fps: { type: "string" }, duration: { type: "string" }, video: { type: "string" }, dir: { type: "string" },
   model: { type: "string", multiple: true }, help: { type: "boolean", short: "h" },
@@ -197,19 +201,25 @@ const main = async () => {
       }
       return;
     }
-    case "frame": {
-      const [src] = args;
-      if (!src || !v.frame) throw new Error("Usage: readytogo frame <screenshot> --frame phone|tablet|browser|window|laptop|card");
-      const { makeFrame } = await import("../src/images.js");
-      const r = await makeFrame(resolve(src), v.frame, resolve(v.out ?? assetsDir("mockups", `${basename(src).replace(/\.\w+$/, "")}-${v.frame}.png`)), { size: v.size, bg: v.bg, url: v.url, dark: v.dark, color: v.color });
-      return log(`wrote ${r.file}${r.width ? ` (${r.width}×${r.height})` : ""}`);
+    case "verify": {
+      if (!args.length || !v.target) throw new Error("Usage: readytogo verify <image...> --target <asset-id|WxH>   (ids: readytogo specs)");
+      const { verifyImage } = await import("../src/images.js");
+      for (const file of args) {
+        const r = await verifyImage(resolve(file), v.target);
+        log(`${r.ok ? "OK  " : "FAIL"} ${basename(file)}  ${r.width}×${r.height} ${r.format}${r.alpha ? " +alpha" : ""} ${(r.bytes / 1024).toFixed(0)} KB  vs ${r.spec}`);
+        r.problems.forEach((p) => log(`      problem: ${p}`));
+        r.notes.forEach((n) => log(`      note: ${n}`));
+        if (!r.ok) process.exitCode = 1;
+      }
+      return;
     }
-    case "promo": {
-      if (!v.target) throw new Error("Usage: readytogo promo --target <asset-id> --title … [--logo file]");
-      const { makePromo } = await import("../src/images.js");
-      const r = await makePromo(v.target, resolve(v.out ?? assetsDir("promo", `${v.target}.png`)), { title: v.title, subtitle: v.subtitle, logo: v.logo && resolve(v.logo), bg: v.bg, fg: v.fg, accent: v.accent });
-      log(`wrote ${r.file} (${r.width}×${r.height})`);
-      return r.warnings.forEach((w) => log(`warning: ${w}`));
+    case "video": {
+      const [input] = args;
+      if (!input) throw new Error("Usage: readytogo video <in> [--out file.webm|mp4|gif] [--width 1280] [--fps 30] [--start s] [--duration s]");
+      const { convertVideo, probeVideo } = await import("../src/video.js");
+      if (!v.out) return log(JSON.stringify(probeVideo(resolve(input)), null, 2));
+      const r = convertVideo(resolve(input), resolve(v.out), { width: v.width ? +v.width : undefined, fps: v.fps ? +v.fps : undefined, start: v.start != null ? +v.start : undefined, duration: v.duration ? +v.duration : undefined, crf: v.crf ? +v.crf : undefined, alpha: v.transparent });
+      return log(`wrote ${v.out}: ${r.width}×${r.height} ${r.fps} fps ${r.seconds.toFixed(1)}s ${(r.bytes / 1024).toFixed(0)} KB`);
     }
     case "annotate": {
       const [src] = args;
@@ -232,14 +242,72 @@ const main = async () => {
       if (!target) throw new Error("Usage: readytogo seo <page.html|https://url>");
       let html;
       if (/^https?:\/\//i.test(target)) {
-        const res = await fetch(target, { signal: AbortSignal.timeout(15000), headers: { "user-agent": "readytogo/0.1" } });
-        html = (await res.text()).slice(0, 2_000_000);
+        const { fetchPage } = await import("../src/net.js");
+        html = (await fetchPage(target, { allowLocal: v["allow-local"] })).text;
       } else html = readFileSync(resolve(target), "utf8");
       const page = parsePage(html);
       const { score, checks } = scorePage(page);
       log(`SEO score: ${score}/100\n`);
       log(checks.map((c) => `${c.pass ? "PASS" : "FAIL"}  ${c.label}${c.pass ? "" : `\n      → ${c.tip}`}`).join("\n"));
       return log(`\nog: ${JSON.stringify(page.og)}\ntwitter: ${JSON.stringify(page.twitter)}`);
+    }
+    case "links": {
+      const [target] = args;
+      if (!target) throw new Error("Usage: readytogo links <page.html|https://url> [--no-check] [--limit 150]");
+      const { auditPageLinks } = await import("../src/links.js");
+      let html, url = target;
+      if (/^https?:\/\//i.test(target)) {
+        const { fetchPage } = await import("../src/net.js");
+        const r = await fetchPage(target, { allowLocal: v["allow-local"] });
+        html = r.text; url = r.finalUrl;
+      } else {
+        html = readFileSync(resolve(target), "utf8");
+        url = v.url ?? "https://example.invalid/"; // relative links in a local file need a base: pass --url https://yoursite.com/page
+      }
+      const r = await auditPageLinks(url, html, { check: !v["no-check"], limit: v.limit ? +v.limit : 150, allowLocal: v["allow-local"] });
+      if (v.json) return log(JSON.stringify(r, null, 2));
+      log(`${r.total} links (${r.unique} unique, ${r.internal} internal, ${r.nofollow} nofollow); ${r.checked} checked${r.truncated ? " (truncated by --limit)" : ""}`);
+      for (const x of r.findings) log(`${x.level.toUpperCase().padEnd(5)} ${x.href}\n      ${x.problem}`);
+      if (r.findings.some((x) => x.level === "error")) process.exitCode = 1;
+      return;
+    }
+    case "backlinks": {
+      const [file] = args;
+      if (!file || !v.target) throw new Error("Usage: readytogo backlinks <export.csv|urls.txt> --target example.com [--verify]");
+      const { parseBacklinks, analyseBacklinks, verifyBacklinks } = await import("../src/links.js");
+      const rows = parseBacklinks(readFileSync(resolve(file), "utf8"));
+      const a = analyseBacklinks(rows, v.target);
+      const ver = v.verify ? await verifyBacklinks(rows, v.target, { limit: v.limit ? +v.limit : 100, allowLocal: v["allow-local"] }) : null;
+      if (v.json) return log(JSON.stringify({ analysis: a, verification: ver }, null, 2));
+      log(`${a.rows} links from ${a.referringDomains} referring domains to ${a.target}${a.nofollowShare != null ? `; ${Math.round(a.nofollowShare * 100)}% nofollow` : ""}; top domain holds ${Math.round(a.concentration * 100)}% of links`);
+      log(`TLDs: ${Object.entries(a.tlds).map(([k, n]) => `.${k} ${n}`).join(", ")}`);
+      log(`Anchors: ${Object.entries(a.anchors).filter(([, n]) => n).map(([k, n]) => `${k} ${n}`).join(", ") || "not in export"}`);
+      log("\nTop referring domains:\n" + a.topDomains.map((d) => `  ${String(d.links).padStart(4)}  ${d.domain}${d.risk.length ? `   ⚠ ${d.risk.join("; ")}` : ""}`).join("\n"));
+      if (a.risky.length) log(`\n${a.risky.length} domain(s) look risky; review before disavowing anything (this is a heuristic, not a verdict).`);
+      if (ver) {
+        log(`\nVerified ${ver.checked} referring pages: ${ver.alive} still link to you${ver.truncated ? " (sample, see --limit)" : ""}`);
+        for (const r of ver.results.filter((x) => !x.ok)) log(`  GONE  ${r.source}  ${r.problem}`);
+        for (const r of ver.results.filter((x) => x.ok && (x.nofollow || x.sponsored || x.ugc || x.noindexPage))) log(`  WEAK  ${r.source}  ${[r.nofollow && "nofollow", r.sponsored && "sponsored", r.ugc && "ugc", r.noindexPage && "page is noindex"].filter(Boolean).join(", ")}`);
+      }
+      return;
+    }
+    case "deadcode": {
+      const { analyseDeadCode } = await import("../src/deadcode.js");
+      const dir = args[0] ? resolve(args[0]) : root;
+      const r = await analyseDeadCode(dir, { langs: v.lang ? list(v.lang) : undefined, ignore: list(v.ignore), strict: v.strict });
+      const order = ["high", "medium", "low"], minRank = order.indexOf(v.min ?? "low");
+      const shown = r.findings.filter((x) => order.indexOf(x.confidence) <= minRank).slice(0, v.max ? +v.max : 200);
+      if (v.json) return log(JSON.stringify({ ...r, findings: shown }, null, 2));
+      log(`Parsed ${r.files} files (${r.languages.join(", ") || "none"}); ${r.findings.length} finding(s)${shown.length < r.findings.length ? `, showing ${shown.length}` : ""}.`);
+      for (const x of shown) log(`${x.confidence.toUpperCase().padEnd(6)} ${x.kind.padEnd(17)} ${relative(dir, join(dir, x.file)).split(sep).join("/")}:${x.line}  ${x.message}`);
+      if (r.skipped.length) log(`\nskipped: ${r.skipped.slice(0, 5).join(", ")}${r.skipped.length > 5 ? ` (+${r.skipped.length - 5})` : ""}`);
+      return log("\nName-based and conservative: confirm 'low' and 'medium' items before deleting (dynamic access, reflection and framework conventions are invisible).");
+    }
+    case "setup": {
+      const { setup, GROUPS } = await import("../src/tools.js");
+      const groups = args.length ? args : Object.keys(GROUPS);
+      for (const g of groups) setup(g);
+      return log(`\nDone. Re-run \`readytogo setup\` any time (or with --update) to refresh to current versions.`);
     }
     case "scaffold": {
       const { scaffold } = await import("../src/render.js");
@@ -250,20 +318,21 @@ const main = async () => {
     case "models": {
       const { listModels } = await import("../src/render.js");
       const m = listModels();
-      return log(m.length ? m.map((x) => `${x.id}\t${x.kind}\t${x.file}\t${x.license}`).join("\n") : "No bundled models yet. The 3D template builds procedural devices; see references/mockups-3d.md to add GLB models.");
+      return log(m.length ? m.map((x) => `${x.id.padEnd(18)} ${x.kind.padEnd(7)} screen ${x.screenAspect}  ${x.description}`).join("\n") : "No bundled models. See assets/3d/models/README.md.");
     }
     case "render": {
       const [html] = args;
       if (!html || (!v.out && !v.video)) throw new Error("Usage: readytogo render <page.html[?query]> --size WxH --out file.png");
       const { render } = await import("../src/render.js");
-      const r = await render({ html, size: v.size, out: v.out, scale: v.scale ? +v.scale : 1, transparent: v.transparent, wait: v.wait ? +v.wait : 0, frames: v.frames ? +v.frames : undefined, fps: v.fps ? +v.fps : 30, duration: v.duration ? +v.duration : undefined, video: v.video, at: v.at != null ? +v.at : undefined, root });
+      const r = await render({ html, size: v.size, out: v.out, scale: v.scale ? +v.scale : 1, transparent: v.transparent, wait: v.wait ? +v.wait : 0, frames: v.frames ? +v.frames : undefined, fps: v.fps ? +v.fps : undefined, duration: v.duration ? +v.duration : undefined, video: v.video, at: v.at != null ? +v.at : undefined, root });
       log(r.files.map((f) => `wrote ${f}`).join("\n"));
       if (r.note) log(r.note);
       return r.errors.slice(0, 5).forEach((e) => log(`page error: ${e}`));
     }
     case "doctor": {
-      const has = (c, a = ["-version"]) => !spawnSync(c, a, { stdio: "ignore" }).error;
-      log(`node ${process.version}\nsharp ${await sharpLib().then(() => "ok", (e) => "MISSING: " + e.message)}\nplaywright ${(await (await import("../src/render.js")).loadPlaywright(root).then(() => true, () => false)) ? "ok" : "not installed (needed for render/3D): npm i -D playwright && npx playwright install chromium"}\nffmpeg ${has("ffmpeg") ? "ok" : "not found (needed only for video output)"}\ngit repo ${existsSync(join(root, ".git")) ? "yes" : "no"}`);
+      const { status, TOOLS_DIR } = await import("../src/tools.js");
+      const t = status([root]);
+      log(`node ${process.version}\nsharp ${await sharpLib().then(() => "ok", (e) => "MISSING: " + e.message)}\ntools dir ${TOOLS_DIR}\ntree-sitter ${t.deadcode["web-tree-sitter"] ? `web-tree-sitter ${t.deadcode["web-tree-sitter"]}, grammars ${t.deadcode["tree-sitter-wasms"] ?? "missing"}` : "not set up (needed for deadcode): readytogo setup deadcode"}\nplaywright ${t.render.playwright ? t.render.playwright : "not set up (needed for render, frames, 3D): readytogo setup render"}\nffmpeg ${t.ffmpeg ? "ok" : "not found (needed for the video tool and video output): install from https://ffmpeg.org/download.html, or winget/brew/apt install ffmpeg"}\ngit repo ${existsSync(join(root, ".git")) ? "yes" : "no"}`);
       return;
     }
     default:

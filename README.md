@@ -2,10 +2,10 @@
 
 An agent skill and CLI that gets a product **ready to ship**. Point your coding agent at a repo; it works out which launch checks apply (web, iOS, Android, desktop, browser extension, CLI, library, API), fixes what it can, and generates the assets stores ask for: icons, favicons, store screenshots at exact pixel sizes, promo tiles, device mockups, and animated 3D (three.js) mockups.
 
-- **158 checks in 20 checklists**, tag-filtered so a Chrome extension never sees App Store items.
+- **161 checks in 20 checklists**, tag-filtered so a Chrome extension never sees App Store items.
 - **27 automatic checks** that read the repo (secrets, icon size and alpha channel, manifest, SEO and Open Graph tags, privacy page, CI, crash reporting, target SDK …).
-- **Deterministic asset tools** (no AI drawing): icon sets for App Store, Google Play, Chrome, Firefox, Edge, favicon, `.icns`, `.ico`; screenshot fitting; device frames; promo tiles; redaction; listing-text limits.
-- **3D mockups**: a procedural phone, tablet, laptop and phone-pair scene with motion presets, rendered frame-exact to PNG, transparent WebM, MP4 or GIF. Bring your own GLB models.
+- **Tools** for static, repeated work (exact and deterministic, no AI drawing): icon sets for every store, screenshot fitting, spec `verify`, video convert, redaction, listing-text limits, SEO score, broken-link audit, backlink analysis, dead-code finder.
+- **Guidelines plus shipped assets** for anything that must be designed per product: OS window frames, seven generic 3D phone and laptop models, a director-driven three.js scene (camera moves, video on screens), promo and capture templates. The agent composes; it asks you first whether to use your screenshots or capture fresh.
 - The agent supplies judgement; the CLI supplies exactness and memory (`.readytogo/` in the repo).
 
 ## Install
@@ -27,13 +27,14 @@ npx skills add HarshalKudale/readytogo
 
 **Manual**: copy `skills/readytogo/` into your agent's skills folder (for Claude Code: `~/.claude/skills/readytogo/` or `<project>/.claude/skills/readytogo/`).
 
-The skill runs the CLI through `npx -y readytogo@latest …`, so there is nothing else to install. For HTML and 3D rendering add Playwright once per project:
+The skill runs the CLI through `npx -y readytogo@latest …`. Heavy external tools are never bundled (so they cannot go stale); download them once, on demand, into `~/.readytogo/tools`:
 
 ```bash
-npm i -D playwright && npx playwright install chromium
+npx readytogo setup render     # Playwright + Chromium: render, frames, 3D, fresh screenshots (~250 MB)
+npx readytogo setup deadcode   # tree-sitter + grammars, for deadcode (~55 MB)
 ```
 
-(`readytogo doctor` tells you what is missing. Video output also needs `ffmpeg`.)
+`readytogo doctor` tells you what is missing. The video tool also needs `ffmpeg`.
 
 ## Use
 
@@ -55,10 +56,14 @@ npx readytogo report                               # READYTOGO.md; exit 1 while 
 
 npx readytogo icons logo.svg --for chrome_web_store
 npx readytogo shot cap/*.png --target chrome       # 1280×800 store screenshots
-npx readytogo frame cap/home.png --frame browser --url acme.com --size hero --bg "grad:#6366f1,#8b5cf6"
-npx readytogo promo --target cws_small --title "Do more, faster" --logo logo.svg
-npx readytogo render "/__skill/templates/3d/device-scene.html?device=laptop&screen=/cap/home.png&anim=open&capture=1" \
-  --size 1920x1080 --duration 6 --fps 30 --video hero.mp4
+npx readytogo verify out/*.png --target chrome     # does each file meet the store spec?
+npx readytogo links https://acme.com               # broken or unsafe links
+npx readytogo backlinks export.csv --target acme.com --verify
+npx readytogo deadcode src                         # unused code
+
+# mockups: start from the shipped parts, edit, render
+npx readytogo scaffold 3d --model laptop-notch
+npx readytogo render ".readytogo/mockups/3d/scene.html?config=./director.js" --size 1920x1080 --video hero.mp4
 ```
 
 Full command reference: [`skills/readytogo/references/commands.md`](skills/readytogo/references/commands.md).
@@ -67,21 +72,21 @@ Full command reference: [`skills/readytogo/references/commands.md`](skills/ready
 
 ```
 skills/readytogo/
-  SKILL.md                      the agent's entry point (workflow, rules, asset table)
+  SKILL.md                      the agent's entry point (workflow, rules, tool vs guideline)
   references/
     workflow.md  commands.md    how to profile, work a checklist, gate CI; every CLI option
-    assets.md                   master icon, real-screenshot capture per platform, placement, listing copy
-    mockups.md                  2D mockup and store-screenshot composition guidelines
-    mockups-3d.md               three.js mockups: camera, lighting, motion design, render pipeline, GLB contract
+    assets.md  capture.md       master icon, placement, listing copy; capturing real screenshots per platform
+    mockups.md  mockups-3d.md   composition guidelines for 2D and three.js mockups, motion, GLB contract
     store-specs.md              generated pixel sizes and character limits
     checklists/*.md             generated: one file per checklist
-  templates/3d/device-scene.html    deterministic three.js scene (window.__seek)
-  templates/promo/tile.html         HTML/CSS promo tile
-  assets/3d/models/                 drop-in GLB device models + contract (none bundled yet)
-bin/ src/                       the CLI (Node 20+, sharp; Playwright optional)
-data/                           the catalog: checklists + items, store specs, icon sets, tags, questions (JSON)
+  assets/frames/                OS browser and app window frames (HTML + CSS) and compose.html
+  assets/3d/models/             generic GLB phone and laptop models + contract
+  templates/3d/                 scene.html stage + director examples
+  templates/promo/  capture/    promo tile; Playwright capture scripts
+bin/ src/                       the CLI (Node 20+, sharp)
+data/                           the catalog: checklists, items, store specs, icon sets, tags, questions (JSON)
 commands/                       Claude Code slash commands
-scripts/build-references.mjs    data/*.json -> references/checklists/*.md and store-specs.md
+scripts/                        build-references.mjs (data -> docs), build-models.mjs (GLB generator)
 ```
 
 ## Keeping the catalog current
@@ -92,8 +97,8 @@ The catalog is plain JSON: `data/catalog.json` (checklists and items, each with 
 
 ```bash
 npm install
-npm test                       # unit tests: plan, checks, icons, frames, promo, annotate
-READYTOGO_E2E=1 npm test       # also renders the 3D template (needs Playwright + network for three.js)
+npm test                       # plan, checks, icons, verify, models, links, backlinks, deadcode, video
+READYTOGO_E2E=1 npm test       # also renders the 3D scene and frames (needs `readytogo setup render` + network for three.js)
 ```
 
 ## Limits (honest)
@@ -102,6 +107,6 @@ READYTOGO_E2E=1 npm test       # also renders the 3D template (needs Playwright 
 - Legal items are drafts and prompts, not legal advice.
 - Store requirements change; sizes and limits here are as of each checklist's `lastVerified` date.
 - Frames and 3D devices are generic, original designs, not any manufacturer's.
-- Text in `promo` tiles uses system fonts; use the HTML template for brand fonts.
+- `deadcode` and the `backlinks` risk flags are heuristics; confirm before deleting or disavowing.
 
 MIT licensed.

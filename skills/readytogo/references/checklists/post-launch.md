@@ -15,6 +15,16 @@ Phase: Post-launch · Last verified: 2026-10-24 · Checklist applies when: alway
   4. (any of fw:kotlin) Kotlin: the Play In-App Review API.
   5. Ask only after a success moment, never on first launch.
 
+## post.backlinks: Launch listings and mentions actually link back
+
+- **Priority:** recommended · ~30 min · **Applies when:** any of store:website, store:github, store:npm
+- **Why:** Directory and community listings only help if the link exists, is not nofollow-only everywhere, and the page is indexable.
+- **Run:** `readytogo backlinks links.csv --target yoursite.com --verify`
+- **Steps:**
+  1. Collect the URLs of your listings (Product Hunt, directories, posts) into a text file, or export links from Google Search Console (Links, Top linking sites) or your SEO tool.
+  2. Verify each still links to you and note rel flags; follow up on missing links.
+  3. Review risky domains before taking any disavow action; do not disavow on heuristics alone.
+
 ## post.reply-reviews: Reply to every store review in the first month
 
 - **Priority:** recommended · ~15 min · **Applies when:** any of store:app_store, store:play_store, store:mac_app_store, store:microsoft_store, store:chrome_web_store

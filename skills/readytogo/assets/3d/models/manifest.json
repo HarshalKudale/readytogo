@@ -1,4 +1,86 @@
 {
-  "_comment": "Bundled device models go here as <id>.glb and are listed below. `readytogo models` reads this file. See README.md for the model contract.",
-  "models": []
+  "units": "1 = 10 cm",
+  "frontAxis": "+z",
+  "models": [
+    {
+      "id": "phone-island",
+      "kind": "phone",
+      "file": "phone-island.glb",
+      "screenMesh": "Screen",
+      "screenAspect": 0.4655,
+      "defaultColor": "#2b2b30",
+      "description": "Modern flagship: rounded titanium edge, dynamic-island style cutout, square triple-camera plate",
+      "license": "CC0-1.0",
+      "author": "ReadyToGo (procedurally generated, generic design)"
+    },
+    {
+      "id": "phone-punchhole",
+      "kind": "phone",
+      "file": "phone-punchhole.glb",
+      "screenMesh": "Screen",
+      "screenAspect": 0.4486,
+      "defaultColor": "#1f2937",
+      "description": "Android-style: tall 20:9 screen, small punch-hole camera, horizontal camera bar",
+      "license": "CC0-1.0",
+      "author": "ReadyToGo (procedurally generated, generic design)"
+    },
+    {
+      "id": "phone-notch",
+      "kind": "phone",
+      "file": "phone-notch.glb",
+      "screenMesh": "Screen",
+      "screenAspect": 0.4607,
+      "defaultColor": "#c9ccd2",
+      "description": "Earlier generation: top notch, glossy edge, dual lens",
+      "license": "CC0-1.0",
+      "author": "ReadyToGo (procedurally generated, generic design)"
+    },
+    {
+      "id": "phone-flat",
+      "kind": "phone",
+      "file": "phone-flat.glb",
+      "screenMesh": "Screen",
+      "screenAspect": 0.4579,
+      "defaultColor": "#3a3f4b",
+      "description": "Flat-edge slab with thin bezels and a large square camera plate",
+      "license": "CC0-1.0",
+      "author": "ReadyToGo (procedurally generated, generic design)"
+    },
+    {
+      "id": "laptop-notch",
+      "kind": "laptop",
+      "file": "laptop-notch.glb",
+      "screenMesh": "Screen",
+      "screenAspect": 1.6,
+      "hinge": "LidPivot",
+      "defaultColor": "#2d2d32",
+      "description": "Premium 16:10 laptop: thin bezels, notch, dark aluminium",
+      "license": "CC0-1.0",
+      "author": "ReadyToGo (procedurally generated, generic design)"
+    },
+    {
+      "id": "laptop-slim",
+      "kind": "laptop",
+      "file": "laptop-slim.glb",
+      "screenMesh": "Screen",
+      "screenAspect": 1.6,
+      "hinge": "LidPivot",
+      "defaultColor": "#bfc1c8",
+      "description": "Ultrabook: very thin silver body, tiny bezels, no notch",
+      "license": "CC0-1.0",
+      "author": "ReadyToGo (procedurally generated, generic design)"
+    },
+    {
+      "id": "laptop-classic",
+      "kind": "laptop",
+      "file": "laptop-classic.glb",
+      "screenMesh": "Screen",
+      "screenAspect": 1.7778,
+      "hinge": "LidPivot",
+      "defaultColor": "#1d1d20",
+      "description": "Classic 16:9 laptop: black plastic, thick bezel and chin, webcam dot",
+      "license": "CC0-1.0",
+      "author": "ReadyToGo (procedurally generated, generic design)"
+    }
+  ]
 }

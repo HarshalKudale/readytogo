@@ -9,7 +9,8 @@ Phase: Launch week · Last verified: 2026-10-24 · Checklist applies when: alway
 - **Priority:** recommended · ~240 min · **Applies when:** the checklist applies
 - **Why:** A good launch day brings thousands of early adopters and backlinks.
 - **Needs product copy:** name, tagline, description, url
-- **Generate:** `readytogo shot <screenshot> --target <id>` · `readytogo promo --target <id> --title "…"` (ids: product_hunt, ph_thumb) · `readytogo listing <fields.json>` (field ids: ph_name, ph_tagline, ph_description)
+- **Generate:** capture a real screenshot (references/capture.md), then `readytogo shot <file> --target <id>` · design it as HTML at the exact size (references/mockups.md), `readytogo render` it, then `readytogo verify <file> --target <id>` (ids: product_hunt, ph_thumb) · `readytogo listing <fields.json>` (field ids: ph_name, ph_tagline, ph_description)
+- **Run:** `readytogo backlinks <listing-urls.txt> --target yoursite.com --verify   (after you are listed)`
 - **Steps:**
   1. Warm up your maker account 2–3 weeks ahead: comment and upvote genuinely.
   2. Schedule for 12:01 AM Pacific. Weekends are easier to rank.
@@ -26,6 +27,7 @@ Phase: Launch week · Last verified: 2026-10-24 · Checklist applies when: alway
 - **Priority:** recommended · ~60 min · **Applies when:** any of platform:web, platform:desktop, platform:api, platform:cli, platform:library
 - **Why:** Hacker News sends thousands of technical early adopters in a day.
 - **Needs product copy:** name, url
+- **Run:** `readytogo backlinks <listing-urls.txt> --target yoursite.com --verify   (after you are listed)`
 - **Steps:**
   1. Title: 'Show HN: <Name> – <what it does>', plainly, with no superlatives.
   2. Link to something people can try without signing up, if you can.
@@ -37,6 +39,7 @@ Phase: Launch week · Last verified: 2026-10-24 · Checklist applies when: alway
 - **Priority:** recommended · ~30 min · **Applies when:** the checklist applies
 - **Why:** A maker-focused launch platform: an extra launch day, a backlink and early users.
 - **Needs product copy:** name, tagline, description, url
+- **Run:** `readytogo backlinks <listing-urls.txt> --target yoursite.com --verify   (after you are listed)`
 - **Steps:**
   1. Create your product page on PeerPush.
   2. Reuse the tagline, description, screenshots and links from your kit.
@@ -47,6 +50,7 @@ Phase: Launch week · Last verified: 2026-10-24 · Checklist applies when: alway
 - **Priority:** recommended · ~30 min · **Applies when:** any of platform:web, platform:desktop, mobile, platform:extension
 - **Why:** People search 'alternative to X' at the exact moment they're ready to switch.
 - **Needs product copy:** name, description, url
+- **Run:** `readytogo backlinks <listing-urls.txt> --target yoursite.com --verify   (after you are listed)`
 - **Steps:**
   1. Add your app with a description, screenshots and links.
   2. List it as an alternative to the 3–5 best-known tools you replace.
@@ -62,6 +66,7 @@ Phase: Launch week · Last verified: 2026-10-24 · Checklist applies when: alway
 - **Priority:** nice · ~20 min · **Applies when:** any of platform:web, mobile
 - **Why:** Reaches early adopters who sign up for products before they launch.
 - **Needs product copy:** name, tagline, url
+- **Run:** `readytogo backlinks <listing-urls.txt> --target yoursite.com --verify   (after you are listed)`
 - **Steps:**
   1. Submit before your public launch; the free queue takes weeks.
   2. Link to a page with a signup or waitlist.
@@ -71,6 +76,7 @@ Phase: Launch week · Last verified: 2026-10-24 · Checklist applies when: alway
 - **Priority:** nice · ~20 min · **Applies when:** none of platform:library
 - **Why:** A daily launch board with a backlink for ranked products.
 - **Needs product copy:** name, tagline, description, url
+- **Run:** `readytogo backlinks <listing-urls.txt> --target yoursite.com --verify   (after you are listed)`
 - **Steps:**
   1. Submit your product and pick a launch date.
   2. Share it on launch day: ranking depends on upvotes that day.
@@ -80,6 +86,7 @@ Phase: Launch week · Last verified: 2026-10-24 · Checklist applies when: alway
 - **Priority:** nice · ~20 min · **Applies when:** none of platform:library
 - **Why:** A month-long launch window that keeps sending traffic after day one.
 - **Needs product copy:** name, tagline, url
+- **Run:** `readytogo backlinks <listing-urls.txt> --target yoursite.com --verify   (after you are listed)`
 - **Steps:**
   1. Submit your product with screenshots.
   2. Reply to comments and feedback during your launch month.
@@ -89,6 +96,7 @@ Phase: Launch week · Last verified: 2026-10-24 · Checklist applies when: alway
 - **Priority:** recommended · ~20 min · **Applies when:** any of platform:api, platform:cli, platform:library
 - **Why:** A launch board just for developer tools: the audience is exactly your users.
 - **Needs product copy:** name, tagline, url
+- **Run:** `readytogo backlinks <listing-urls.txt> --target yoursite.com --verify   (after you are listed)`
 - **Steps:**
   1. Submit with your GitHub repo and a demo GIF.
   2. Launch on a weekday and share in your developer circles.
@@ -97,6 +105,7 @@ Phase: Launch week · Last verified: 2026-10-24 · Checklist applies when: alway
 
 - **Priority:** nice · ~45 min · **Applies when:** any of platform:web, mobile, platform:desktop, platform:extension
 - **Why:** Founders there read launch stories and become early users and advocates.
+- **Run:** `readytogo backlinks <listing-urls.txt> --target yoursite.com --verify   (after you are listed)`
 - **Steps:**
   1. Write a launch post with numbers: what you built, how long it took, what's next.
   2. Add your product to the Indie Hackers product directory.
@@ -106,6 +115,7 @@ Phase: Launch week · Last verified: 2026-10-24 · Checklist applies when: alway
 - **Priority:** nice · ~20 min · **Applies when:** any of platform:web, platform:api
 - **Why:** Compares you against named alternatives and ranks well for 'X alternatives'.
 - **Needs product copy:** name, description, url
+- **Run:** `readytogo backlinks <listing-urls.txt> --target yoursite.com --verify   (after you are listed)`
 - **Steps:**
   1. Claim or add your product page.
   2. Add the alternatives you compete with.
@@ -115,6 +125,7 @@ Phase: Launch week · Last verified: 2026-10-24 · Checklist applies when: alway
 - **Priority:** recommended · ~20 min · **Applies when:** any of ai:any
 - **Why:** The biggest AI tool directory, with heavy search traffic for AI use cases.
 - **Needs product copy:** name, tagline, url
+- **Run:** `readytogo backlinks <listing-urls.txt> --target yoursite.com --verify   (after you are listed)`
 - **Steps:**
   1. Submit with a clear use-case title (the task your AI does).
   2. Pick the task category your users search for.
@@ -124,6 +135,7 @@ Phase: Launch week · Last verified: 2026-10-24 · Checklist applies when: alway
 - **Priority:** nice · ~20 min · **Applies when:** any of ai:any
 - **Why:** A large AI tools directory with category pages that rank in search.
 - **Needs product copy:** name, description, url
+- **Run:** `readytogo backlinks <listing-urls.txt> --target yoursite.com --verify   (after you are listed)`
 - **Steps:**
   1. Submit your tool with pricing and category.
   2. Add screenshots of the AI feature in action.

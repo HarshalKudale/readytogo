@@ -8,6 +8,7 @@
   state.json     manual marks: { "<item-id>": { status, note, at } }   status: done | skipped | na
   checks.json    last automatic check results: { "<item-id>": { pass: true|false|null, detail } }
   assets/        generated output (icons, screenshots, mockups, promo)
+  mockups/       scaffolded 3d / frames / promo starters you are editing
 READYTOGO.md     the report (commit it, or regenerate in CI)
 ```
 
@@ -28,6 +29,18 @@ Open and failing items are not closed. A `pass: null` check result means "the re
 ## Monorepos
 
 `scan` merges every `package.json` it finds (to depth 7, skipping `node_modules` and build output) into one profile. If the repo ships several products (a web app and a mobile app, say), tag the union, then run the plan once; items carry their own `Applies when` lines so you can see which product each one is about. For truly separate launches, run with `--root apps/<name>`; each root keeps its own `.readytogo/`.
+
+## Setup of external tools
+
+Tool commands need nothing extra except these, which are downloaded on demand (never bundled) into `~/.readytogo/tools`:
+
+| Needed for | Run | Size |
+|---|---|---|
+| `deadcode` | `readytogo setup deadcode` | ~55 MB |
+| `render`, frames, 3D mockups, fresh screenshots | `readytogo setup render` | ~250 MB |
+| `video`, video output | install `ffmpeg` yourself | |
+
+`readytogo doctor` shows what is missing. Tell the user the size and ask before downloading.
 
 ## Working a checklist
 

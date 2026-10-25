@@ -11,6 +11,7 @@ Phase: Pre-launch · Last verified: 2026-10-24 · Checklist applies when: any of
 - **Auto-check:** `readytogo check` verifies this one.
 - **Needs product copy:** name, tagline, description
 - **Generate:** `readytogo seo <page.html|url>`
+- **Run:** `readytogo seo <page.html|https://yoursite.com/>`
 - **Steps:**
   1. Write a unique title and description for each page.
   2. (any of fw:nextjs) Next.js: export metadata (or generateMetadata) from each page.
@@ -22,8 +23,19 @@ Phase: Pre-launch · Last verified: 2026-10-24 · Checklist applies when: any of
 - **Why:** Without them, links on X, LinkedIn and Slack show as bare URLs.
 - **Auto-check:** `readytogo check` verifies this one.
 - **Generate:** `readytogo seo <page.html|url>`
+- **Run:** `readytogo seo <page.html|https://yoursite.com/>`
 - **Steps:**
   1. Add og:title, og:description, og:image and twitter:card.
+
+## seo.links: No broken, insecure or chained links on key pages
+
+- **Priority:** recommended · ~20 min · **Applies when:** any of store:website
+- **Why:** Broken links lose visitors and search trust; redirect chains slow pages; http links on https pages warn browsers.
+- **Run:** `readytogo links https://yoursite.com/` · `readytogo seo https://yoursite.com/`
+- **Steps:**
+  1. Run the link audit on the home page, pricing, docs and download pages (the live URL).
+  2. Fix every ERROR; fix WARN chains by linking to the final URL.
+  3. Add rel="noopener noreferrer" to external target="_blank" links.
 
 ## seo.prerender: Public pages are prerendered or server-rendered
 
@@ -48,6 +60,7 @@ Phase: Pre-launch · Last verified: 2026-10-24 · Checklist applies when: any of
 - **Priority:** recommended · ~15 min · **Applies when:** the checklist applies
 - **Why:** Helps search engines find every page quickly.
 - **Auto-check:** `readytogo check` verifies this one.
+- **Run:** `readytogo seo <page.html|https://yoursite.com/>`
 - **Steps:**
   1. (any of fw:nextjs) Next.js: add app/sitemap.ts and app/robots.ts.
   2. (any of fw:astro) Astro: add @astrojs/sitemap.

@@ -154,7 +154,7 @@ export const CHECKS = {
   "seo.software-schema": (c) => flag(c.grep(/SoftwareApplication|MobileApplication/).length, "SoftwareApplication JSON-LD present", "No SoftwareApplication structured data."),
   "assets.og-image": (c) => {
     const f = c.find(/(^|\/)(og|opengraph|open-graph|social|twitter)[\w-]*\.(png|jpe?g)$/i);
-    return flag(f.length || c.grep(/og:image/).length, f[0] ?? "og:image set", "No share image found. Run `readytogo promo --target og`.");
+    return flag(f.length || c.grep(/og:image/).length, f[0] ?? "og:image set", "No share image found. Design a 1200×630 image (references/mockups.md), render it, and check with `readytogo verify <file> --target og`.");
   },
   "domain.deeplinks-ios": (c) => flag(c.has(/apple-app-site-association/), "AASA file present", "No apple-app-site-association file."),
   "domain.deeplinks-android": (c) => flag(c.has(/assetlinks\.json$/), "assetlinks.json present", "No assetlinks.json."),

@@ -1,43 +1,28 @@
 # 3D device models
 
-Drop-in `.glb` device models for `templates/3d/device-scene.html` (`?device=model&model=<url>`).
-**None are bundled yet.** The template builds a procedural phone, tablet and laptop with no files at all,
-so mockups work today; add models here when you want a specific real-world device.
+Generic, original phone and laptop models in glTF binary, used by `templates/3d/scene.html`. List them with `readytogo models`; copy some into a project with `readytogo scaffold 3d --model phone-island --model laptop-notch`.
 
-## Adding a model
+They are **generated** by `scripts/build-models.mjs` (`npm run build:models`) and described in `manifest.json`. Edit the script, not the `.glb` files. License CC0-1.0; they imitate no manufacturer's design.
 
-1. Put `<id>.glb` in this folder.
-2. Add an entry to `manifest.json`:
+| id | kind | look |
+|---|---|---|
+| `phone-island` | phone | modern flagship, dynamic-island style cutout, triple-camera plate |
+| `phone-punchhole` | phone | tall 20:9, punch-hole camera |
+| `phone-notch` | phone | older notch phone |
+| `phone-flat` | phone | flat-edge phone |
+| `laptop-notch` | laptop | thin bezel with webcam notch |
+| `laptop-slim` | laptop | slim, minimal bezel |
+| `laptop-classic` | laptop | classic thicker bezel |
 
-   ```json
-   { "id": "phone-generic-1", "kind": "phone", "file": "phone-generic-1.glb", "screenMesh": "Screen",
-     "screenAspect": 0.4875, "license": "CC0", "source": "https://…", "author": "…" }
-   ```
-3. Check it against the contract below with a render:
-   `readytogo scaffold 3d --model phone-generic-1`, then
-   `readytogo render ".readytogo/mockups/3d/device-scene.html?device=model&model=/.readytogo/mockups/3d/models/phone-generic-1.glb&screen=/shot.png&capture=1" --size 1200x1200 --out check.png`
-
-## Model contract
+## Contract (follow it when adding a model)
 
 | Rule | Why |
 |---|---|
-| glTF 2.0 binary (`.glb`), one scene, Y up, front facing +Z | The scene template assumes it. |
-| Real-world scale in metres is fine; the template normalises the longest side to 1.6 units | Any scale works, but keep proportions true. |
-| Origin near the centre of the device | The template re-centres anyway; a far-off origin breaks pivots. |
-| **A mesh named `Screen`** (or set `screenMesh` in the manifest) with one material | The screenshot replaces this mesh's material. |
-| `Screen` UVs span exactly 0–1 with the image upright (U right, V up) | Otherwise the screenshot is rotated or stretched. Use `?flipY=1` if it only appears upside down. |
-| Screen aspect recorded in `screenAspect` (width ÷ height) | The agent crops the screenshot to this aspect before rendering. |
-| No embedded lights or cameras | The template owns lighting. |
-| Under ~3 MB; meshes merged where possible; textures ≤ 2048px, no Draco unless you also add a decoder | Fast loads, deterministic headless rendering. |
-| PBR materials (metal-rough); no unlit tricks on the body | The environment map gives believable reflections. |
+| glTF 2.0 binary, one scene, Y up, front faces **+z**, units 1 = 10 cm | The scene assumes it. |
+| A mesh named **`Screen`** with its own material, UVs spanning 0 to 1, image upright | The screen image or video is mapped onto it. |
+| Laptops: a node named **`LidPivot`** that the lid hangs from, hinge on its origin | The scene opens and closes the lid by rotating it. |
+| A material named **`Body`** | The scene recolours the body from `defaultColor` or the director's `color`. |
+| `screenAspect` (width ÷ height) in `manifest.json` | Crop the screenshot to this aspect before rendering. |
+| No embedded lights or cameras; PBR materials; small file | The scene owns lighting; fast, deterministic headless rendering. |
 
-## Licensing
-
-Only add models you may redistribute. CC0 or CC-BY with attribution recorded in `manifest.json`.
-Never add models traced from, or named for, trademarked device designs you do not have rights to; name them
-generically (`phone-generic-*`, `laptop-generic-*`). The agent must carry the `license`/`author` into the
-project's third-party notices when it uses a model.
-
-## Naming
-
-`<kind>-<variant>-<n>.glb` where kind is `phone`, `tablet`, `laptop`, `watch`, `desktop`, `tv`, `browser`.
+To add a model: put the `.glb` here, add an entry to `manifest.json` (`id`, `kind`, `file`, `screenMesh`, `screenAspect`, `hinge` for laptops, `defaultColor`, `license`, `author`), and check it with a render of `templates/3d/scene.html`. Only add models you may redistribute (CC0 or CC-BY with attribution recorded), named generically.

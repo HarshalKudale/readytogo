@@ -22,7 +22,7 @@ function toolHint(slug) {
   switch (t.component) {
     case "store-kit": {
       const kinds = new Set((t.scope ?? []).map((s) => KIT_ASSETS.find((a) => a.id === s)?.kind));
-      return [kinds.has("shot") && "`readytogo shot <screenshot> --target <id>`", kinds.has("promo") && '`readytogo promo --target <id> --title "…"`'].filter(Boolean).join(" · ") + ` (ids: ${ids})`;
+      return [kinds.has("shot") && "capture a real screenshot (references/capture.md), then `readytogo shot <file> --target <id>`", kinds.has("promo") && "design it as HTML at the exact size (references/mockups.md), `readytogo render` it, then `readytogo verify <file> --target <id>`"].filter(Boolean).join(" · ") + ` (ids: ${ids})`;
     }
     case "icon-pack":
     case "app-icon-file":
@@ -30,7 +30,7 @@ function toolHint(slug) {
     case "favicon":
       return "`readytogo icons <logo> --for favicon`";
     case "device-mockup":
-      return t.scope?.some((s) => s.includes("3d")) ? "3D: see `references/mockups-3d.md`" : `\`readytogo frame <screenshot> --frame ${t.scope?.[0] ?? "phone"}\``;
+      return t.scope?.some((s) => s.includes("3d")) ? "3D scene: see `references/mockups-3d.md`" : "frame the screenshot: see `references/mockups.md` (OS frames in assets/frames, device scene in templates/3d)";
     case "listing-copy":
       return `\`readytogo listing <fields.json>\` (field ids: ${ids})`;
     case "meta-tags":
@@ -45,7 +45,7 @@ function toolHint(slug) {
 }
 
 rmSync(new URL("references/checklists/", skill), { recursive: true, force: true });
-const index = ["# Checklists", "", "Generated from `data/catalog.json`. Run `readytogo plan` to see which apply to this repo, then read only those files.", ""];
+const index = ["# Checklists", "", "Generated from `data/catalog.json` (the source of truth). Run `readytogo plan` to see which apply to this repo, then read only those files.", ""];
 for (const phase of PHASES) {
   index.push(`## ${phase.title}`, "", `_${phase.description}_`, "");
   for (const c of CHECKLISTS.filter((x) => x.phase === phase.id).sort((a, b) => a.order - b.order)) {
@@ -58,6 +58,7 @@ for (const phase of PHASES) {
       if (i.kit?.length) md.push(`- **Needs product copy:** ${i.kit.join(", ")}`);
       const hints = (i.tools ?? []).map(toolHint).filter(Boolean);
       if (hints.length) md.push(`- **Generate:** ${[...new Set(hints)].join(" · ")}`);
+      if (i.commands?.length) md.push(`- **Run:** ${i.commands.map((c) => "`" + c + "`").join(" · ")}`);
       if (i.toolOptions?.length) md.push(`- **Asset ids needed:** ${i.toolOptions.join(", ")}`);
       md.push("- **Steps:**", ...i.steps.map((s, n) => (typeof s === "string" ? `  ${n + 1}. ${s}` : `  ${n + 1}. (${expr(s.appliesTo)}) ${s.text}`)), "");
     }
@@ -74,7 +75,7 @@ out(new URL("references/store-specs.md", skill), [
   "",
   "Generated from `data/specs.json`. Stores change these; if `Last verified` on the relevant checklist is old, confirm against the store's live docs before generating in bulk.",
   "",
-  "Use the id with `readytogo shot --target <id>` (screenshots) or `readytogo promo --target <id>` (graphics).",
+  "Screenshots: capture, then `readytogo shot <file> --target <id>`. Graphics (tiles, feature graphics, OG and social images): design at the exact size, `readytogo render` it, then `readytogo verify <file> --target <id>`.",
   "",
   "| id | type | store | label | size | status | count | note |",
   "|---|---|---|---|---|---|---|---|",

@@ -2,7 +2,7 @@
 
 Generated from `data/specs.json`. Stores change these; if `Last verified` on the relevant checklist is old, confirm against the store's live docs before generating in bulk.
 
-Use the id with `readytogo shot --target <id>` (screenshots) or `readytogo promo --target <id>` (graphics).
+Screenshots: capture, then `readytogo shot <file> --target <id>`. Graphics (tiles, feature graphics, OG and social images): design at the exact size, `readytogo render` it, then `readytogo verify <file> --target <id>`.
 
 | id | type | store | label | size | status | count | note |
 |---|---|---|---|---|---|---|---|
